@@ -1,0 +1,63 @@
+{**
+ * @filesource  commentsControl.latte
+ * 
+ * @author      Bc. Vojtech Krupicka
+ * @copyright   hl2 - ZONE 2011
+ * @package     AdminModule
+ * @version     1.0.0 
+ *}
+ 
+
+
+<div class="comments">
+	<h2>Komentáře</h2>
+	{if $showBar}
+	<div class="bar">
+		<a class="up" n:href="this showComments => false" n:if="$showComments">Zkrýt komentáře</a>
+		<a class="down" n:href="this showComments => true" n:if="!$showComments">Zobrazit komentáře</a>
+	</div>
+	{/if}
+	{if $showComments}
+		{if $comments->count()}
+			{foreach $comments as $comment}
+				<div id="comment-{$comment->id}-owner-{$ownerId}" n:class="comment, $iterator->even ? even">
+					<div class="header">
+						{var fragment = "comment-{$comment->id}-owner-{$ownerId}"}
+						<div class="id"><a n:href="this#$fragment" title="Komentář #{$iterator->counter}">#{$iterator->counter}</a></div>	
+						<div class="author">
+							{if $comment->email != NULL}
+								<h2><a href="mailto:{$comment->email}" title="{$comment->email}">{$comment->nickname}</a></h2>
+								<h3><strong>Email: </strong><a href="mailto:{$comment->email}" title="{$comment->email}">{$comment->email}</a></h3>
+							{else}
+								<h2>{$comment->nickname}</h2>
+							{/if}
+							<h3 n:if="$comment->subject != NULL"><strong>Předmět: </strong>{$comment->subject}</h3>
+						</div>
+						<div class="info">
+							<div class="tools">
+								<div class="time">{$comment->added|date:'H:i:s d.m.Y'}</div>
+								<ul>
+									{var fragment = "comments-form-owner-{$ownerId}"}
+									{if $user->isLoggedIn()}
+									<li><a n:href="delete! commentId => $comment->id" title="Smazat komentář" onclick="return confirm('Opravdu chcete smazat tento komentář? Tato akce je permamentní!');"><img class="comment-delete" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+									<li><a n:href="this#$fragment commentId => $comment->id, commentEdit => true" title="Upravit komentář"><img class="comment-edit" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+									<li><a n:href="this#$fragment commentId => $comment->id, commentEdit => false" title="Odpovědět"><img class="comment-reply" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+									{else}
+									<li><a n:href="this#$fragment commentId => $comment->id, commentEdit => false" title="Odpovědět">Odpovědět</a></li>
+									{/if}
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="content wysiwyg">{!$comment->comment}</div>
+				</div>
+			{/foreach}
+		{else}
+			<div class="error">Nebyly nalezeny žádné komentáře</div>
+		{/if}
+		
+		<div id="comments-form-owner-{$ownerId}">
+		{control commentForm}
+		</div>
+	{/if}
+</div>

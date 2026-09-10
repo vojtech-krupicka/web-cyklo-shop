@@ -1,0 +1,189 @@
+{**
+ * @filesource  @layout.latte
+ * 
+ * @author      Ing. Vojtech Krupicka
+ * @copyright   HassaSimple Framework
+ * @package     AdminModule
+ * @version     1.0.0 
+ *
+ * @param string   $basePath absolute web path
+ * @param string   $robots   tell robots how to index the content of a page (optional)
+ * @param array    $flashes  flash messages
+ *}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs">
+<head>
+	<meta http-equiv="Content-Language" content="cs" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="author" content="hAssassin" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="robots" content="noindex, nofollow" />
+	{block meta}{/block}
+		
+	<title>.: Cyklo shop | Administrační systém {ifset #title} | {include #title|striptags}{/ifset}:.</title>
+
+	<link rel="stylesheet" href="{$baseUrl}/css/admin/style.css" type="text/css">
+	<link rel="stylesheet" href="{$baseUrl}/css/shadowbox.css" type="text/css">	
+	{block css}{/block}
+	
+	<link rel="shortcut icon" type="image/x-icon" href="{$baseUrl}/css/admin/images/favicon.ico">
+		
+	<script type="text/javascript" src="{$baseUrl}/javascript/jquery.js"></script>
+	<script type="text/javascript" src="{$baseUrl}/javascript/shadowbox.js"></script>
+	<script type="text/javascript" src="{$baseUrl}/javascript/jquery.ajaxform.js"></script>
+	<script type="text/javascript" src="{$baseUrl}/javascript/jquery.livequery.js"></script>
+	<script type="text/javascript" src="{$baseUrl}/javascript/jquery.nette.js"></script>
+	<script type="text/javascript" src="{$baseUrl}/javascript/nette.forms.js"></script>
+	<script type="text/javascript" src="{$baseUrl}/javascript/tiny_mce/jquery.tinymce.js"></script>
+	
+	<script type="text/javascript">
+	// <![CDATA[
+		var baseUrl = '{!$baseUrl}';
+	// ]]>
+	</script>
+				
+	<script type="text/javascript" src="{$baseUrl}/javascript/tinymce.config.full.js"></script>
+	<script type="text/javascript" src="{$baseUrl}/javascript/tinymce.config.lite.js"></script>
+	{block js}{/block}
+	
+	<script type="text/javascript">
+	// <![CDATA[
+		$(document).ready(function(){
+			// Initialize shadowbox
+			Shadowbox.init({
+				counterType: "skip",
+				continuous: true,
+				overlayColor: '#000011',
+				overlayOpacity: 0.8
+			});
+			
+			// Initialize MCE editor
+			$('.mceEditorFull').tinymce(HassaMceConfigFull);
+			$('.mceEditorLite').tinymce(HassaMceConfigLite);
+		});
+	// ]]>
+	</script>
+</head>
+
+<body>
+	
+	<div id="headerWrapper">
+	
+		<div id="header">
+		
+			<div class="logo">
+				<h1>Cyklo shop</h1>
+				<h2>Hassa Framework 1.00 | http://www.example.com</h2>
+				<a n:href=":Admin:Default: id => NULL" title="Cyklo shop">
+					<img src="{$baseUrl}/css/images/bg-logo.png" alt="" />
+				</a>
+			</div>
+			
+			<div class="cleaner"></div>
+		</div>
+		
+	</div>
+		
+	<div id="middleWrapper">
+	
+		<div id="middle">
+		
+			<div id="left">
+			{if $user->IsLoggedIn()}
+				<h2>Navigace</h2>
+				<div class="menu">
+					<!--[if IE 6]>
+					<ul><li class="first"><a n:class="$presenter->name == 'Admin:Default' ? active" n:href=":Admin:Default:" title="Úvod">Úvod</a></li><li><a n:class="$presenter->name == 'Admin:Cms' ? active" n:href=":Admin:Cms:" title="Vlastní stránky">Vlastní stránky</a></li><li><a n:class="$presenter->name == 'Admin:File' ? active" n:href=":Admin:File:" title="Správce souborů">Správce souborů</a></li><li><a n:class="$presenter->name == 'Admin:Guestbook' ? active" n:href=":Admin:Guestbook:" title="Diskuze">Diskuze</a></li><li><a n:class="$presenter->name == 'Admin:Gallery' ? active" n:href=":Admin:Gallery:" title="Galerie">Galerie</a></li></ul>
+					<![endif]-->
+					<!--[if gt IE 6]><!-->
+					<ul>
+						<li class="first"><a n:class="$presenter->name == 'Admin:Default' ? active" n:href=":Admin:Default: id => NULL" title="Úvod">Úvod</a></li>
+						<li><a n:class="$presenter->name == 'Admin:Cms' ? active" n:href=":Admin:Cms: id => NULL" title="Vlastní stránky">Vlastní stránky</a></li>
+						<li><a n:class="$presenter->name == 'Admin:File' ? active" n:href=":Admin:File: id => NULL" title="Správce souborů">Správce souborů</a></li>
+						<li><a n:class="$presenter->name == 'Admin:Guestbook' ? active" n:href=":Admin:Guestbook: id => NULL" title="Diskuze">Diskuze</a></li>
+						<li><a n:class="$presenter->name == 'Admin:Gallery' ? active" n:href=":Admin:Gallery: id => NULL" title="Galerie">Galerie</a></li>
+					</ul>
+					<!--<![endif]-->
+				</div>
+				
+				<div class="box">
+					<h2>Přihlášený uživatel</h2>
+					<div class="newsItem">
+						<div class="date">{$user->identity->lastLogon|date:'H:i:s d.m.Y'}</div>
+						<h3>{$user->identity->nickname} - <a n:href="logout!" title="Odhlásit">Odhlásit <img src="{$baseUrl}/css/images/icon-new-window.png" alt="" /></a></h3>
+						<p>Jméno: {$user->identity->firstname} {$user->identity->surname}</p>
+						<p>E-mail: <a href="mailto:{$user->identity->email}" title="{$user->identity->email}">{$user->identity->email}</a></p>
+					</div>
+				</div>
+				
+				<div class="box">
+					<h2>Statistiky</h2>
+					<div class="newsItem">
+						<p>
+							Počet návštěv: 
+							<!-- BlueBoard.cz Pocitadlo -->
+							<span id="bbpocitadlo-span-XXXXXXXX"><a id="bbpocitadlo-XXXXXXXX" href="http://miniaplikace.blueboard.cz"></a></span>
+							<script type="text/javascript" src="http://miniaplikace.blueboard.cz/counter_1.php?jid=XXXXXXXX"></script>
+							<!-- BlueBoard.cz Pocitadlo KONEC -->
+						</p>
+						<p>
+							On-line:
+							<!-- BLUEBOARD ONLINEMONITOR -->
+							<script src="http://miniaplikace.blueboard.cz/omonitor.php?id=000000"  type="text/javascript" ></script>
+							<!-- BLUEBOARD ONLINEMONITOR KONEC-->
+						</p>
+						<p>&nbsp;</p>
+						<p><a href="http://www.toplist.cz/toplist/?search=example&a=s&sex=on" target="_blank" title="Žebříček">Žebříček</a></p>
+						<p><a href="http://www.toplist.cz/stat/000000" target="_blank" title="Podrobné statistiky">Podrobné statistiky</a></p>
+					</div>
+				</div>
+			{/if}
+			</div>
+			
+			<div id="content">
+				{snippet flashes}
+				{if count($flashes)}
+				<div class="flashes">
+					<ul>
+					{foreach $flashes as $flash}
+						<li class="{$flash->type}">{$flash->message}</li>
+					{/foreach}
+					</ul>
+				</div>
+				{/if}
+				{/snippet}
+				
+				{include #content}
+			</div>
+			
+			<div class="cleaner"></div>
+			
+		</div>
+		
+	</div>
+		
+	<div class="cleaner"></div>
+	
+	<div id="footerWrapper">
+		<div id="footer">
+			<div class="bottom">
+				<div class="menu">
+					<ul>
+						<li class="first"><a n:href=":Front:Homepage: id => NULL" title="Cyklo shop">Cyklo shop</a></li>
+						<li><a n:class="$presenter->name == 'Admin:Default' ? active" n:href=":Admin:Default: id => NULL" title="Úvod">Úvod</a></li>
+						<li><a n:class="$presenter->name == 'Admin:Cms' ? active" n:href=":Admin:Cms: id => NULL" title="Vlastní stránky">Vlastní stránky</a></li>
+						<li><a n:class="$presenter->name == 'Admin:File' ? active" n:href=":Admin:File: id => NULL" title="Správce souborů">Správce souborů</a></li>
+						<li><a n:class="$presenter->name == 'Admin:Guestbook' ? active" n:href=":Admin:Guestbook: id => NULL" title="Diskuze">Diskuze</a></li>
+						<li><a n:class="$presenter->name == 'Admin:Gallery' ? active" n:href=":Admin:Gallery: id => NULL" title="Galerie">Galerie</a></li>
+					</ul>
+				</div>
+				
+				<div class="copyright">Copyright &copy; 2002 - 2012 <a href="http://www.example.com/">Cyklo shop</a> | <a href="http://hlzone.czechgamer.com">Hassa Framework v1.00</a>.</div>
+			</div>
+		</div>
+	</div>
+  
+</body>
+</html>

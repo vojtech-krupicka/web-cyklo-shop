@@ -1,0 +1,37 @@
+{**
+ * @filesource  Homepage/default.latte
+ * 
+ * @author      Ing. Vojtech Krupicka
+ * @copyright   HassaSimple Framework
+ * @package     FrontModule
+ * @version     1.0.0
+ *}
+ 
+
+{block #content}
+{if $page}
+	{define #title}{$page['seo_title']}{/define}
+	{define #seoKeywords}{$page['seo_keywords']}{/define}
+	{define #seoDescription}{$page['seo_description']}{/define}
+	
+	<div class="breadcrumb">
+		<ul>
+			<li><a title="Úvod" n:href=":Front:Homepage: id => NULL">Úvod</a></li>
+			{foreach $parentItems as $parent}
+				{sep}<li><span>&gt;</span></li>{/sep}
+				{if $iterator->last}<li><span>&gt;</span></li>{/if}
+				<li><a title="{$parent->name}" n:href=":Front:Cms: uri => $parent->url" n:class="$iterator->last ? active">{$parent->name}</a></li>
+			{/foreach}
+		</ul>
+		<div class="cleaner"></div>
+	</div>	
+	
+	<h1>{$page->heading}</h1>
+	<div class="wysiwyg">
+	{!$page->content}
+	</div>
+	
+	{if $page['allow_comments']}
+		{control pageComments}
+	{/if}
+{/if}

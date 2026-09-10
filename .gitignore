@@ -1,21 +1,32 @@
-# the composer package lock file and install directory
-# Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# /composer.lock
-/fuel/vendor
+# Local DI configuration — holds database credentials, must never be committed
+/app/config/config.neon
 
-# the fuelphp document
-/docs/
+# Writable runtime directories (keep the dir, ignore the contents)
+/temp/*
+!/temp/.gitignore
+!/temp/.htaccess
+!/temp/web.config
+/log/*
+!/log/.gitignore
+!/log/.htaccess
+!/log/web.config
 
-# you may install these packages with `oil package`.
-# http://fuelphp.com/docs/packages/oil/package.html
-# /fuel/packages/auth/
-# /fuel/packages/email/
-# /fuel/packages/oil/
-# /fuel/packages/orm/
-# /fuel/packages/parser/
+# Bundled third-party tools not needed in the repo
+# (Adminer = web DB console, Checker = Nette environment checker — both are
+#  security-sensitive to ship and are easy to re-download if ever needed)
+/www/adminer/
+/www/checker/
 
-# dynamically generated files
-/fuel/app/logs/*/*/*
-/fuel/app/cache/*/*
-/fuel/app/config/crypt.php
+# Uploaded content
+/www/resources/
+
+# Generated TinyMCE file/image lists
+/www/javascript/tinymce.filelist.js
+/www/javascript/tinymce.imagelist.js
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

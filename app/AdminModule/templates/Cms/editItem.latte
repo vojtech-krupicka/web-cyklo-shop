@@ -1,0 +1,25 @@
+{**
+ * @filesource  Cms/editItem.latte
+ * 
+ * @author      Ing. Vojtech Krupicka
+ * @copyright   HassaSimple Framework
+ * @package     AdminModule
+ * @version     1.0.0
+ *}
+ 
+{block #content}
+<div class="breadcrumb">
+	<ul>
+		<li><a title="Úvod" n:href=":Admin:Default: id => NULL">Úvod</a><span>&gt;</span></li>
+		<li><a title="Vlastní stránky" n:href=":Admin:Cms: id => NULL">Vlastní stránky</a><span>&gt;</span></li>
+		<li><a title="Úprava položky" n:href="this" class="active">Úprava položky</a></li>
+	</ul>
+	<div class="cleaner"></div>
+</div>
+
+<h1 n:block=title>Úprava položky menu <a class="backlink" n:href=":Admin:Cms: id => NULL" title="Vrátit zpět na předchozí stránku"></a></h1>
+
+{if $menuItem !== NULL}
+	{control menuItemEdit}
+{/if}
+	

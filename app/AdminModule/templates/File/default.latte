@@ -1,0 +1,74 @@
+{**
+ * @filesource  Default/default.latte
+ * 
+ * @author      Ing. Vojtech Krupicka
+ * @copyright   HassaSimple Framework
+ * @package     AdminModule
+ * @version     1.0.0
+ *}
+ 
+{block #content}
+<div class="breadcrumb">
+	<ul>
+		<li><a title="Úvod" n:href=":Admin:Default: id => NULL">Úvod</a><span>&gt;</span></li>
+		<li><a title="Správce souborů" n:href=":Admin:File: id => NULL" class="active">Správce souborů</a></li>
+	</ul>
+	<div class="cleaner"></div>
+</div>
+
+<h1 n:block=title>Správce souborů</h1>
+
+{control fileAdd}
+
+
+<h2>Soubory</h2>
+{if count($files)}
+	<div class="gallery-items">
+{foreach $files as $file}
+		<div class="item">
+			<div class="info">
+				Název souboru: <a href="{$file['web_path']}" title="{$file['file_name']}">{$file['file_name']}</a><br />
+				Velikost: <strong>{$file['file_size']|bytes}</strong><br />
+				Vytvořeno: <strong>{$file['modified']|date:'H:i:s d.m.Y'}</strong>
+			</div>
+			<div class="tools">
+				<ul>
+					<li><a n:href="delete! fileName => $file['file_name'], img => false" title="Smazat soubor" onclick="return confirm('Opravdu chcete smazat tento soubor? Tato akce je permamentní!');"><img class="delete" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+				</ul>
+			</div>
+			<div class="cleaner"></div>
+		</div>
+{/foreach}
+	</div>
+{else}
+	<div class="nothingToShow">Nebyly nalezeny žádné soubory!</div>
+{/if}
+
+
+<h2>Obrázky</h2>
+{if count($images)}
+	<div class="gallery-items">
+{foreach $images as $image}
+		<div class="item">
+			<div class="left">
+				<a rel="shadowbox[images1]" href="{$image['web_path']}" title="{$image['file_name']}">
+					<img src="{$image['web_path']}" alt="{$image['file_name']}" />
+				</a>
+			</div>
+			<div class="info">
+				Název souboru: <a rel="shadowbox[images2]" href="{$image['web_path']}" title="{$image['file_name']}">{$image['file_name']}</a><br />
+				Velikost: <strong>{$image['file_size']|bytes}</strong><br />
+				Vytvořeno: <strong>{$image['modified']|date:'H:i:s d.m.Y'}</strong>
+			</div>
+			<div class="tools">
+				<ul>
+					<li><a n:href="delete! fileName => $image['file_name'], img => true" title="Smazat soubor" onclick="return confirm('Opravdu chcete smazat tento soubor? Tato akce je permamentní!');"><img class="delete" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+				</ul>
+			</div>
+			<div class="cleaner"></div>
+		</div>
+{/foreach}
+	</div>
+{else}
+	<div class="nothingToShow">Nebyly nalezeny žádné obrázky!</div>
+{/if}
