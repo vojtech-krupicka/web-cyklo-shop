@@ -1,0 +1,14 @@
+#!/bin/sh
+# Drop-in replacement for sendmail. Reads the raw message from stdin and saves
+# it as an .eml file instead of sending it. Used via php.ini `sendmail_path`.
+# Any arguments PHP passes (e.g. -t -i) are ignored.
+
+dir="${FAKE_MAIL_DIR:-/var/www/app/var/mail}"
+mkdir -p "$dir"
+
+file="$dir/$(date +%Y%m%d-%H%M%S)-$$.eml"
+cat > "$file"
+chmod 0666 "$file"
+
+logger -t fake_sendmail "saved mail to $file" 2>/dev/null || true
+exit 0

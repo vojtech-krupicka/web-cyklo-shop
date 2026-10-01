@@ -1,0 +1,26 @@
+{
+  "name": "web Cyklo-Shop",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "web",
+  "runServices": ["web", "db"],
+  "workspaceFolder": "/var/www/app",
+  "remoteUser": "dev",
+  "shutdownAction": "stopCompose",
+  // Port 4203 is published by docker-compose.yml, so it's already reachable from
+  // Windows and WSL. Don't let VS Code add its own forward on top of it.
+  "otherPortsAttributes": { "onAutoForward": "ignore" },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "xdebug.php-debug",
+        "bmewburn.vscode-intelephense-client",
+        "editorconfig.editorconfig",
+        "cweijan.vscode-database-client2"
+      ],
+      "settings": {
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}

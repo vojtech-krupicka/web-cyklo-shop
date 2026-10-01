@@ -1,0 +1,40 @@
+services:
+  web:
+    build:
+      context: ./docker/php
+      args:
+        # Match your host user so files created in the container aren't root-owned.
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    ports:
+      - "4203:80"
+    volumes:
+      - .:/var/www/app
+    env_file: .env
+    environment:
+      APACHE_RUN_USER: dev
+      APACHE_RUN_GROUP: dev
+      FAKE_MAIL_DIR: /var/www/app/var/mail
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.4
+    env_file: .env  # MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD
+    environment:
+      # Kept out of .env on purpose: env_file also feeds the web container.
+      MYSQL_ROOT_PASSWORD: root
+      TZ: UTC
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+volumes:
+  db_data:

@@ -1,16 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
-// uncomment this line if you must temporarily take down your site for maintenance
-// require '.maintenance.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-// absolute filesystem path to this web root
-define('WWW_DIR', __DIR__);
-
-// absolute filesystem path to the application root
-define('APP_DIR', WWW_DIR . '/../app');
-
-// absolute filesystem path to the libraries
-define('LIBS_DIR', WWW_DIR . '/../libs');
-
-// load bootstrap file
-require APP_DIR . '/bootstrap.php';
+$bootstrap = new App\Bootstrap;
+$container = $bootstrap->bootWebApplication();
+$application = $container->getByType(Nette\Application\Application::class);
+$application->run();
