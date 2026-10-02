@@ -9,12 +9,12 @@ services:
     ports:
       - "4203:80"
     volumes:
-      - .:/var/www/app
+      - .:/var/www/root
     env_file: .env
     environment:
       APACHE_RUN_USER: dev
       APACHE_RUN_GROUP: dev
-      FAKE_MAIL_DIR: /var/www/app/var/mail
+      FAKE_MAIL_DIR: /var/www/root/var/mail
     depends_on:
       db:
         condition: service_healthy

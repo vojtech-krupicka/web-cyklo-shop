@@ -3,7 +3,7 @@
   "dockerComposeFile": ["../docker-compose.yml"],
   "service": "web",
   "runServices": ["web", "db"],
-  "workspaceFolder": "/var/www/app",
+  "workspaceFolder": "/var/www/root",
   "remoteUser": "dev",
   "shutdownAction": "stopCompose",
   // Port 4203 is published by docker-compose.yml, so it's already reachable from

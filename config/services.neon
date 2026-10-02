@@ -1,9 +1,10 @@
 services:
+	database: @Nette\Database\Connection
 	- App\Core\RouterFactory::createRouter
 
 
 search:
-	-	in: %appDir%
+	- in: %appDir%
 		classes:
 			- *Facade
 			- *Factory

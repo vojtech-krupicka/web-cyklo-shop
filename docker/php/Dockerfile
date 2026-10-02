@@ -20,7 +20,7 @@ RUN groupadd --gid ${USER_GID} dev \
     && useradd --uid ${USER_UID} --gid ${USER_GID} --create-home --shell /bin/bash dev
 
 # Apache: document root is ./www, enable mod_rewrite
-ENV APACHE_DOCUMENT_ROOT=/var/www/app/www
+ENV APACHE_DOCUMENT_ROOT=/var/www/root/www
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
     && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}/!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
     && echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
@@ -35,4 +35,4 @@ COPY php-dev.ini "$PHP_INI_DIR/conf.d/99-dev.ini"
 COPY fake_sendmail /usr/local/bin/fake_sendmail
 RUN chmod +x /usr/local/bin/fake_sendmail
 
-WORKDIR /var/www/app
+WORKDIR /var/www/root

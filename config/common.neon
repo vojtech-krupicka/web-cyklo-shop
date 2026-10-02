@@ -1,6 +1,19 @@
 # see https://doc.nette.org/en/configuring
 
 parameters:
+	database:
+		driver: mysql
+		host: db
+		dbname: app
+		user: app
+		password: app
+
+	defaults:
+		seoTitle: "Prodej a servis jízdních kol"
+		seoKeywords: "cyklo, shop, jízdní kola, prodej, servis"
+		seoDescription: "Cyklocentrum, prodej a servis jízdních kol, příslušenství a cyklistického oblečení."
+
+	resourcesDir: '%wwwDir%/resources'
 
 
 application:
@@ -12,9 +25,9 @@ application:
 
 
 database:
-	dsn: 'sqlite::memory:'
-	user:
-	password:
+	dsn: '%database.driver%:host=%database.host%;dbname=%database.dbname%'
+	user: %database.user%
+	password: %database.password%
 
 
 latte:
@@ -27,7 +40,6 @@ assets:
 	mapping:
 		default:
 			path: assets
-			# type: vite  # Uncomment to activate Vite for asset building
 
 
 di:

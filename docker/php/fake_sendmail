@@ -3,7 +3,7 @@
 # it as an .eml file instead of sending it. Used via php.ini `sendmail_path`.
 # Any arguments PHP passes (e.g. -t -i) are ignored.
 
-dir="${FAKE_MAIL_DIR:-/var/www/app/var/mail}"
+dir="${FAKE_MAIL_DIR:-/var/www/root/var/mail}"
 mkdir -p "$dir"
 
 file="$dir/$(date +%Y%m%d-%H%M%S)-$$.eml"
