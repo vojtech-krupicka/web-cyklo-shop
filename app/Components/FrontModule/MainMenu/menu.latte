@@ -1,0 +1,5 @@
+<ul>
+    <li n:foreach="$menuItems as $key => $value">
+        <a n:class="$value->isActive ? active" href="{plink :FrontModule:{$value->presenter}:}" title="{$value->title}">{$value->title}</a>
+    </li>
+</ul>

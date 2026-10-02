@@ -12,6 +12,11 @@ final class PagesFacade
 	{ }
 
 
+    public function getPageById(int $id): ?\Nette\Database\Table\ActiveRow
+    {
+        return $this->dbconn->table('pages')->get($id);
+    }
+
     public function getHomepage(): ?\Nette\Database\Table\ActiveRow
     {
         return $this->dbconn->table('pages')->where('is_homepage', true)->fetch();

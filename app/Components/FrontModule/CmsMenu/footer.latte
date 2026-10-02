@@ -1,0 +1,9 @@
+{if $menuItems->count()}
+<div class="menu">
+    <ul>
+        <li n:foreach="$menuItems as $item">
+        {include 'item.latte', item: $item}
+        </li>
+    </ul>
+</div>
+{/if}

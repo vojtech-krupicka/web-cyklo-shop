@@ -5,12 +5,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<meta name="author" content="Cyklo shop" />
-	<meta name="keywords" content="{ifset #seoKeywords}{include #seoKeywords|striptags}{else}cyklo shop, jízdní kola, prodej, servis{/ifset}" />
-	<meta name="description" content="{ifset #seoDescription}{include #seoDescription|striptags}{else}Cyklo shop – prodej a servis jízdních kol.{/ifset}" />
+	<meta name="keywords" content="{$seoKeywords|striptags}" />
+	<meta name="description" content="{$seoDescription|striptags}" />
 	<meta name="robots" content="index, follow" />
 	{block meta}{/block}
 
-	<title>.: Cyklo shop{ifset #title} | {include #title|striptags}{/ifset} :.</title>
+	<title>.: Cyklo shop{if $seoTitle} | {$seoTitle|striptags}{/if} :.</title>
 
 	{asset 'css/style.css'}
 	{asset 'css/shadowbox.css'}
@@ -68,13 +68,7 @@
 			</div>
 
 			<div class="menu">
-				<ul>
-					<li><a n:class="$presenterName == 'FrontModule:Homepage' ? active" n:href=":FrontModule:Homepage: id => NULL" title="Úvod">Úvod</a></li>
-					<li><a n:class="$presenterName == 'FrontModule:Gallery' ? active" n:href=":FrontModule:Gallery: id => NULL" title="Galerie">Galerie</a></li>
-					<li><a n:class="$presenterName == 'FrontModule:Guestbook' ? active" n:href=":FrontModule:Guestbook: id => NULL" title="Diskuze">Diskuze</a></li>
-					<li><a n:class="$presenterName == 'FrontModule:Contact' ? active" n:href=":FrontModule:Contact: id => NULL" title="Kontakt">Kontakt</a></li>
-					<li><a n:class="$presenterName == 'FrontModule:Sitemap' ? active" n:href=":FrontModule:Sitemap: id => NULL" title="Mapa stránek">Mapa stránek</a></li>
-				</ul>
+				{control mainMenu}
 			</div>
 
 			<div class="cleaner"></div>
@@ -87,30 +81,7 @@
 		<div id="middle">
 
 			<div id="left">
-				{if $menuItems->count()}
-				<h2>Navigace</h2>
-				<div class="menu">
-					{var $level = 0}
-					{block leftMenuTree}
-					<ul>
-						{foreach $menuItems as $item}
-						<li n:class="($level == 0 && $iterator->first) ? first, ($level == 0 && $iterator->last) ? last">
-						{if $item['page_id'] == NULL}
-						<a href="{$item->url}" title="{$item->title}">{$item->name}</a>
-						{else}
-						<a n:href=":FrontModule:Cms: uri => $item->url, id => NULL" title="{$item->title}" n:class="($activeItemId == $item->id) ? active">{$item->name}</a>
-						{/if}
-
-						{var $childrens = $presenter->menuItemsFacade->getMenuItems($item->id, true, 'ASC')}
-						{if $childrens->count()}
-							{include #leftMenuTree, menuItems => $childrens, level => $level + 1}
-						{/if}
-						</li>
-						{/foreach}
-					</ul>
-					{/block}
-				</div>
-				{/if}
+				{control cmsMenu:sidebar $activeItemId}
 			</div>
 
 			<div id="content">
@@ -143,74 +114,50 @@
 				<div class="box boxFirst">
 					<h2>Kde nás najdete?</h2>
 					<dl>
-						<dt><a href="http://www.example.com/" title="Cyklo shop">Cyklo shop</a></dt>
-						<dt>Example Street 1</dt>
-						<dt>000 00 Example City</dt>
+						<dt><a href="{$shopInfo->url}" title="{$shopInfo->name|noescape}">{$shopInfo->name|noescape}</a></dt>
+						<dt>{$shopInfo->street|noescape}</dt>
+						<dt>{$shopInfo->city|noescape}</dt>
 						<dt><a n:href=":FrontModule:Contact:default#toc_map" title="Mapa">(mapa {asset 'css/images/icon-new-window.png'})</a></dt>
 					</dl>
 					<dl>
-						<dt>tel/fax: </dt>
-						<dd>+420&nbsp;XXX&nbsp;XXX&nbsp;XXX</dd>
+						<dt>tel/fax:</dt>
+						<dd>{$shopInfo->phone|noescape}</dd>
 
-						<dt>mobil: </dt>
-						<dd>+420&nbsp;XXX&nbsp;XXX&nbsp;XXX</dd>
+						<dt>mobil:</dt>
+						<dd>{$shopInfo->mobile|noescape}</dd>
 
 						<dt>email:</dt>
 						<dd>
-							<a href="mailto:info@example.com" title="info@example.com">info@example.com</a>
+							<a href="mailto:{$shopInfo->email}" title="{$shopInfo->email}">{$shopInfo->email}</a>
 						</dd>
 
-						<dt>IČ:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</dt>
-						<dd>00000000</dd>
+						<dt>IČ:</dt>
+						<dd>{$shopInfo->ico|noescape}</dd>
 					</dl>
 				</div>
 
 				<div class="box">
 					<h2>Otevírací doba:</h2>
 					<dl>
-						<dt>Po - Pá:</dt>
-						<dd class="right">8:00 - 11:30<br />13:00 - 17:00</dd>
-
-						<dt>So:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</dt>
-						<dd class="right">8:00 - 11:30</dd>
+                        {foreach $openingHours as $item}
+						<dt>{$item->key|noescape}:</dt>
+						<dd class="right">{$item->value|breakLines|noescape}</dd>
+                        {/foreach}
 					</dl>
 				</div>
 
 				<div class="box boxLast">
 					<h2>Těšíme se na Vaší návštěvu!</h2>
-					{*
-					<p>Lorem ipsum dolor condimentum velit orci nascetur lorem lacinia Nullam convallis Vestibulum elit Sed In sit amet consectetuer cursus elit id nascetur tincidunt lobortis elit pretium Phasellus tempor elit pretium Phasellus tempor elit vel et Aliquam lacinia.</p>
-					*}
-					{if $menuItems->count()}
-					<div class="menu">
-						<ul>
-							{foreach $menuItems as $item}
-							<li>
-							{if $item['page_id'] == NULL}
-							<a href="{$item->url}" title="{$item->title}">{$item->name}</a>
-							{else}
-							<a n:href=":FrontModule:Cms: uri => $item->url, id => NULL" title="{$item->title}">{$item->name}</a>
-							{/if}
-							</li>
-							{/foreach}
-						</ul>
-					</div>
-					{/if}
+					{control cmsMenu:footer}
 				</div>
 			</div>
 
 			<div class="bottom">
 				<div class="menu">
-					<ul>
-						<li><a n:class="$presenterName == 'FrontModule:Homepage' ? active" n:href=":FrontModule:Homepage: id => NULL" title="Úvod">Úvod</a></li>
-						<li><a n:class="$presenterName == 'FrontModule:Gallery' ? active" n:href=":FrontModule:Gallery: id => NULL" title="Galerie">Galerie</a></li>
-						<li><a n:class="$presenterName == 'FrontModule:Guestbook' ? active" n:href=":FrontModule:Guestbook: id => NULL" title="Diskuze">Diskuze</a></li>
-						<li><a n:class="$presenterName == 'FrontModule:Contact' ? active" n:href=":FrontModule:Contact: id => NULL" title="Kontakt">Kontakt</a></li>
-						<li><a n:class="$presenterName == 'FrontModule:Sitemap' ? active" n:href=":FrontModule:Sitemap: id => NULL" title="Mapa stránek">Mapa stránek</a></li>
-					</ul>
+					{control mainMenu}
 				</div>
 
-				{* <div class="copyright"><p>Copyright &copy; 2002 - 2012 <a href="http://www.example.com/">Cyklo shop</a> | <a n:href=":Admin:Default:">Administrační systém</a>.</p></div> *}
+				{* <div class="copyright"><p>Copyright &copy; 2002 - 2012 <a href="{$shopInfo->url}" title="{$shopInfo->name|noescape}">{$shopInfo->name|noescape}</a> | <a n:href=":Admin:Default:">Administrační systém</a>.</p></div> *}
 			</div>
 		</div>
 	</div>

@@ -11,6 +11,26 @@ final class MenuItemsFacade
 	{ }
 
 
+    public function getCurrentMenuItemByUri(string $uri): ?\Nette\Database\Table\ActiveRow
+    {
+        return $this->dbconn->table('menu_items')
+            ->where('url', $uri)
+            ->where('active', true)
+            ->order('sort_order ASC')
+            ->limit(1)
+            ->fetch();
+    }
+
+    public function getCurrentMenuItemById(?int $id): ?\Nette\Database\Table\ActiveRow
+    {
+        return !$id ? null : $this->dbconn->table('menu_items')
+            ->where('id', $id)
+            ->where('active', true)
+            ->order('sort_order ASC')
+            ->limit(1)
+            ->fetch();
+    }
+
     public function getMenuItems(?int $parentId = null, bool $activeOnly = true, string $order = "ASC"): \Nette\Database\Table\Selection
     {
         $query = $this->dbconn->table('menu_items');

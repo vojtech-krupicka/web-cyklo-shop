@@ -8,10 +8,28 @@ parameters:
 		user: app
 		password: app
 
-	defaults:
-		seoTitle: "Prodej a servis jízdních kol"
-		seoKeywords: "cyklo, shop, jízdní kola, prodej, servis"
-		seoDescription: "Cyklocentrum, prodej a servis jízdních kol, příslušenství a cyklistického oblečení."
+	seo:
+		title: "Prodej a servis jízdních kol"
+		keywords: "cyklo, shop, jízdní kola, prodej, servis"
+		description: "Cyklocentrum, prodej a servis jízdních kol, příslušenství a cyklistického oblečení."
+
+	shopInfo:
+		name: "Cyklo&nbsp;shop"
+		url: "https://www.example.com"
+		street: "Hlavní&nbsp;123"
+		city: "123&nbsp;45&nbsp;Město"
+		phone: "+420&nbsp;123&nbsp;456&nbsp;789"
+		mobile: "+420&nbsp;123&nbsp;456&nbsp;789"
+		email: "info@example.com"
+		ico: "12345678"
+
+	openingHours:
+		- key: "Po - Pá"
+		  value: "8:00 - 11:30\n13:00 - 17:00"
+		- key: "So"
+		  value: "8:00 - 11:30"
+		- key: "Ne"
+		  value: "zavřeno"
 
 	resourcesDir: '%wwwDir%/resources'
 

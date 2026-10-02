@@ -1,7 +1,8 @@
 services:
 	database: @Nette\Database\Connection
 	- App\Core\RouterFactory::createRouter
-
+	- Model\SeoSettings(%seo.title%, %seo.keywords%, %seo.description%)
+	- Model\ShopInfo(%shopInfo%, %openingHours%)
 
 search:
 	- in: %appDir%

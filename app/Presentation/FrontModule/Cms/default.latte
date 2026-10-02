@@ -1,0 +1,23 @@
+{block #content}
+{if $page}
+	<div class="breadcrumb">
+		<ul>
+			<li><a title="Úvod" n:href=":FrontModule:Homepage: id => NULL">Úvod</a></li>
+			{foreach $parentItems as $parent}
+				{sep}<li><span>&gt;</span></li>{/sep}
+				{if $iterator->last}<li><span>&gt;</span></li>{/if}
+				<li><a title="{$parent->name}" n:href=":FrontModule:Cms: uri => $parent->url" n:class="$iterator->last ? active">{$parent->name}</a></li>
+			{/foreach}
+		</ul>
+		<div class="cleaner"></div>
+	</div>
+
+	<h1>{$page->heading}</h1>
+	<div class="wysiwyg">
+	{$page->content|noescape}
+	</div>
+
+	{* {if $page['allow_comments']}
+		{control pageComments}
+	{/if} *}
+{/if}

@@ -3,6 +3,8 @@
 namespace App\Presentation\FrontModule;
 
 use App;
+use App\Components\FrontModule\CmsMenu;
+use App\Components\FrontModule\MainMenu;
 use Nette\Application\Attributes\Persistent;
 use Nette\DI\Attributes\Inject;
 
@@ -13,15 +15,39 @@ abstract class BasePresenter extends App\Presentation\BasePresenter
 	public int | null $id = null;
 
     #[Inject]
-    public \Model\MenuItemsFacade $menuItemsFacade;
+    public \Model\SeoSettings $seoSettings;
+
+    #[Inject]
+    public \Model\ShopInfo $shopInfo;
+
+    #[Inject]
+    public CmsMenu\CmsMenuControlFactory  $cmsMenuControlFactory;
+
+    #[Inject]
+    public MainMenu\MainMenuControlFactory  $mainMenuControlFactory;
 
 	public function beforeRender()
 	{
 		parent::beforeRender();
 
+		$this->template->seoTitle = $this->seoSettings->title;
+		$this->template->seoKeywords = $this->seoSettings->keywords;
+		$this->template->seoDescription = $this->seoSettings->description;
+
+		$this->template->shopInfo = $this->shopInfo->info;
+		$this->template->openingHours = $this->shopInfo->openingHours;
+
 		$this->template->activeItemId = null;
-        $this->template->presenterName = $this->getName();
-		$this->template->menuItems = $this->menuItemsFacade->getMenuItems(null, true, "ASC");
+	}
+
+    protected function createComponentCmsMenu(): CmsMenu\CmsMenuControl
+	{
+		return $this->cmsMenuControlFactory->create();
+	}
+
+    protected function createComponentMainMenu(): MainMenu\MainMenuControl
+	{
+		return $this->mainMenuControlFactory->create();
 	}
 
 }
