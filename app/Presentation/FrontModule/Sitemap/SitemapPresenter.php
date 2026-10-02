@@ -6,7 +6,4 @@ use App\Presentation\FrontModule;
 
 
 final class SitemapPresenter extends FrontModule\BasePresenter
-{
-
-
-}
+{ }

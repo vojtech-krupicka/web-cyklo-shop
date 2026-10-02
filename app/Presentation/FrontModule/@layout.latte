@@ -68,7 +68,7 @@
 			</div>
 
 			<div class="menu">
-				{control mainMenu}
+				{control mainMenu:flat}
 			</div>
 
 			<div class="cleaner"></div>
@@ -147,14 +147,13 @@
 				</div>
 
 				<div class="box boxLast">
-					<h2>Těšíme se na Vaší návštěvu!</h2>
-					{control cmsMenu:footer}
+					{control cmsMenu:footer heading: "Těšíme se na Vaší návštěvu!"}
 				</div>
 			</div>
 
 			<div class="bottom">
 				<div class="menu">
-					{control mainMenu}
+					{control mainMenu:flat}
 				</div>
 
 				{* <div class="copyright"><p>Copyright &copy; 2002 - 2012 <a href="{$shopInfo->url}" title="{$shopInfo->name|noescape}">{$shopInfo->name|noescape}</a> | <a n:href=":Admin:Default:">Administrační systém</a>.</p></div> *}

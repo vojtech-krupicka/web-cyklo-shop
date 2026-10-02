@@ -1,0 +1,80 @@
+{block #content}
+<div class="breadcrumb">
+	<ul>
+		<li><a title="Úvod" n:href=":FrontModule:Homepage: id => NULL">Úvod</a><span>&gt;</span></li>
+		<li><a title="Kontakt" n:href=":FrontModule:Contact: id => NULL" class="active">Kontakt</a></li>
+	</ul>
+	<div class="cleaner"></div>
+</div>
+
+<h1 n:block=title>Kontakt</h1>
+
+<div class="contact">
+	<h2 id="toc_info">{$shopInfo->name|noescape}</h2>
+	<dl>
+		<dt>Prodej a servis jízdních kol</dt>
+		<dt>Adresa:</dt>
+			<dd>{$shopInfo->street|noescape}</dd>
+			<dd>{$shopInfo->city|noescape}</dd>
+		<dt>Telefon:</dt>
+			<dd>{$shopInfo->phone|noescape}</dd>
+		<dt>Mobil:</dt>
+			<dd>{$shopInfo->mobile|noescape}</dd>
+		<dt>E-mail:</dt>
+			<dd><a href="mailto:{$shopInfo->email}" title="{$shopInfo->email}">{$shopInfo->email}</a></dd>
+		<dt>WWW:</dt>
+			<dd><a href="{$shopInfo->url}" title="{$shopInfo->url}">{$shopInfo->url}</a></dd>
+		<dt>IČ:</dt>
+			<dd>{$shopInfo->ico|noescape}</dd>
+	</dl>
+
+	<div class="image">
+		<div class="gallery">
+			<div class="item">
+				<a rel="shadowbox[contact]" href="{asset "images/promo1.jpg"}" title="{$shopInfo->name|noescape}">{asset "images/promo1_thumb.jpg"}</a>
+			</div>
+			<div class="item">
+				<a rel="shadowbox[contact]" href="{asset "images/promo2.jpg"}" title="{$shopInfo->name|noescape}">{asset "images/promo2_thumb.jpg"}</a>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="cleaner"></div>
+
+
+	<h2 id="toc_open">Otevírací doba</h2>
+	<table>
+		<tr n:foreach="$openingHours as $item">
+			<th class="left" style="width: 50%;">{$item->key|noescape}</th>
+			<td class="right">{$item->value|breakLines|noescape}</td>
+		</tr>
+		<tr>
+			<td class="left" colspan="3" style="font-style: italic;">Pozn.: v případě nutnosti je možné otvírací dobu po domluvě libovolně prodloužit.</td>
+		</tr>
+	</table>
+
+
+	<h2 id="toc_map">Mapa</h2>
+	<script type="text/javascript" src="http://api4.mapy.cz/loader.js"></script>
+	<script type="text/javascript">Loader.load();</script>
+	<div id="mapa"></div>
+	<script type="text/javascript">
+	    var center = SMap.Coords.fromWGS84({$shopInfo->location->lon}, {$shopInfo->location->lat}, { orientation:SMap.NORTH});
+	    var mapa = new SMap(JAK.gel("mapa"), center,16);
+	    mapa.addDefaultLayer(SMap.DEF_SMART).enable();
+	    mapa.addDefaultControls();
+	    var node = JAK.mel("a",{ href:"http://mapy.cz/s/4MUd",target:'_blank'},{ fontSize:"13px",lineHeight:"100%",fontFamily:"Arial,Verdana,sans-serif",textAlign:"center",display:"block",width:"165px", height:"33px",overflow:"hidden",textDecoration:"none",background:"transparent url(http://api4.mapy.cz/img/web/button-zobrazit.png) no-repeat",position:"absolute",left:"4px",bottom:"26px"});
+	    node.innerHTML = '<span style="position:relative; top:10px;text-shadow:0px 1px 1px #fff;color:#000;display:inline-block;padding-left:18px;background:transparent url(http://api4.mapy.cz/img/web/ico-zobrazit.png) 0 0 no-repeat">Zobrazit na Mapy.cz</span>';
+	    JAK.gel("mapa").appendChild(node);
+	    var layer = new SMap.Layer.Marker();
+	    mapa.addLayer(layer);
+	    layer.enable();
+	    var markerCoord = SMap.Coords.fromWGS84({$shopInfo->location->lon}, {$shopInfo->location->lat});
+	    var marker = new SMap.Marker(markerCoord,"MyMarker",{ url:SMap.CONFIG.img + "/marker/drop-blue-asterisk.png"});
+	    layer.addMarker(marker);
+	    var overview = new SMap.Control.Overview();
+	    mapa.addControl(overview);
+	</script>
+
+</div>

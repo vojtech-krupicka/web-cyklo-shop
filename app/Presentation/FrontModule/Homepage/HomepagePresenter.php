@@ -17,7 +17,7 @@ final class HomepagePresenter extends FrontModule\BasePresenter
     public function renderDefault()
 	{
         $this->template->homepage = $this->pagesFacade->getHomepage();
-        $this->template->gallery = $this->galleryFacade->getGalleryItems('RAND()', 3);
+        $this->template->gallery = $this->galleryFacade->getGalleryItems(null, true, "RAND()", 3);
 	}
 
 }

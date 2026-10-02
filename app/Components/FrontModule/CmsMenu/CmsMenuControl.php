@@ -11,20 +11,21 @@ final class CmsMenuControl extends Control
 	) {}
 
 
-	public function renderSidebar(?int $activeItemId = null): void
+	public function renderSidebar(?int $activeItemId = null, ?string $heading = null): void
 	{
-		$this->renderTemplate(__DIR__ . '/sidebar.latte', $activeItemId);
+		$this->renderTemplate(__DIR__ . '/sidebar.latte', $activeItemId, $heading);
 	}
 
-	public function renderFooter(?int $activeItemId = null): void
+	public function renderFooter(?string $heading = null): void
 	{
-		$this->renderTemplate(__DIR__ . '/footer.latte', $activeItemId);
+		$this->renderTemplate(__DIR__ . '/footer.latte', null, $heading);
 	}
 
-	public function renderTemplate(string $file, ?int $activeItemId = null): void
+	public function renderTemplate(string $file, ?int $activeItemId = null, ?string $heading = null): void
 	{
 		$this->template->menuItems = $this->getMenuItems(null, true, "ASC");
 		$this->template->activeItemId = $activeItemId;
+		$this->template->heading = $heading;
 		$this->template->render($file);
 	}
 

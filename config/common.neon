@@ -22,6 +22,9 @@ parameters:
 		mobile: "+420&nbsp;123&nbsp;456&nbsp;789"
 		email: "info@example.com"
 		ico: "12345678"
+		location:
+			lon: 15.1234
+			lat: 49.9876
 
 	openingHours:
 		- key: "Po - Pá"

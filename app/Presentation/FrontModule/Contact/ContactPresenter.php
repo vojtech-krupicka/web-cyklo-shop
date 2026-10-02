@@ -6,7 +6,4 @@ use App\Presentation\FrontModule;
 
 
 final class ContactPresenter extends FrontModule\BasePresenter
-{
-
-
-}
+{ }
