@@ -11,17 +11,20 @@ final class AdminAuthenticator implements Security\Authenticator
         private Security\Passwords $passwords,
     ) {}
 
-    public function authenticate(string $username, string $password): Security\SimpleIdentity
+    public function authenticate(string $username, string $password): AdminIdentity
     {
-        $row = $this->membersFacade->getByUsername($username);
-        if (!$row) {
+        $member = $this->membersFacade->getByUsername($username);
+        if (!$member) {
             throw new Security\AuthenticationException('User not found.');
         }
 
-        if (!$this->passwords->verify($password, $row->password)) {
+        if (!$this->passwords->verify($password, $member->password)) {
             throw new Security\AuthenticationException('Invalid password.');
         }
 
-        return new Security\SimpleIdentity($row->id, $row->role, $row->toArray());
+        $member->lastLogin = new \DateTime();
+        $this->membersFacade->persist($member);
+
+        return AdminIdentity::fromMember([$member->role], $member);
     }
 }

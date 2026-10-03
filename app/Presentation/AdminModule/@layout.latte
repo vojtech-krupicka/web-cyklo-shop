@@ -88,8 +88,8 @@
 				<div class="box">
 					<h2>Přihlášený uživatel</h2>
 					<div class="newsItem">
-						<div class="date">{$user->identity->lastLogon|date:'H:i:s d.m.Y'}</div>
-						<h3>{$user->identity->nickname} - <a n:href="logout!" title="Odhlásit">Odhlásit <img src="{$baseUrl}/css/images/icon-new-window.png" alt="" /></a></h3>
+						<div class="date">{$user->identity->lastLogin|date:'H:i:s d.m.Y'}</div>
+						<h3>{$user->identity->username} - <a n:href="logout!" title="Odhlásit">Odhlásit <img src="{$baseUrl}/css/images/icon-new-window.png" alt="" /></a></h3>
 						<p>Jméno: {$user->identity->firstname} {$user->identity->surname}</p>
 						<p>E-mail: <a href="mailto:{$user->identity->email}" title="{$user->identity->email}">{$user->identity->email}</a></p>
 					</div>
