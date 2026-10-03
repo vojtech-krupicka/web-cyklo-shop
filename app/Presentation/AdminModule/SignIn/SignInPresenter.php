@@ -55,9 +55,9 @@ final class SignInPresenter extends AdminModule\BasePresenter
     {
         try {
             if ($values->remember) {
-                $this->user->setExpiration('+1 days', false);
+                $this->user->setExpiration('+7days', false);
             } else {
-                $this->user->setExpiration('+90 minutes', true);
+                $this->user->setExpiration('+90minutes', true);
             }
             $this->user->login($values->username, $values->password);
             $this->flashMessage('Byl jste úspěšně přihlášen do administračního systému.', 'info');

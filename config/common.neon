@@ -67,3 +67,6 @@ di:
 	export:
 		parameters: no
 		tags: no
+
+session:
+	expiration: +7days
