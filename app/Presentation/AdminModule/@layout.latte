@@ -82,13 +82,7 @@
 			{if $user->IsLoggedIn()}
 				<h2>Navigace</h2>
 				<div class="menu">
-					<ul>
-						<li class="first"><a n:class="$presenter->name == 'Admin:Default' ? active" n:href=":Admin:Default: id => NULL" title="Úvod">Úvod</a></li>
-						<li><a n:class="$presenter->name == 'Admin:Cms' ? active" n:href=":Admin:Cms: id => NULL" title="Vlastní stránky">Vlastní stránky</a></li>
-						<li><a n:class="$presenter->name == 'Admin:File' ? active" n:href=":Admin:File: id => NULL" title="Správce souborů">Správce souborů</a></li>
-						<li><a n:class="$presenter->name == 'Admin:Guestbook' ? active" n:href=":Admin:Guestbook: id => NULL" title="Diskuze">Diskuze</a></li>
-						<li><a n:class="$presenter->name == 'Admin:Gallery' ? active" n:href=":Admin:Gallery: id => NULL" title="Galerie">Galerie</a></li>
-					</ul>
+					{control mainMenu}
 				</div>
 
 				<div class="box">

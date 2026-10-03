@@ -1,1 +1,57 @@
-<h1>Default</h1>
+{block #content}
+
+<h1>Administrační systém</h1>
+
+<div class="wysiwyg">
+	<h2>Nápověda k používání</h2>
+
+	<ul>
+		<li><a href="#toc_basic">Z&aacute;kladn&iacute; přehled</a></li>
+		<li><a href="#toc_cms">Vlastn&iacute; str&aacute;nky</a></li>
+		<li><a href="#toc_files">Spr&aacute;vce souborů</a></li>
+		<li><a href="#toc_guestbook">Diskuze</a></li>
+		<li><a href="#toc_gallery">Galerie</a></li>
+		<li><a href="#toc_epilogue">Z&aacute;věr</a></li>
+	</ul>
+	<br />
+
+	<h3><a name="toc_basic"></a>Z&aacute;kladn&iacute; přehled</h3>
+	<p>Hlavn&iacute; menu cel&eacute;ho administračn&iacute;ho syst&eacute;mu se nach&aacute;z&iacute; vlev&eacute;m pruhu. Je prozat&iacute;m tvořeno pěti položkami, kde &uacute;plně ta prvn&iacute; vede pr&aacute;vě na tuto str&aacute;nku. Ostatn&iacute; vedou pak na spr&aacute;vu ostatn&iacute;ch č&aacute;st&iacute; syst&eacute;mu, kter&eacute; budou pops&aacute;ny d&aacute;le.</p>
+	<p>N&iacute;že pod navigac&iacute;, opět v lev&eacute;m pruhu, se nach&aacute;z&iacute; informace o pr&aacute;vě přihl&aacute;&scaron;en&eacute;m uživateli, včetně jeho posledn&iacute;ho času přihl&aacute;&scaron;en&iacute;, přezd&iacute;vky, jm&eacute;na a emailu. Posledn&iacute;m velice důležit&yacute;m odkazem v t&eacute;to č&aacute;sti je tlač&iacute;tko <em><strong>odhl&aacute;sit</strong></em>, kter&eacute; vede k odhl&aacute;&scaron;en&iacute; administr&aacute;tora ze syst&eacute;mu. Je důrazně doporučeno se vždy po ukončen&iacute; pr&aacute;ci v syst&eacute;mu odhl&aacute;sit, aby nebyla naru&scaron;ena bezpečnost dat v syst&eacute;mu neopr&aacute;vněn&yacute;m př&iacute;stupem a jejich manipulac&iacute;!</p>
+
+	<h3><a name="toc_cms"></a>Vlastn&iacute; str&aacute;nky</h3>
+	<p>V t&eacute;to sekci je možn&eacute; spravovat lev&eacute; menu, kter&eacute; je zobrazeno v <em>prezentačn&iacute; č&aacute;sti</em> str&aacute;nek (prezentačn&iacute; č&aacute;st&iacute; se rozum&iacute; č&aacute;st, kterou vid&iacute; obyčejn&yacute; uživatel). Sekce <strong>Vlastn&iacute; str&aacute;nky</strong> se děl&iacute; na tři č&aacute;sti:</p>
+	<ul>
+		<li><strong>položky menu,</strong></li>
+		<li><strong>vkl&aacute;dan&eacute; str&aacute;nky,<br /></strong></li>
+		<li><strong>hlavn&iacute; str&aacute;nka.<br /></strong></li>
+	</ul>
+	<p>Prvn&iacute; č&aacute;st, <em>položky menu</em>, se star&aacute; skutečně pouze o menu, lze vytv&aacute;řet, upravovat a mazat položky menu, přičemž položky mohou b&yacute;t do sebe vnořov&aacute;ny. &Uacute;roveň zanořen&iacute; je nastavena na 3. Každ&aacute; položka menu je definov&aacute;n&aacute; vlastn&iacute;m n&aacute;zvem (povinn&yacute; parametr), textem, kter&yacute; se zobrazuje uživateli v menu, d&aacute;le titulkem, kter&yacute; se zobraz&iacute; po najet&iacute; my&scaron;i a d&aacute;le pak vlastn&iacute; URL. URL položky pak může b&yacute;t buď absolutn&iacute;, tedy <em>extern&iacute;</em>, kter&aacute; vede na nějak&eacute; ciz&iacute; str&aacute;nky (např.: <a href="http://www.google.com">www.google.com</a>, apod.) nebo naopak relativn&iacute;, kter&aacute; povede na vnitř&iacute; str&aacute;nku v tomto syst&eacute;mu. Relativn&iacute; URL se zad&aacute;v&aacute; pouze pro konkr&eacute;tn&iacute; str&aacute;nku a nesm&iacute; obsahovat znak '<strong>/</strong>' (znak <em>lom&iacute;tka</em>).</p>
+	<p>&nbsp;Pokud je při vytv&aacute;řen&iacute; nov&eacute; položky menu vybr&aacute;na relativn&iacute; URL, je vytvořena i nov&aacute; <em>vkl&aacute;dan&aacute;</em> <em>str&aacute;nka </em>(což odpov&iacute;d&aacute; druh&eacute; č&aacute;sti ze seznamu v&yacute;&scaron;e), kterou bude nutn&eacute; n&aacute;sledně upravit. Každ&aacute; vkl&aacute;dan&aacute; str&aacute;nka m&aacute; několik č&aacute;st&iacute;, kter&eacute; je nutn&eacute; nastavit:</p>
+	<ul>
+		<li><em>nadpis str&aacute;nky</em> - hlavn&iacute; nadpis str&aacute;nky, kter&yacute; se zobrazuje ihned pod navigac&iacute; (je doporučeno ho nastavit už zde a ne potom manu&aacute;lně v obsahu str&aacute;nky!),</li>
+		<li><em>SEO titulek </em>- voliteln&yacute; parametr, kter&yacute; se bude zobrazovat v li&scaron;tě prohl&iacute;žeče pro danou str&aacute;nku, pomoc&iacute; tohoto titulku hledaj&iacute; vyhled&aacute;vače na internetu (např.: <a href="http://www.google.com">www.google.com</a>, <a href="http://www.seznam.cz">www.seznam.cz</a>, apod.), pokud nen&iacute; titulek vyplněn, dopln&iacute; se automaticky z <em>nadpisu str&aacute;nky</em>,</li>
+		<li><em>SEO kl&iacute;čov&aacute; slova - </em>voliteln&yacute; parametr, opět pomoc&iacute; kl&iacute;čov&yacute;ch slov hledaj&iacute; vyhled&aacute;vače,</li>
+		<li><em>SEO popis - </em>popis str&aacute;nky, kter&yacute; se zobrazuje u v&yacute;sledků ve vyhled&aacute;vač&iacute;ch,</li>
+		<li><em>Povolit koment&aacute;ře </em>- umožňuje zapnout nebo vypnout podporu koment&aacute;řů pro danou str&aacute;nku, pokud jsou koment&aacute;ře zak&aacute;z&aacute;ny, nebudou se na prezentaci zobrazovat,</li>
+		<li><em>Obsah str&aacute;nky - </em>vlastn&iacute; obsah str&aacute;nky, kter&yacute; se zobraz&iacute; pro danou str&aacute;nku na prezentaci, editace prob&iacute;h&aacute; velmi podobně jako např. ve WORDu, tedy to co je naps&aacute;no bude i 1:1 zobrazeno n&aacute;v&scaron;těvn&iacute;kům str&aacute;nek.</li>
+	</ul>
+	<p>Pokud jsou povoleny koment&aacute;ře, jejich seznam pro danou str&aacute;nku je zobrazen n&iacute;že pod editorem obsahu str&aacute;nky. Popis koment&aacute;řů viz n&iacute;že.</p>
+	<p>Posledn&iacute; č&aacute;st&iacute; je pak <em>hlavn&iacute; str&aacute;nka</em>, kterou je možn&eacute; vytvořit pouze jedinou a kter&aacute; nem&aacute; k sobě ž&aacute;dnou položku menu. Jedn&aacute; se o speci&aacute;ln&iacute; str&aacute;nku, jej&iacute;ž obsah se bude zobrazovat na &uacute;vodn&iacute; str&aacute;nce prezentace, včetně nadpisu a SEO informac&iacute; (titulek, kl&iacute;čov&aacute; slova, popis).</p>
+	<p><strong>Velmi důležitou informac&iacute; je fakt, že každ&aacute; nově vytvořen&aacute; položka menu nen&iacute; aktivn&iacute; a proto se nebude zobrazovat na prezentaci! Pro to, aby se položka v menu zobrazila, je nutn&eacute; ji aktivovat! </strong>Kromě aktivace je tak&eacute; možn&eacute; měnit pořad&iacute; položek posunem nahoru nebo dolů.</p>
+
+	<h3><a name="toc_files"></a>Spr&aacute;vce souborů</h3>
+	<p>Třet&iacute; položka menu se t&yacute;k&aacute; vlastn&iacute;ch souborů, kter&eacute; lze nahr&aacute;vat na server. Je možn&eacute; nahr&aacute;vat buď obr&aacute;zky, tak i jin&eacute; soubory (např. ve form&aacute;tu PDF, apod). Kromě nahr&aacute;n&iacute; souboru je možn&eacute; uv&eacute;st i nov&eacute; jm&eacute;no souboru, kter&eacute; bude soubor obsahovat po nahr&aacute;n&iacute; (<strong>uv&aacute;dějte bez př&iacute;pony, př&iacute;pona bude automaticky doplněna podle původn&iacute; př&iacute;pony souboru!</strong>). D&aacute;le je možn&eacute; vynutit přeps&aacute;n&iacute; souboru se stejn&yacute;m n&aacute;zvem, pokud již takov&yacute; soubor na serveru existuje. Tato možnost je v&scaron;ak nebezpečn&aacute; a proto ji použ&iacute;vejte jen pokud to je skutečně nutn&eacute;.</p>
+	<p>Pod formul&aacute;řem pro nahr&aacute;n&iacute; souboru je seznam již nahran&yacute;ch souborů na serveru. Na tyto soubory je pak možn&eacute; odkazovat např. pr&aacute;vě z editoru obsahu vkl&aacute;dan&yacute;ch str&aacute;nek apod. Soubory je možn&eacute; se serveru rovněž smazat, přičemž tato opreace je nevratn&aacute;!</p>
+
+	<h3><a name="toc_guestbook"></a>Diskuze</h3>
+	<p>Zde jsou zobrazeny v&scaron;echny koment&aacute;ře n&aacute;v&scaron;těvn&iacute;ků str&aacute;nek, kter&eacute; n&aacute;lež&iacute; do diskuze. Každ&yacute; koment&aacute;ř je zobrazen tak, jak je skutečně viděn i n&aacute;v&scaron;těvn&iacute;ky. Kromě toho je možn&eacute; přidat nov&yacute; koment&aacute;ř, resp. odpovědět na st&aacute;vaj&iacute;c&iacute; (stejně jako to je možn&eacute; i z prezentace). Administr&aacute;tor m&aacute; v&scaron;ak d&aacute;le pr&aacute;vo i na editaci formul&aacute;ře, nebo dokonce na jeho smaz&aacute;n&iacute; (<strong>to je opět nevratn&eacute;!</strong>) pokud např. jeho obsah pohor&scaron;uje nebo obsahuje jin&eacute; shůvěřilosti.</p>
+
+	<h3><a name="toc_gallery"></a>Galerie</h3>
+	<p>Posledn&iacute; položkou je položka <em>Galeri&iacute;</em>. Galerie je opět možn&eacute; vytvořit, přičem je možn&eacute; definovat n&aacute;zev galerie (např.: <em>Tour de France 2011 - v&yacute;let na z&aacute;vody do Francie</em>) a voliteln&yacute; popis galerie. Rovněž je možn&eacute; n&aacute;zev i popis n&aacute;sledně upravit.</p>
+	<p>Po vytvořen&iacute; galerie je možn&eacute; nahr&aacute;vat položky, kter&eacute; opět mohou obsahovat n&aacute;zev a popis. Položky (obr&aacute;zky) je pro zobrazen&iacute; nutn&eacute; <strong>aktivovat</strong>, d&aacute;le je možn&eacute; je mazat a posouvat nahoru nebo dolů.</p>
+	<p>Pro každou galerii je opět možn&eacute; povolit nebo zak&aacute;zat zobrazov&aacute;n&iacute; koment&aacute;řů. Aby se galerie zobrazila i n&aacute;v&scaron;těvn&iacute;kům str&aacute;nek na prezentaci, je opět nutn&eacute; ji <strong>aktivovat</strong>!</p>
+
+	<h3><a name="toc_epilogue"></a>Z&aacute;věr</h3>
+	<p>Toto byla velmi jednuch&aacute; n&aacute;pověda k tomuto syst&eacute;mu a k jeho použ&iacute;v&aacute;n&iacute;. Obecně se jedn&aacute; o velmi jednoduch&yacute; a intuitivn&iacute; syst&eacute;m, jehož použ&iacute;v&aacute;n&iacute; by nemělo b&yacute;t složit&eacute; a po kr&aacute;tk&eacute;m čase by se mělo osvojit. Je v&scaron;ak nutn&eacute; se vždy ř&iacute;dit aktu&aacute;ln&iacute;mi informacemi pro danou akci a skutečně je č&iacute;st, aby nedo&scaron;lo k něčemu nechtěn&eacute;mu.</p>
+</div>
