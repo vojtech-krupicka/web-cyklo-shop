@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Presentation\AdminModule\Sign;
+namespace App\Presentation\AdminModule\SignIn;
 
 use App\Presentation\AdminModule;
 use Nette\Application\UI;
@@ -13,7 +13,7 @@ class SignInFormData
     public bool $remember;
 }
 
-final class SignPresenter extends AdminModule\BasePresenter
+final class SignInPresenter extends AdminModule\BasePresenter
 {
     public function actionDefault(): void
     {

@@ -4,32 +4,29 @@ namespace App\Presentation\AdminModule;
 
 abstract class BaseSecuredPresenter extends BasePresenter
 {
+    public function startup(): void
+    {
+        // Zavola rodice !!!
+        parent::startup();
 
-	public function startup() : void
-	{
-		// Zavola rodice !!!
-		parent::startup();
+        // Pokud neni uzivatel prihlasen, presmeruje ho na stranku prihlaseni
+        if (!$this->user->isLoggedIn()) {
+            // Pokud byl uzivatel odhlasen automaticky
+            if ($this->user->getLogoutReason() === \Nette\Security\User::LogoutInactivity) {
+                $this->flashMessage('Byl jste automaticky odhlášen z administračního systému z důvodu neaktivity.', 'warning');
+            }
 
-		// Pokud neni uzivatel prihlasen, presmeruje ho na stranku prihlaseni
-		if(!$this->user->isLoggedIn()) {
-			// Pokud byl uzivatel odhlasen automaticky
-			if($this->user->getLogoutReason() === \Nette\Security\User::LogoutInactivity) {
-				$this->flashMessage('Byl jste automaticky odhlášen z administračního systému z důvodu neaktivity.', 'warning');
-			}
+            // A pokud neni, presmeruje na stranku prihlaseni
+            $this->redirect(':AdminModule:SignIn:');
+            die;
+        }
+    }
 
-			// A pokud neni, presmeruje na stranku prihlaseni
-			$this->redirect(':AdminModule:Sign:');
-			die;
-		}
-	}
-
-
-	public function handleLogout() : void
-	{
-		$this->user->logout(true);
-		$this->flashMessage('Byl jste úspěšně odhlášen.', 'info');
-		$this->redirect(':AdminModule:Sign:');
-		exit();
-	}
-
+    public function handleLogout(): void
+    {
+        $this->user->logout(true);
+        $this->flashMessage('Byl jste úspěšně odhlášen.', 'info');
+        $this->redirect(':AdminModule:SignIn:');
+        exit();
+    }
 }
