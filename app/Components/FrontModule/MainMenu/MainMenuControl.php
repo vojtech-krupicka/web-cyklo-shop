@@ -21,8 +21,6 @@ final class MainMenuItem
 final class MainMenuControl extends Control
 {
 
-    private array $menuItems = [];
-
     public function __construct(
 		private \Model\GalleryFacade $galleryFacade,
 	) {}

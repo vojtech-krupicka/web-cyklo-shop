@@ -23,7 +23,6 @@
     {asset "javascript/jquery.ajaxform.js"}
     {asset "javascript/jquery.livequery.js"}
     {asset "javascript/jquery.nette.js"}
-    {asset "javascript/jquery.nette.js"}
     {asset "javascript/nette.forms.js"}
     {asset "javascript/tiny_mce/jquery.tinymce.js"}
 
@@ -61,8 +60,8 @@
 		<div id="header">
 
 			<div class="logo">
-				<h1>Cyklo shop</h1>
-				<a n:href=":FrontModule:Homepage: id => NULL" title="Cyklo shop">
+				<h1>{$shopInfo->name|noescape}</h1>
+				<a n:href=":FrontModule:Homepage:" title="{$shopInfo->name|noescape}">
 					{asset "css/images/bg-logo.png"}
 				</a>
 			</div>
@@ -160,7 +159,7 @@
 					{control mainMenu:flat}
 				</div>
 
-				{* <div class="copyright"><p>Copyright &copy; 2002 - 2012 <a href="{$shopInfo->url}" title="{$shopInfo->name|noescape}">{$shopInfo->name|noescape}</a> | <a n:href=":Admin:Default:">Administrační systém</a>.</p></div> *}
+				<div class="copyright"><p>Copyright &copy; 2002 - 2026 <a href="{$shopInfo->url}" title="{$shopInfo->name|noescape}">{$shopInfo->name|noescape}</a> | <a n:href=":AdminModule:Default:">Administrační systém</a>.</p></div>
 			</div>
 		</div>
 	</div>

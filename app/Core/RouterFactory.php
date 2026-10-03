@@ -15,6 +15,36 @@ final class RouterFactory
 	{
 		$router = new RouteList;
 
+        $adminRouter = new RouteList('AdminModule');
+        $adminRouter->addRoute('admin/index.php', 'Default:default', Route::ONE_WAY);
+	    $adminRouter->addRoute('admin/<presenter>/<action>[/<id \d+(?:-[a-z-]+)?>]', array(
+								'presenter' => array(
+									Route::Value => 'Default',
+									Route::FilterTable => array(
+										'uvod' => 'Default',
+										'novinky' => 'News',
+										'vlastni-stranky' => 'Cms',
+										'galerie' => 'Gallery',
+										'diskuze' => 'Guestbook',
+										'spravce-souboru' => 'File',
+										'prihlaseni' => 'Sign'
+									),
+								),
+								'action' => array(
+									Route::Value => 'default',
+									Route::FilterTable => array(
+										'vychozi' => 'default',
+										'vytvorit' => 'add',
+										'upravit' => 'edit',
+										'upravit-polozku-menu' => 'editItem',
+										'upravit-vlastni-stranku' => 'editPage',
+										'komentare' => 'comments'
+									),
+								),
+								'id' => NULL,
+						));
+
+
         $frontRouter = new RouteList('FrontModule');
         $frontRouter->addRoute('index.php', 'Homepage:default', Route::ONE_WAY);
         $frontRouter->addRoute('<uri [a-z0-9_/-]+>.html', 'Cms:default');
@@ -39,9 +69,9 @@ final class RouterFactory
 								'id' => NULL,
 							));
 
+        $router->add($adminRouter);
         $router->add($frontRouter);
 
-		// $router->addRoute('<presenter>/<action>[/<id>]', 'Home:default');
 		return $router;
 	}
 }

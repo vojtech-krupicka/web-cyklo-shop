@@ -56,7 +56,6 @@ final class CmsPresenter extends FrontModule\BasePresenter
         }
 
         // Set template
-		//$this->template->parentItems = array_reverse($parentItems);
 		$this->template->menuItem = $this->menuItem;
 		$this->template->activeItemId = $this->menuItem->id;
 
