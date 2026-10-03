@@ -2,18 +2,13 @@
 
 namespace Model;
 
-final class MenuItemsFacade
+final class MenuItemsFacade extends BaseFacade
 {
-
-	public function __construct(
-        private \Nette\Database\Explorer $dbconn
-    )
-	{ }
-
-
     public function getCurrentMenuItemByUri(string $uri): ?\Nette\Database\Table\ActiveRow
     {
-        return $this->dbconn->table('menu_items')
+        return $this
+            ->dbconn
+            ->table('menu_items')
             ->where('url', $uri)
             ->where('active', true)
             ->order('sort_order ASC')
@@ -23,7 +18,9 @@ final class MenuItemsFacade
 
     public function getCurrentMenuItemById(?int $id): ?\Nette\Database\Table\ActiveRow
     {
-        return !$id ? null : $this->dbconn->table('menu_items')
+        return !$id ? null : $this
+            ->dbconn
+            ->table('menu_items')
             ->where('id', $id)
             ->where('active', true)
             ->order('sort_order ASC')
@@ -31,7 +28,7 @@ final class MenuItemsFacade
             ->fetch();
     }
 
-    public function getMenuItems(?int $parentId = null, bool $activeOnly = true, string $order = "ASC"): \Nette\Database\Table\Selection
+    public function getMenuItems(?int $parentId = null, bool $activeOnly = true, string $order = 'ASC'): \Nette\Database\Table\Selection
     {
         $query = $this->dbconn->table('menu_items');
 
@@ -47,5 +44,4 @@ final class MenuItemsFacade
 
         return $query->order("sort_order {$order}");
     }
-
 }

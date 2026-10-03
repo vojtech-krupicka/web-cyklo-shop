@@ -2,16 +2,8 @@
 
 namespace Model;
 
-final class GalleryFacade
+final class GalleryFacade extends BaseFacade
 {
-
-
-	public function __construct(
-        private \Nette\Database\Explorer $dbconn
-    )
-	{ }
-
-
     public function getGallery(int $id, bool $active = true, $order = 'added'): \Nette\Database\Table\ActiveRow|null
     {
         return $this->getGalleries($active, $order)->where('id', $id)->fetch();
@@ -33,6 +25,4 @@ final class GalleryFacade
         }
         return $query;
     }
-
-
 }

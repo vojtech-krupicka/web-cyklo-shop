@@ -2,16 +2,8 @@
 
 namespace Model;
 
-final class PagesFacade
+final class PagesFacade extends BaseFacade
 {
-
-
-	public function __construct(
-        private \Nette\Database\Explorer $dbconn
-    )
-	{ }
-
-
     public function getPageById(int $id): ?\Nette\Database\Table\ActiveRow
     {
         return $this->dbconn->table('pages')->get($id);
@@ -21,5 +13,4 @@ final class PagesFacade
     {
         return $this->dbconn->table('pages')->where('is_homepage', true)->fetch();
     }
-
 }
