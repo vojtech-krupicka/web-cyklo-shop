@@ -1,18 +1,7 @@
 {block #content}
-<div class="breadcrumb">
-	<ul>
-		<li><a title="Úvod" n:href=":FrontModule:Homepage: id => NULL">Úvod</a><span>&gt;</span></li>
-		<li><a title="Mapa stránek" n:href=":FrontModule:Sitemap: id => NULL" class="active">Mapa stránek</a></li>
-	</ul>
-	<div class="cleaner"></div>
-</div>
-
-<h1 n:block=title>Mapa stránek</h1>
-
 <div class="wysiwyg">
 	<h2>Hlavní nabídka</h2>
     {control mainMenu:withGalleries}
 
     {control cmsMenu:sidebar heading: "Vlastní obsah"}
 </div>
-

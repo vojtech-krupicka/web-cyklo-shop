@@ -18,6 +18,9 @@ final class HomepagePresenter extends FrontModule\BasePresenter
 	{
         $this->template->homepage = $this->pagesFacade->getHomepage();
         $this->template->gallery = $this->galleryFacade->getGalleryItems(null, true, "RAND()", 3);
+
+        $this->template->breadcrumbItems = []; // no breadcrumb for homepage
+        $this->template->pageHeading = $this->template->homepage->heading ?? "Vítejte na example.com";
 	}
 
 }

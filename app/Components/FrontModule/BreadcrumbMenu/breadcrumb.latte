@@ -1,0 +1,15 @@
+{varType array $menuItems}
+
+{if $menuItems}
+<div class="breadcrumb">
+    <ul>
+        {foreach $menuItems as $item}
+            <li>
+                <a title="{$item->title}" href="{plink ":FrontModule:$item->presenter:$item->action", $item->argName => $item->argValue}" n:class="$iterator->last ? active">{$item->title}</a>
+            </li>
+            {sep}<li><span>&raquo;</span></li>{/sep}
+        {/foreach}
+    </ul>
+    <div class="cleaner"></div>
+</div>
+{/if}

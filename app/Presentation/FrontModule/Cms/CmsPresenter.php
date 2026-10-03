@@ -33,7 +33,6 @@ final class CmsPresenter extends FrontModule\BasePresenter
 			throw new \Nette\Application\BadRequestException("Stránka s URL '".$this->uri."' neexistuje!");
 		}
 
-
 		// Get page
 		$this->page = $this->pagesFacade->getPageById($this->menuItem['page_id']);
 		if(!$this->page) {
@@ -51,8 +50,13 @@ final class CmsPresenter extends FrontModule\BasePresenter
 			$parentObj = $this->menuItemsFacade->getCurrentMenuItemById($parentId);
 		}
 
+        // Add all breadcrumb items
+        foreach(array_reverse($parentItems) as $item) {
+			$this->addBreadcrumbItem("Cms", $item->title, argName: "uri", argValue: $item->url);
+        }
+
         // Set template
-		$this->template->parentItems = array_reverse($parentItems);
+		//$this->template->parentItems = array_reverse($parentItems);
 		$this->template->menuItem = $this->menuItem;
 		$this->template->activeItemId = $this->menuItem->id;
 
@@ -65,7 +69,10 @@ final class CmsPresenter extends FrontModule\BasePresenter
 		if(!empty($this->page->seo_description)) {
 			$this->template->seoDescription = $this->page->seo_description;
 		}
+
 		$this->template->page = $this->page;
+        $this->template->pageHeading = $this->page->heading;
+
 
     }
 }

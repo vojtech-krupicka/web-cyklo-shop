@@ -1,27 +1,19 @@
 {block #content}
 
-{if $homepage}
-<h1 n:if="$homepage->heading">{$homepage->heading}</h1>
-<h1 n:if="!$homepage->heading">Vítejte na example.com</h1>
-	{if !empty($homepage['seo_title'])}{define #title}{$homepage['seo_title']}{/define}{/if}
-	{if !empty($homepage['seo_keywords'])}{define #seoKeywords}{$homepage['seo_keywords']}{/define}{/if}
-	{if !empty($homepage['seo_description'])}{define #seoDescription}{$homepage['seo_description']}{/define}{/if}
-
-	{if $gallery}
-		<div class="gallery">
-		{foreach $gallery as $item}
-			<div n:class="item, ($iterator->first) ? itemFirst, ($iterator->last) ? itemLast">
-				<a n:href=":FrontModule:Gallery:detail id => $item->gallery_id" title="{$item['title']}">
-					<img src="{$baseUrl}/resources/galleries/gallery_{$item['gallery_id']}/thumb_{$item['file_name']}" alt="{$item['title']}" />
-				</a>
-			</div>
-		{/foreach}
-		</div>
-	{/if}
-
-	<div class="wysiwyg">
-	{$homepage->content|noescape}
-	</div>
+{if $gallery}
+    <div class="gallery">
+    {foreach $gallery as $item}
+        <div n:class="item, ($iterator->first) ? itemFirst, ($iterator->last) ? itemLast">
+            <a n:href=":FrontModule:Gallery:detail id => $item->gallery_id" title="{$item['title']}">
+                <img src="{$baseUrl}/resources/galleries/gallery_{$item['gallery_id']}/thumb_{$item['file_name']}" alt="{$item['title']}" />
+            </a>
+        </div>
+    {/foreach}
+    </div>
 {/if}
+
+<div class="wysiwyg">
+{$homepage->content|noescape}
+</div>
 
 {/block}

@@ -6,4 +6,11 @@ use App\Presentation\FrontModule;
 
 
 final class ContactPresenter extends FrontModule\BasePresenter
-{ }
+{
+
+    public function renderDefault(): void {
+        $this->template->pageHeading = "Kontakt";
+        $this->addBreadcrumbItem("Contact", "Kontakt");
+    }
+
+}

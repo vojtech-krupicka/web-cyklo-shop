@@ -1,15 +1,4 @@
 {block #content}
-{if $gallery}
-<div class="breadcrumb">
-	<ul>
-		<li><a title="Úvod" n:href=":FrontModule:Homepage: id => NULL">Úvod</a><span>&gt;</span></li>
-		<li><a title="Galerie" n:href=":FrontModule:Gallery: id => NULL">Galerie</a><span>&gt;</span></li>
-		<li><a title="{$gallery->name}" n:href=":FrontModule:Gallery:detail id => $gallery->id" class="active">{$gallery->name}</a></li>
-	</ul>
-	<div class="cleaner"></div>
-</div>
-
-<h1 n:block=title>{$gallery->name}</h1>
 
 <div class="wysiwyg">
 	<p>{$gallery->description|noescape}</p>
@@ -33,6 +22,4 @@
 
 {else}
 	<div class="nothingToShow">Nebyly nalezeny žádné obrázky</div>
-{/if}
-
 {/if}
