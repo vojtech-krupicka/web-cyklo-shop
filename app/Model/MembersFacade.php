@@ -30,14 +30,6 @@ final class MemberEntity extends BaseEntity
             lastLogin: $row->last_logon,
         );
     }
-
-    public static function fromSelection(\Nette\Database\Table\Selection $selection): array
-    {
-        return array_map(
-            fn(\Nette\Database\Table\ActiveRow $row) => self::fromActiveRow($row),
-            $selection->fetchAll(),
-        );
-    }
 }
 
 final class MembersFacade extends BaseFacade

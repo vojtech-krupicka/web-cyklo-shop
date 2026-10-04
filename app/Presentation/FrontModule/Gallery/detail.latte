@@ -4,12 +4,12 @@
 	<p>{$gallery->description|noescape}</p>
 </div>
 
-{if $galleryItems->count()}
+{if $galleryItems}
 <div class="gallery">
 {foreach $galleryItems as $item}
 	<div n:class="item, (($iterator->counter-1) % 3 == 0) ? itemFirst, (($iterator->counter-1) % 3 == 2) ? itemLast">
-		<a rel="shadowbox[gallery_{$gallery->id}]" href="{$baseUrl}/resources/galleries/gallery_{$gallery->id}/{$item->file_name}" title="{$item->title}" longdesc="{$item->description}">
-			<img src="{$baseUrl}/resources/galleries/gallery_{$gallery->id}/thumb_{$item->file_name}" alt="{$item->title}" />
+		<a rel="shadowbox[gallery_{$gallery->id}]" href="{$baseUrl}/resources/galleries/gallery_{$gallery->id}/{$item->filename}" title="{$item->title}" longdesc="{$item->description}">
+			<img src="{$baseUrl}/resources/galleries/gallery_{$gallery->id}/thumb_{$item->filename}" alt="{$item->title}" />
 		</a>
 		<div class="info">
 			<h2>{$item->title}</h2>

@@ -4,8 +4,8 @@
     <div class="gallery">
     {foreach $gallery as $item}
         <div n:class="item, ($iterator->first) ? itemFirst, ($iterator->last) ? itemLast">
-            <a n:href=":FrontModule:Gallery:detail id => $item->gallery_id" title="{$item['title']}">
-                <img src="{$baseUrl}/resources/galleries/gallery_{$item['gallery_id']}/thumb_{$item['file_name']}" alt="{$item['title']}" />
+            <a n:href=":FrontModule:Gallery:detail id => $item->galleryId" title="{$item->title}">
+                <img src="{$baseUrl}/resources/galleries/gallery_{$item->galleryId}/thumb_{$item->filename}" alt="{$item->title}" />
             </a>
         </div>
     {/foreach}

@@ -1,6 +1,6 @@
 {varType string $heading}
 
-{if $menuItems->count()}
+{if count($menuItems)}
 <h2>{$heading ?: 'Navigace'}</h2>
 <div class="menu">
     {var $level = 0}
@@ -10,7 +10,7 @@
         {include 'item.latte', item: $item}
 
         {var $childrens = $control->getMenuItems($item->id, true, 'ASC')}
-        {if $childrens->count()}
+        {if count($childrens)}
             {include #leftMenuTree, menuItems => $childrens, level => $level + 1}
         {/if}
         </li>

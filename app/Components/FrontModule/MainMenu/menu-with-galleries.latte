@@ -1,7 +1,7 @@
 <ul>
     <li n:foreach="$menuItems as $value">
         <a n:class="$value->isActive ? active" href="{plink :FrontModule:{$value->presenter}:}" title="{$value->title}">{$value->title}</a>
-        {if $value->presenter === 'Gallery' && $galleries->count()}
+        {if $value->presenter === 'Gallery' && count($galleries)}
         <ul>
             {foreach $galleries as $gallery}
             <li><a href="{plink :FrontModule:Gallery:detail id => $gallery->id}" title="{$gallery->name}">{$gallery->name}</a></li>
