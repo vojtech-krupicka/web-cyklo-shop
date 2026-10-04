@@ -1,6 +1,23 @@
 {block #content}
 
-<h1>Administrační systém</h1>
+<table class="datagrid">
+	<tr>
+		<th style="width: 32px;">#id</th>
+		<th class="left" style="width: 128px">Přezdívka</th>
+		<th class="left">Jméno a příjmení</th>
+		<th style="width: 128px">Poslední přihlášení</th>
+	</tr>
+
+	{foreach $members as $member}
+	<tr n:class="($iterator->even) ? even">
+		<td>{$member->id}</td>
+		<td class="left"><a href="mailto:{$member->email}" title="{$member->email}">{$member->username}</a></td>
+		<td class="left">{$member->firstname} {$member->surname}</td>
+		<td>{$member->lastLogin|date:"H:i:s d.m.Y"}</td>
+	</tr>
+	{/foreach}
+
+</table>
 
 <div class="wysiwyg">
 	<h2>Nápověda k používání</h2>

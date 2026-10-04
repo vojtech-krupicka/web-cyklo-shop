@@ -52,6 +52,12 @@ final class MembersFacade extends BaseFacade
         return $row ? MemberEntity::fromActiveRow($row) : null;
     }
 
+    public function getAll(): array
+    {
+        $query = $this->dbconn->table('members')->order('last_logon DESC');
+        return MemberEntity::fromSelection($query);
+    }
+
     public function persist(MemberEntity $member): void
     {
         $this->dbconn->table('members')->where('id', $member->id)->update([

@@ -132,6 +132,10 @@
 				{/if}
 				{/snippet}
 
+                {control breadcrumb items: $breadcrumbItems}
+
+                <h1 n:ifset="$pageHeading">{$pageHeading}</h1>
+
 				{include #content}
 			</div>
 
