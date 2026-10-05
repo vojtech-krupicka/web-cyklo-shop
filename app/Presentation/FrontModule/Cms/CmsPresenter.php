@@ -23,7 +23,7 @@ final class CmsPresenter extends FrontModule\BasePresenter
     public function renderDefault(): void
     {
         // Get current menu item
-        $this->menuItem = $this->menuItemsFacade->getCurrentMenuItemByUri($this->uri);
+        $this->menuItem = $this->menuItemsFacade->getMenuItemByUri($this->uri);
         if (!$this->menuItem) {
             throw new \Nette\Application\BadRequestException("Stránka s URL '" . $this->uri . "' neexistuje!");
         }
@@ -38,11 +38,11 @@ final class CmsPresenter extends FrontModule\BasePresenter
         $parentItems = array();
         $parentItems[] = $this->menuItem;
 
-        $parentItem = $this->menuItemsFacade->getCurrentMenuItemById($this->menuItem->parentId);
+        $parentItem = $this->menuItemsFacade->getMenuItemById($this->menuItem->parentId);
         while ($parentItem) {
             $parentItems[] = $parentItem;
             $parentId = $parentItem->parentId;
-            $parentItem = $this->menuItemsFacade->getCurrentMenuItemById($parentId);
+            $parentItem = $this->menuItemsFacade->getMenuItemById($parentId);
         }
 
         // Add all breadcrumb items

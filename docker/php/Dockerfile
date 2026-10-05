@@ -5,11 +5,11 @@ ARG USER_GID=1000
 
 # System packages: MySQL client (used by bin/db-* scripts), git/unzip for Composer
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends default-mysql-client git unzip gzip \
+    && apt-get install -y --no-install-recommends default-mysql-client git unzip gzip libicu-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # PHP extensions
-RUN docker-php-ext-install pdo_mysql mysqli \
+RUN docker-php-ext-install pdo_mysql mysqli intl \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug
 

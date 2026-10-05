@@ -1,0 +1,92 @@
+{define menuTree}
+	{foreach $menuItems as $item}
+	<tr n:class="(!$level) ? even">
+		<td>{$item->id}</td>
+		<td class="left">
+			{str_repeat('&nbsp;', 8*$level)|noescape}
+
+			{if $item->pageId == null}
+			<a href="{$item->url}" title="{$item->title}">{$item->name}</a>
+			{else}
+			<a n:href=":FrontModule:Cms: uri => $item->url" title="{$item->title}">{$item->name}</a>
+			{/if}
+		</td>
+		<td class="tools">
+			<ul>
+				<li><a n:href="delete! itemId => $item->id" title="Smazat galerii" onclick="return confirm('Opravdu chcete smazat tuto položku menu? Tato akce je permamentní!');"><img class="delete" n:asset="images/x.png" alt="" /></a></li>
+
+				{if $item->pageId != null}
+				<li><a n:href="pageEdit id => $item->pageId" title="Upravit stránku"><img class="page-edit" n:asset="images/x.png" alt="" /></a></li>
+				{else}
+				<li><img class="page-edit-disabled" n:asset="images/x.png" alt="" /></li>
+				{/if}
+				<li><a n:href="itemEdit id => $item->id" title="Upravit položku menu"><img class="menu-item-edit" n:asset="images/x.png" alt="" /></a></li>
+
+				{if ($iterator->counter) < count($menuItems)}
+				<li><a n:href="move! itemId => $item->id, up => false" title="Posunout dolu" onclick="return confirm('Opravdu chcete pousnout položku menu dolů?');"><img class="move-down" n:asset="images/x.png" alt="" /></a></li>
+				{else}
+				<li><img class="move-down-disabled" n:asset="images/x.png" alt="" /></li>
+				{/if}
+				{if ($iterator->counter-1) > 0}
+				<li><a n:href="move! itemId => $item->id, up => true" title="Posunout nahoru" onclick="return confirm('Opravdu chcete pousnout položku menu nahoru?');"><img class="move-up" n:asset="images/x.png" alt="" /></a></li>
+				{else}
+				<li><img class="move-up-disabled" n:asset="images/x.png" alt="" /></li>
+				{/if}
+
+
+				{if $item->active}
+				<li><a n:href="activate! itemId => $item->id, flag => false" title="Aktivní - deaktivovat?" onclick="return confirm('Opravdu chcete položku menu deaktivovat?');"><img class="activate" n:asset="images/x.png" alt="" /></a></li>
+				{else}
+				<li><a n:href="activate! itemId => $item->id, flag => true" title="Neaktivní - aktivovat?" onclick="return confirm('Opravdu chcete položku menu aktivovat?');"><img class="deactivate" n:asset="images/x.png" alt="" /></a></li>
+				{/if}
+
+				{if $level < 3}
+				<li><a n:href="itemAdd id => $item->id" title="Přidat podpoložku"><img class="add" n:asset="images/x.png" alt="" /></a></li>
+				{else}
+				<li><img class="add-disabled" n:asset="images/x.png" alt="" /></li>
+				{/if}
+			</ul>
+		</td>
+	</tr>
+	{var $childrens = $presenter->getMenuItems($item->id)}
+	{if count($childrens)}
+		{include #menuTree, menuItems => $childrens, level => $level+1}
+	{/if}
+	{/foreach}
+{/define}
+
+{block #content}
+
+{if $homepage}
+	<div class="tools mainTools">
+		<ul>
+			<li><a n:href=":AdminModule:Cms:pageEdit id => $homepage->id" title="Upravit úvodní stránku"><img class="page-edit" n:asset="images/x.png" alt="" /> Upravit úvodní stránku</a></li>
+		</ul>
+	</div>
+{else}
+	<div class="tools mainTools">
+		<ul>
+			<li><a n:href="createHomepage!" title="Vytvořit novou úvodní stránku"><img class="add" n:asset="images/x.png" alt="" /> Vytvořit úvodní stránku</a></li>
+		</ul>
+	</div>
+{/if}
+
+<div class="tools mainTools">
+	<ul>
+		<li><a n:href="itemAdd" title="Nová položka menu" class="new"><img class="add" n:asset="images/x.png" alt="" /> Nová položka menu</a></li>
+	</ul>
+</div>
+
+<div class="cleaner"></div>
+
+{if $menuItems}
+<table class="datagrid">
+	<tr>
+		<th style="width: 32px;">#id</th>
+		<th class="left">Název</th>
+		<th style="width: 212px;">Volby</th>
+	</tr>
+
+	{include #menuTree, menuItems => $menuItems, level => 0}
+</table>
+{/if}

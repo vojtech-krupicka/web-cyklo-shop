@@ -5,25 +5,25 @@ namespace Model;
 final class MenuItemEntity extends BaseEntity
 {
     public function __construct(
-        public readonly int $id,
-        public readonly int $parentId,
-        public readonly int $pageId,
-        public readonly string $name,
-        public readonly string $title,
-        public readonly string $urlQuery,
-        public readonly string $urlFragment,
-        public readonly string $urlRewriteName,
-        public readonly string $url,
-        public readonly bool $active,
-        public readonly int $sortOrder,
+        public ?int $id = null,
+        public ?int $parentId = null,
+        public ?int $pageId = null,
+        public string $name = '',
+        public string $title = '',
+        public string $urlQuery = '',
+        public string $urlFragment = '',
+        public string $urlRewriteName = '',
+        public string $url = '',
+        public bool $active = false,
+        public int $sortOrder = 0,
     ) {}
 
     public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
     {
         return new self(
             id: (int) $row->id,
-            parentId: (int) $row->parent_id,
-            pageId: (int) $row->page_id,
+            parentId: $row->parent_id !== null ? (int) $row->parent_id : null,
+            pageId: $row->page_id !== null ? (int) $row->page_id : null,
             name: (string) $row->name,
             title: (string) $row->title,
             urlQuery: (string) $row->url_query,
@@ -38,7 +38,7 @@ final class MenuItemEntity extends BaseEntity
 
 final class MenuItemsFacade extends BaseFacade
 {
-    public function getCurrentMenuItemByUri(string $uri): ?MenuItemEntity
+    public function getMenuItemByUri(string $uri): ?MenuItemEntity
     {
         $row = $this
             ->dbconn
@@ -51,16 +51,31 @@ final class MenuItemsFacade extends BaseFacade
         return $row ? MenuItemEntity::fromActiveRow($row) : null;
     }
 
-    public function getCurrentMenuItemById(?int $id): ?MenuItemEntity
+    public function getMenuItemById(?int $id, bool $activeOnly = true): ?MenuItemEntity
     {
         if ($id === null) {
             return null;
         }
-        $row = $this
-            ->dbconn
-            ->table('menu_items')
-            ->where('active', true)
-            ->get($id);
+        $query = $this->dbconn->table('menu_items');
+        if ($activeOnly) {
+            $query->where('active', true);
+        }
+
+        $row = $query->get($id);
+        return $row ? MenuItemEntity::fromActiveRow($row) : null;
+    }
+
+    public function getMenuItemByPageId(?int $pageId, bool $activeOnly = true): ?MenuItemEntity
+    {
+        if ($pageId === null) {
+            return null;
+        }
+        $query = $this->dbconn->table('menu_items');
+        if ($activeOnly) {
+            $query->where('active', true);
+        }
+
+        $row = $query->where('page_id', $pageId)->limit(1)->fetch();
         return $row ? MenuItemEntity::fromActiveRow($row) : null;
     }
 
@@ -81,5 +96,33 @@ final class MenuItemsFacade extends BaseFacade
         $query->order("sort_order {$order}");
 
         return MenuItemEntity::fromSelection($query);
+    }
+
+    public function persist(MenuItemEntity $item): void
+    {
+        $data = [
+            'parent_id' => $item->parentId,
+            'page_id' => $item->pageId,
+            'name' => $item->name,
+            'title' => $item->title,
+            'url_query' => $item->urlQuery,
+            'url_fragment' => $item->urlFragment,
+            'url_rewrite_name' => $item->urlRewriteName,
+            'url' => $item->url,
+            'active' => $item->active,
+            'sort_order' => $item->sortOrder,
+        ];
+
+        if ($item->id === null) {
+            $row = $this->dbconn->table('menu_items')->insert($data);
+            $item->id = (int) $row->id;
+        } else {
+            $this->dbconn->table('menu_items')->where('id', $item->id)->update($data);
+        }
+    }
+
+    public function delete(MenuItemEntity $item): void
+    {
+        $this->dbconn->table('menu_items')->where('id', $item->id)->delete();
     }
 }

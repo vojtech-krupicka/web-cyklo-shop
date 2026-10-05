@@ -22,6 +22,13 @@ abstract class BaseSecuredPresenter extends BasePresenter
         }
     }
 
+    public function beforeRender()
+    {
+        parent::beforeRender();
+
+        $this->addBreadcrumbItem('Default', 'Úvod');
+    }
+
     public function handleLogout(): void
     {
         $this->user->logout(true);

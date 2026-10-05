@@ -5,16 +5,16 @@ namespace Model;
 final class PageEntity extends BaseEntity
 {
     public function __construct(
-        public readonly int $id,
-        public readonly string $heading,
-        public readonly string $seoTitle,
-        public readonly string $seoKeywords,
-        public readonly string $seoDescription,
-        public readonly string $content,
-        public readonly bool $isHomepage,
-        public readonly bool $allowComments,
-        public \DateTime $created,
-        public \DateTime $modified,
+        public ?int $id = null,
+        public string $heading = '',
+        public string $seoTitle = '',
+        public string $seoKeywords = '',
+        public string $seoDescription = '',
+        public string $content = '',
+        public bool $isHomepage = false,
+        public bool $allowComments = false,
+        public \DateTime $created = new \DateTime(),
+        public \DateTime $modified = new \DateTime(),
     ) {}
 
     public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
@@ -46,5 +46,49 @@ final class PagesFacade extends BaseFacade
     {
         $row = $this->dbconn->table('pages')->where('is_homepage', true)->fetch();
         return $row ? PageEntity::fromActiveRow($row) : null;
+    }
+
+    public function createHomepage(): PageEntity
+    {
+        $data = [
+            'heading' => 'Homepage',
+            'seo_title' => 'Homepage',
+            'seo_keywords' => '',
+            'seo_description' => '',
+            'content' => '',
+            'is_homepage' => true,
+            'allow_comments' => false,
+            'created' => new \DateTime(),
+            'modified' => new \DateTime(),
+        ];
+        $this->dbconn->table('pages')->insert($data);
+        return $this->getHomepage();
+    }
+
+    public function persist(PageEntity $item): void
+    {
+        $data = [
+            'heading' => $item->heading,
+            'seo_title' => $item->seoTitle,
+            'seo_keywords' => $item->seoKeywords,
+            'seo_description' => $item->seoDescription,
+            'content' => $item->content,
+            'is_homepage' => $item->isHomepage,
+            'allow_comments' => $item->allowComments,
+            'created' => $item->created,
+            'modified' => $item->modified,
+        ];
+
+        if ($item->id === null) {
+            $row = $this->dbconn->table('pages')->insert($data);
+            $item->id = (int) $row->id;
+        } else {
+            $this->dbconn->table('pages')->where('id', $item->id)->update($data);
+        }
+    }
+
+    public function delete(PageEntity $page): void
+    {
+        $this->dbconn->table('pages')->where('id', $page->id)->delete();
     }
 }

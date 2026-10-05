@@ -35,8 +35,9 @@ final class RouterFactory
                     'vychozi' => 'default',
                     'vytvorit' => 'add',
                     'upravit' => 'edit',
-                    'upravit-polozku-menu' => 'editItem',
-                    'upravit-vlastni-stranku' => 'editPage',
+                    'vytvorit-polozku-menu' => 'itemAdd',
+                    'upravit-polozku-menu' => 'itemEdit',
+                    'upravit-vlastni-stranku' => 'pageEdit',
                     'komentare' => 'comments'
                 ),
             ),

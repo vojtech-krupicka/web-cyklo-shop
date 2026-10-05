@@ -1,0 +1,67 @@
+{block #content}
+
+{* {control pageEdit} *}
+{form pageEdit}
+    <fieldset>
+        <table class="form">
+            <tr>
+                <th>{label created/}</th>
+                <td>{input created}</td>
+            </tr>
+            <tr>
+                <th>{label modified/}</th>
+                <td>{input modified}</td>
+            </tr>
+        </table>
+    </fieldset>
+
+
+    <fieldset>
+        <table class="form">
+            <tr>
+                <th>{label heading/}</th>
+                <td>{input heading}</td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset>
+        <table class="form">
+            <tr>
+                <th>{label seoTitle/}</th>
+                <td>{input seoTitle}</td>
+            </tr>
+            <tr>
+                <th>{label seoKeywords/}</th>
+                <td>{input seoKeywords}</td>
+            </tr>
+            <tr>
+                <th>{label seoDescription/}</th>
+                <td>{input seoDescription}</td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset>
+        <table class="form">
+            <tr>
+                <th>{label allowComments/}</th>
+                <td>{input allowComments}</td>
+            </tr>
+            <tr class="required">
+                <th colspan="2"><label>*Obsah stránky:</label></th>
+            </tr>
+            <tr class="required">
+                <td colspan="2">{input content, class=>'wide mceEditorFull'}</td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset>
+        <table class="form">
+            <tr>
+            <td colspan="2">{input save}{input save_and_back}{input cancel}</td>
+            </tr>
+        </table>
+    </fieldset>
+{/form}
