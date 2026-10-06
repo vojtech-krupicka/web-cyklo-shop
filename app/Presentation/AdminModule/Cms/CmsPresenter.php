@@ -21,7 +21,7 @@ class MenuItemEditFormData
     public string $title;
     public string $fullUrl;
     public string $url;
-    public int $parentId;
+    public ?int $parentId;
 }
 
 class PageEditFormData
@@ -82,7 +82,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         }
 
         if ($this->isAjax()) {
-            $this->invalidateControl('menuItems');
+            $this->redrawControl('menuItems');
         } else {
             $this->redirect('this');
         }
@@ -120,7 +120,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         }
 
         if ($this->isAjax()) {
-            $this->invalidateControl('menuItems');
+            $this->redrawControl('menuItems');
         } else {
             $this->redirect('this');
         }
@@ -151,7 +151,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         }
 
         if ($this->isAjax()) {
-            $this->invalidateControl('menuItems');
+            $this->redrawControl('menuItems');
         } else {
             $this->redirect('this');
         }
@@ -197,19 +197,19 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
             ->setDisabled(true)
             ->setDefaultValue($this->template->baseUrl . '/' . (($this->parentItem) ? $this->parentItem->url : ''));
 
-        $form->addText('url', 'URL položky:');
+        $url = $form->addText('url', 'URL položky:');
 
         // If parent id is sets, check if parent is external, if it is external, child should be
         // external too, if is not external, child should be external or local
         if ($this->parentItem && $this->parentItem->pageId === null) {
-            $form->url->addRule(Form::URL, 'URL Adresa není ve správném formátu!');
+            $url->addRule(Form::URL, 'URL Adresa není ve správném formátu!');
         } else {
             // Add URL type (local or extern)
-            $form->addCheckbox('extern', 'Odkaz na externí stránky?');
+            $extern = $form->addCheckbox('extern', 'Odkaz na externí stránky?');
 
             // Add condition on URL (if URL is extern, URL must be valid URL)
-            $form['url']
-                ->addConditionOn($form['extern'], Form::Equal, true)
+            $url
+                ->addConditionOn($extern, Form::Equal, true)
                 ->addRule(Form::URL, 'URL Adresa není ve správném formátu!');
         }
 
@@ -294,102 +294,103 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     // #region EditMenuItem action
 
     public function actionItemEdit(int $id)
-	{
+    {
         $this->id = $id;
         $this->menuItem = $this->menuItemsFacade->getMenuItemById($this->id, false);
         $this->parentItem = $this->menuItemsFacade->getMenuItemById($this->menuItem->parentId, false);
 
-        if(!$this->menuItem) {
-			$this->flashMessage('Nebylo zadáno platné ID položky menu. Nelze editovat', 'error');
-			$this->redirect('Cms:');
-			exit();
-		}
-	}
+        if (!$this->menuItem) {
+            $this->flashMessage('Nebylo zadáno platné ID položky menu. Nelze editovat', 'error');
+            $this->redirect('Cms:');
+            exit();
+        }
+    }
 
     public function renderItemEdit()
-	{
-		$this->template->menuItem = $this->menuItem;
+    {
+        $this->template->menuItem = $this->menuItem;
 
         $this->template->pageHeading = 'Úprava položky';
         $this->addBreadcrumbItem('Cms', 'Úprava položky', action: 'itemEdit', argName: 'id', argValue: $this->id);
-	}
+    }
 
     protected function createComponentMenuItemEdit(): Form
-	{
-		// New instance of nette form
-		$form = new Form;
-		$renderer = $form->getRenderer();
-		$renderer->wrappers['controls']['container'] = 'table class="form"';
+    {
+        // New instance of nette form
+        $form = new Form;
+        $renderer = $form->getRenderer();
+        $renderer->wrappers['controls']['container'] = 'table class="form"';
 
-		$form->addGroup();
+        $form->addGroup();
 
-		// Add item name (text in menu)
-		$form->addText('name', '*Popisek položky:')
-			 ->setRequired('Vyplňte prosím popisek položky!')
-			 ->addRule(\Nette\Application\UI\Form::MaxLength, 'Popisek položky je příliš dlouhý, max. délka je %d znaků!', 64)
-			 ->setDefaultValue($this->menuItem->name);
+        // Add item name (text in menu)
+        $form
+            ->addText('name', '*Popisek položky:')
+            ->setRequired('Vyplňte prosím popisek položky!')
+            ->addRule(Form::MaxLength, 'Popisek položky je příliš dlouhý, max. délka je %d znaků!', 64)
+            ->setDefaultValue($this->menuItem->name);
 
+        // Add item title (text in title attribute)
+        $form
+            ->addText('title', 'Titulek položky:')
+            ->addRule(Form::MaxLength, 'Titulek položky je příliš dlouhý, max. délka je %d znaků!', 64)
+            ->setDefaultValue($this->menuItem->title);
 
-		// Add item title (text in title attribute)
-		$form->addText('title', 'Titulek položky:')
-			 ->addRule(\Nette\Application\UI\Form::MaxLength, 'Titulek položky je příliš dlouhý, max. délka je %d znaků!', 64)
-			 ->setDefaultValue($this->menuItem->title);
+        $form->addGroup();
 
-		$form->addGroup();
-
-		// Add full URL
-        if($this->menuItem->pageId != null) {
-			$form->addText('fullUrl', 'Adresa položky:')
+        // Add full URL
+        if ($this->menuItem->pageId != null) {
+            $form
+                ->addText('fullUrl', 'Adresa položky:')
                 ->setDisabled(true)
-				->setDefaultValue($this->template->baseUrl . (($this->parentItem) ? $this->parentItem->url . '/' : ''));
-		}
+                ->setDefaultValue($this->template->baseUrl . (($this->parentItem) ? $this->parentItem->url . '/' : ''));
+        }
 
-		// Add item URL (relative or absolute)
-		$form->addText('url', 'URL položky:')
-			 ->setDefaultValue(($this->menuItem->pageId) ? $this->menuItem->urlRewriteName : $this->menuItem->url);
+        // Add item URL (relative or absolute)
+        $url = $form
+            ->addText('url', 'URL položky:')
+            ->setDefaultValue(($this->menuItem->pageId) ? $this->menuItem->urlRewriteName : $this->menuItem->url);
 
-		// If parent id is sets, check if parent is external, if it is external, child should be
-		// external too, if is not external, child should be external or local
-		if($this->menuItem->pageId === null) {
-			$form['url']->addRule(\Nette\Application\UI\Form::URL, 'URL Adresa není ve správném formátu!');
-		}
+        // If parent id is sets, check if parent is external, if it is external, child should be
+        // external too, if is not external, child should be external or local
+        if ($this->menuItem->pageId === null) {
+            $url->addRule(Form::URL, 'URL Adresa není ve správném formátu!');
+        }
 
-		$form->addGroup();
-		$form->addSelect('parentId', 'Nadřazená položka:', $this->generateMenuItemsInSelectbox($this->id))
-			 ->setPrompt('-- hlavní úroveň --')
-			 ->setDefaultValue($this->menuItem->parentId);
+        $form->addGroup();
+        $form
+            ->addSelect('parentId', 'Nadřazená položka:', $this->generateMenuItemsInSelectbox($this->id))
+            ->setPrompt('-- hlavní úroveň --')
+            ->setDefaultValue($this->menuItem->parentId);
 
-
-		// Add two buttons
-		$form->addGroup();
-		$form->addSubmit('save', 'Uložit');
-		$form->addSubmit('save_and_back', 'Uložit a pokračovat');
-		$form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
+        // Add two buttons
+        $form->addGroup();
+        $form->addSubmit('save', 'Uložit');
+        $form->addSubmit('save_and_back', 'Uložit a pokračovat');
+        $form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
             $this->redirect('Cms:default');
             exit();
         };
 
-		// Add callback
-		$form->onSuccess[] = $this->menuItemEditSubmitted(...);
+        // Add callback
+        $form->onSuccess[] = $this->menuItemEditSubmitted(...);
 
-
-		// Return new form instance
-		return $form;
-	}
-
+        // Return new form instance
+        return $form;
+    }
 
     public function menuItemEditSubmitted(Form $form, MenuItemEditFormData $values): void
     {
         $parentUrl = '';
-		$menuItem = $this->menuItemsFacade->getMenuItemById($this->id, false);
+        $menuItem = $this->menuItemsFacade->getMenuItemById($this->id, false);
 
         // Set new parent
-		if($menuItem->parentId != $values->parentId) {
+        if ($menuItem->parentId != $values->parentId) {
             $this->parentItem = $this->menuItemsFacade->getMenuItemById($values->parentId, false);
 
             $index = 0;
             $oldParentItems = $this->menuItemsFacade->getMenuItems($menuItem->parentId, false);
-            foreach($oldParentItems as $index => $item) {
+            foreach ($oldParentItems as $index => $item) {
                 $item->sortOrder = $index;
                 $this->menuItemsFacade->persist($item);
                 $index++;
@@ -401,11 +402,11 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         }
 
         // If ID not empty
-		if($this->parentItem !== null) {
-			if($this->parentItem->pageId != NULL) {
-				$parentUrl = $this->parentItem->url . '/';
-			}
-		}
+        if ($this->parentItem !== null) {
+            if ($this->parentItem->pageId != NULL) {
+                $parentUrl = $this->parentItem->url . '/';
+            }
+        }
         // Check title
         $menuItem->name = $values->name;
         $menuItem->title = $values->title;
@@ -413,182 +414,181 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
             $menuItem->title = $menuItem->name;
         }
         // If new item is not extern
-		if($menuItem->pageId != null) {
-			if($values->url == null) {
-				$menuItem->urlRewriteName = \Nette\Utils\Strings::webalize($values->name);
-			}
-			else {
-				$menuItem->urlRewriteName = \Nette\Utils\Strings::webalize($values->url);
-			}
+        if ($menuItem->pageId != null) {
+            if ($values->url == null) {
+                $menuItem->urlRewriteName = \Nette\Utils\Strings::webalize($values->name);
+            } else {
+                $menuItem->urlRewriteName = \Nette\Utils\Strings::webalize($values->url);
+            }
 
-			// Set full URL
-			$menuItem->url = $parentUrl . $menuItem->urlRewriteName;
+            // Set full URL
+            $menuItem->url = $parentUrl . $menuItem->urlRewriteName;
 
-			// Edit all URLs for children items
-			$this->updateChildrenUrl($menuItem->id, $menuItem->url);
-		}
-		else {
-			if(!str_starts_with($values->url, 'http')) {
-				$values->url = 'http://'.$values->url;
-			}
-		}
+            // Edit all URLs for children items
+            $this->updateChildrenUrl($menuItem->id, $menuItem->url);
+        } else {
+            if (!str_starts_with($values->url, 'http')) {
+                $values->url = 'http://' . $values->url;
+            }
+        }
 
         $this->menuItemsFacade->persist($menuItem);
-        $this->flashMessage("Položka menu '".$menuItem->id." - ".$menuItem->name."' byla úspěšně aktualizována.", 'info');
-		if($form['save_and_back']->isSubmittedBy()) {
-			$this->redirect('Cms:default');
-			exit();
-		}
+        $this->flashMessage("Položka menu '" . $menuItem->id . ' - ' . $menuItem->name . "' byla úspěšně aktualizována.", 'info');
+        if ($form->isSubmitted() === $form['save_and_back']) {
+            $this->redirect('Cms:default');
+            exit();
+        }
 
-		$this->redirect('this');
-		exit();
-
+        $this->redirect('this');
+        exit();
     }
-
 
     // #region EditPage action
 
     public function actionPageEdit(int $id)
-	{
+    {
         $this->id = $id;
         $this->page = $this->pagesFacade->getPageById($id);
         $this->menuItem = $this->menuItemsFacade->getMenuItemByPageId($id, false);
 
-        if(!$this->page || (!$this->page->isHomepage && !$this->menuItem)) {
-			$this->flashMessage('Nebylo zadáno platné ID stránky obsahu. Nelze editovat', 'error');
-			$this->redirect('Cms:');
-			exit();
-		}
+        if (!$this->page || (!$this->page->isHomepage && !$this->menuItem)) {
+            $this->flashMessage('Nebylo zadáno platné ID stránky obsahu. Nelze editovat', 'error');
+            $this->redirect('Cms:');
+            exit();
+        }
 
-		if($this->isAjax()) {
-			$this->invalidateControl('comments');
-		}
-	}
+        if ($this->isAjax()) {
+            $this->redrawControl('comments');
+        }
+    }
 
     public function renderPageEdit()
-	{
-		$this->template->page = $this->page;
-		$this->template->menuItem = $this->menuItem;
+    {
+        $this->template->page = $this->page;
+        $this->template->menuItem = $this->menuItem;
 
         $this->template->pageHeading = 'Úprava obsahu stránky';
         $this->addBreadcrumbItem('Cms', 'Úprava stránky', action: 'pageEdit', argName: 'id', argValue: $this->id);
-	}
+    }
 
     protected function createComponentPageEdit(): Form
-	{
-		// New instance of nette form
-		$form = new Form;
+    {
+        // New instance of nette form
+        $form = new Form;
         $renderer = $form->getRenderer();
-		$renderer->wrappers['controls']['container'] = 'table class="form"';
+        $renderer->wrappers['controls']['container'] = 'table class="form"';
 
-		$form->addGroup();
+        $form->addGroup();
 
-		$form->addText('created', 'Vytvořeno:')
+        $form
+            ->addText('created', 'Vytvořeno:')
             ->setDisabled(true)
-			->setDefaultValue(DateTime::from($this->page->created)->format('Y-m-d H:i:s'));
-		$form->addText('modified', 'Naposledy upraveno:')
+            ->setDefaultValue(DateTime::from($this->page->created)->format('Y-m-d H:i:s'));
+        $form
+            ->addText('modified', 'Naposledy upraveno:')
             ->setDisabled(true)
             ->setDefaultValue(DateTime::from($this->page->modified)->format('Y-m-d H:i:s'));
 
-		$form->addGroup();
-		$form->addText('heading', 'Nadpis stránky:')
-			 ->setDefaultValue($this->page->heading);
+        $form->addGroup();
+        $form
+            ->addText('heading', 'Nadpis stránky:')
+            ->setDefaultValue($this->page->heading);
 
-		$form->addGroup();
-		$form->addText('seoTitle', '(SEO) Titulek:')
-			 ->setDefaultValue($this->page->seoTitle);
-		$form->addText('seoKeywords', '(SEO) Klíčová slova:')
-			 ->setDefaultValue($this->page->seoKeywords);
-		$form->addTextArea('seoDescription', '(SEO) Popis:', 80, 3)
-			 ->setDefaultValue($this->page->seoDescription);
+        $form->addGroup();
+        $form
+            ->addText('seoTitle', '(SEO) Titulek:')
+            ->setDefaultValue($this->page->seoTitle);
+        $form
+            ->addText('seoKeywords', '(SEO) Klíčová slova:')
+            ->setDefaultValue($this->page->seoKeywords);
+        $form
+            ->addTextArea('seoDescription', '(SEO) Popis:', 80, 3)
+            ->setDefaultValue($this->page->seoDescription);
 
-		$form->addGroup();
-		$form->addRadioList('allowComments', 'Povolit komentáře?', array(1 => 'Ano', 0 => 'Ne'))
-			 ->setDefaultValue($this->page->allowComments ? 1 : 0);
+        $form->addGroup();
+        $form
+            ->addRadioList('allowComments', 'Povolit komentáře?', array(1 => 'Ano', 0 => 'Ne'))
+            ->setDefaultValue($this->page->allowComments ? 1 : 0);
 
-		$form->addTextArea('content', NULL, 80, 40)
-			 ->setRequired('Musíte napsat nějaký obsah, který se bude zobrazovat na stránce!')
-			 ->setDefaultValue($this->page->content);
+        $form
+            ->addTextArea('content', NULL, 80, 40)
+            ->setRequired('Musíte napsat nějaký obsah, který se bude zobrazovat na stránce!')
+            ->setDefaultValue($this->page->content);
 
-
-		// Add two buttons
-		$form->addGroup();
-		$form->addSubmit('save', 'Uložit');
-		$form->addSubmit('save_and_back', 'Uložit a pokračovat');
-		$form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
+        // Add two buttons
+        $form->addGroup();
+        $form->addSubmit('save', 'Uložit');
+        $form->addSubmit('save_and_back', 'Uložit a pokračovat');
+        $form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
             $this->redirect('Cms:default');
             exit();
         };
 
-		// Add callback
-		$form->onSuccess[] = $this->pageEditSubmitted(...);
+        // Add callback
+        $form->onSuccess[] = $this->pageEditSubmitted(...);
 
+        // Return new form instance
+        return $form;
+    }  // createComponentPageEdit()
 
-		// Return new form instance
-		return $form;
-	} // createComponentPageEdit()
-
-
-
-	/**
-	 * Callback method for adding new menu item
-	 * @param \Nette\Application\UI\Form $form
-	 */
-	public function pageEditSubmitted(Form $form, PageEditFormData $values): void
-	{
+    /**
+     * Callback method for adding new menu item
+     * @param \Nette\Application\UI\Form $form
+     */
+    public function pageEditSubmitted(Form $form, PageEditFormData $values): void
+    {
         $this->page->modified = new \DateTime();
         $this->page->heading = $values->heading;
         $this->page->seoTitle = $values->seoTitle;
         $this->page->seoKeywords = $values->seoKeywords;
         $this->page->seoDescription = $values->seoDescription;
-        $this->page->allowComments = (bool)$values->allowComments;
+        $this->page->allowComments = (bool) $values->allowComments;
         $this->page->content = $values->content;
 
         $this->pagesFacade->persist($this->page);
 
-        $this->flashMessage("Stránka obsahu '".$this->page->id." - ".$values->heading."' byla úspěšně aktualizována.", 'info');
-		if($form['save_and_back']->isSubmittedBy()) {
-			$this->redirect('Cms:default');
-			exit();
-		}
+        $this->flashMessage("Stránka obsahu '" . $this->page->id . ' - ' . $values->heading . "' byla úspěšně aktualizována.", 'info');
+        if ($form->isSubmitted === $form['save_and_back']) {
+            $this->redirect('Cms:default');
+            exit();
+        }
 
-		$this->redirect('this');
-		exit();
+        $this->redirect('this');
+        exit();
     }
 
     // #region Helpers
 
     private function updateChildrenUrl(?int $parentId, string $parentUrl)
-	{
-		$children = $this->menuItemsFacade->getMenuItems($parentId, false);
-		foreach($children as $child) {
-			$child->url = $parentUrl.'/'.$child->urlRewriteName;
-			$this->menuItemsFacade->persist($child);
-			$this->updateChildrenUrl($child->id, $child->url);
-		}
+    {
+        $children = $this->menuItemsFacade->getMenuItems($parentId, false);
+        foreach ($children as $child) {
+            $child->url = $parentUrl . '/' . $child->urlRewriteName;
+            $this->menuItemsFacade->persist($child);
+            $this->updateChildrenUrl($child->id, $child->url);
+        }
 
-		return;
-	}
+        return;
+    }
 
     private function generateMenuItemsInSelectbox(int $itemId, ?int $parentId = null, int $level = 0): array
-	{
-		$items = array();
-		$result = $this->menuItemsFacade->getMenuItems($parentId, false);
+    {
+        $items = array();
+        $result = $this->menuItemsFacade->getMenuItems($parentId, false);
 
-        foreach($result as $item) {
+        foreach ($result as $item) {
             if ($item->id == $itemId) {
                 continue;
             }
-            $items[$item->id] = str_repeat("-", 4*$level) .' '. $item->name;
-            $children = $this->generateMenuItemsInSelectbox($itemId, $item->id, $level+1);
-            if(!empty($children)) {
-                foreach($children as $id => $child) {
+            $items[$item->id] = str_repeat('-', 4 * $level) . ' ' . $item->name;
+            $children = $this->generateMenuItemsInSelectbox($itemId, $item->id, $level + 1);
+            if (!empty($children)) {
+                foreach ($children as $id => $child) {
                     $items[$id] = $child;
                 }
             }
         }
 
-		return $items;
-	}
-
+        return $items;
+    }
 }

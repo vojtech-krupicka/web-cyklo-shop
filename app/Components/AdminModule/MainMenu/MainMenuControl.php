@@ -33,7 +33,7 @@ final class MainMenuControl extends Control
             new MainMenuItem('Cms', 'Vlastní stránky', $presenterName),
             // new MainMenuItem('File', 'Správce souborů', $presenterName),
             // new MainMenuItem('Guestbook', 'Diskuze', $presenterName),
-            // new MainMenuItem('Gallery', 'Galerie', $presenterName),
+            new MainMenuItem('Gallery', 'Galerie', $presenterName),
         ];
     }
 }

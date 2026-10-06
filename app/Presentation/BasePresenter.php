@@ -64,7 +64,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         $flash = parent::flashMessage($message, $type);
 
         if ($this->isAjax()) {
-            $this->invalidateControl('flashes');
+            $this->redrawControl('flashes');
         }
 
         return $flash;

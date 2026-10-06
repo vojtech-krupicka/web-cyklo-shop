@@ -1,0 +1,65 @@
+{block #content}
+
+{control galleryEdit}
+{control galleryMediaAdd}
+
+{snippet galleryMedia}
+	{if $galleryItems}
+    <div class="gallery-items">
+		{foreach $galleryItems as $item}
+		{snippet galleryMedia-{$item->id}}
+		{form galleryMediaEdit-{$item->id}, class=>'ajax'}
+		<div class="item">
+            <div class="left">
+				{var $fullFileName = $wwwDir."/resources/galleries/gallery_".$gallery->id."/".$item->filename}
+				{if is_file($fullFileName)}
+				<a rel="shadowbox[gallery_{$gallery->id}]" href="{$baseUrl}/resources/galleries/gallery_{$gallery->id}/{$item->filename}" title="{$item->title}">
+					<img src="{$baseUrl}/resources/galleries/gallery_{$gallery->id}/thumb_{$item->filename}" alt="{$item->title}" />
+				</a>
+				{else}
+					<img src="{$baseUrl}/images/no-image.png" title="{$item->title}" alt="{$item->title}" />
+				{/if}
+			</div>
+			<div class="info">
+				<table class="form">
+                    <tr>
+						<td>id #{$item->id}</td><td></td>
+					</tr>
+					<tr>
+						<td>{input title}</td><td>{input save}</td>
+					</tr>
+					<tr>
+						<td colspan="2">{input description}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="tools">
+				<div class="time">{$item->added|date:'H:i:s d.m.Y'}</div>
+				<ul>
+					<li><a n:href="deleteMedia! mediaId => $item->id" title="Smazat obrázek" onclick="return confirm('Opravdu chcete smazat tento obrázek? Tato akce je permamentní!');"><img class="delete" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					{if ($iterator->counter) < count($galleryItems)}
+					<li><a n:href="moveMedia! mediaId => $item->id, up => false" title="Posunout dolu" onclick="return confirm('Opravdu chcete pousnout obrázek dolů?');"><img class="move-down" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					{else}
+					<li><img class="move-down-disabled" src="{$baseUrl}/images/x.png" alt="" /></li>
+					{/if}
+					{if ($iterator->counter-1) > 0}
+					<li><a n:href="moveMedia! mediaId => $item->id, up => true" title="Posunout nahoru" onclick="return confirm('Opravdu chcete pousnout obrázek nahoru?');"><img class="move-up" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					{else}
+					<li><img class="move-up-disabled" src="{$baseUrl}/images/x.png" alt="" /></li>
+					{/if}
+
+					{if $item->active}
+					<li><a n:href="activateMedia! mediaId => $item->id, flag => false" title="Aktivní - deaktivovat?" onclick="return confirm('Opravdu chcete položku menu deaktivovat?');"><img class="activate" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					{else}
+					<li><a n:href="activateMedia! mediaId => $item->id, flag => true" title="Neaktivní - aktivovat?" onclick="return confirm('Opravdu chcete položku menu aktivovat?');"><img class="deactivate" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					{/if}
+				</ul>
+			</div>
+			<div class="cleaner"></div>
+		</div>
+		{/form}
+		{/snippet}
+		{/foreach}
+	</div>
+    {/if}
+{/snippet}

@@ -1,7 +1,9 @@
 services:
 	database: @Nette\Database\Connection
+	- Nette\Utils\FileSystem
 	- App\Core\RouterFactory::createRouter
 	- App\Core\AdminAuthenticator
+	- Model\AppSettings(%wwwDir%, %settings.resourcesDir%)
 	- Model\SeoSettings(%seo.title%, %seo.keywords%, %seo.description%)
 	- Model\ShopInfo(%shopInfo%, %openingHours%)
 

@@ -34,7 +34,8 @@ parameters:
 		- key: "Ne"
 		  value: "zavřeno"
 
-	resourcesDir: '%wwwDir%/resources'
+	settings:
+		resourcesDir: '%wwwDir%/resources'
 
 
 application:
@@ -69,4 +70,6 @@ di:
 		tags: no
 
 session:
-	expiration: +7days
+	expiration: 14 days
+	autoStart: smart
+
