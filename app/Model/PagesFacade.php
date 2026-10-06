@@ -14,7 +14,7 @@ final class PageEntity extends BaseEntity
         public bool $isHomepage = false,
         public bool $allowComments = false,
         public \DateTime $created = new \DateTime(),
-        public \DateTime $modified = new \DateTime(),
+        public ?\DateTime $modified = new \DateTime(),
     ) {}
 
     public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self

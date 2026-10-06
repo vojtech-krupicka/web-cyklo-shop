@@ -37,6 +37,9 @@ parameters:
 	settings:
 		resourcesDir: '%wwwDir%/resources'
 
+	mapy:
+		apiKey: ''
+
 
 application:
 	debugger: true
