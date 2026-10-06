@@ -23,6 +23,8 @@
 # Generated TinyMCE file/image lists
 /www/javascript/tinymce.filelist.js
 /www/javascript/tinymce.imagelist.js
+/www/assets/javascript/tinymce.imagelist.js
+/www/assets/javascript/tinymce.filelist.js
 
 # Editors / OS
 .idea/
@@ -35,3 +37,4 @@ Thumbs.db
 !/var/mail/.gitkeep
 /db/dumps/*
 !/db/dumps/.gitkeep
+

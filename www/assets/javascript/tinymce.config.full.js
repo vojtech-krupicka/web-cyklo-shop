@@ -25,8 +25,8 @@ var HassaMceConfigFull = {
 
     relative_urls: false,
     document_base_url: baseUrl,
-    external_image_list_url: '/javascript/tinymce.imagelist.js',
-    external_link_list_url: '/javascript/tinymce.filelist.js',
+    external_image_list_url: '/assets/javascript/tinymce.imagelist.js',
+    external_link_list_url: '/assets/javascript/tinymce.filelist.js',
 
     // Example content CSS (should be your site CSS)
     content_css: '/css/style.css',

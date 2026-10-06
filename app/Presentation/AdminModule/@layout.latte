@@ -28,13 +28,14 @@
 
 	<script type="text/javascript">
 	// <![CDATA[
-		// var baseUrl = {$baseUrl|noescape};
-		var baseUrl = 'http://localhost:4203';
+		var baseUrl = {$baseUrl};
 	// ]]>
 	</script>
 
     {asset "javascript/tinymce.config.full.js"}
     {asset "javascript/tinymce.config.lite.js"}
+    {asset "javascript/tinymce.filelist.js"}
+    {asset "javascript/tinymce.imagelist.js"}
 	{block js}{/block}
 
 	<script type="text/javascript">

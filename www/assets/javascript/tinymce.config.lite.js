@@ -22,7 +22,7 @@ var HassaMceConfigLite = {
     theme_advanced_statusbar_location: false,
 
 
-    external_image_list_url: "/javascript/tinymce.imagelist.js",
+    external_image_list_url: "/assets/javascript/tinymce.imagelist.js",
 
     relative_urls: false,
     document_base_url: baseUrl

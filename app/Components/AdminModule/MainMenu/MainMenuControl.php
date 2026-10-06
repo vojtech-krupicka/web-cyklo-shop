@@ -31,7 +31,7 @@ final class MainMenuControl extends Control
         return [
             new MainMenuItem('Default', 'Úvod', $presenterName),
             new MainMenuItem('Cms', 'Vlastní stránky', $presenterName),
-            // new MainMenuItem('File', 'Správce souborů', $presenterName),
+            new MainMenuItem('File', 'Správce souborů', $presenterName),
             // new MainMenuItem('Guestbook', 'Diskuze', $presenterName),
             new MainMenuItem('Gallery', 'Galerie', $presenterName),
         ];
