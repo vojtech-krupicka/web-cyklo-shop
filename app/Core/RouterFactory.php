@@ -46,7 +46,7 @@ final class RouterFactory
                     'odhlasit' => 'logout',
                 ),
             ),
-            'id' => NULL,
+            'id' => null,
         ));
 
         $frontRouter = new RouteList('FrontModule');
@@ -70,7 +70,7 @@ final class RouterFactory
                     'vychozi' => 'default'
                 ),
             ),
-            'id' => NULL,
+            'id' => null,
         ));
 
         $router->add($adminRouter);

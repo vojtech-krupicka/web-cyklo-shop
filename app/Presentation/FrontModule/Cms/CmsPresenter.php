@@ -35,7 +35,7 @@ final class CmsPresenter extends FrontModule\BasePresenter
         }
 
         // Get all parent menu items for breadcrumb
-        $parentItems = array();
+        $parentItems = [];
         $parentItems[] = $this->menuItem;
 
         $parentItem = $this->menuItemsFacade->getMenuItemById($this->menuItem->parentId);

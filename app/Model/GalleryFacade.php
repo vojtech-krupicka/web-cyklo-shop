@@ -56,7 +56,7 @@ final class GalleryMediaEntity extends BaseEntity
 
 final class GalleryFacade extends BaseFacade
 {
-    public function getGallery(int $id, bool $activeOnly = true): ?GalleryEntity
+    public function getGallery(?int $id, bool $activeOnly = true): ?GalleryEntity
     {
         if ($id === null) {
             return null;
@@ -70,7 +70,7 @@ final class GalleryFacade extends BaseFacade
         return $row ? GalleryEntity::fromActiveRow($row) : null;
     }
 
-    public function getGalleries(bool $activeOnly = true, $order = 'added'): array
+    public function getGalleries(bool $activeOnly = true, string $order = 'added'): array
     {
         $query = $this->dbconn->table('galleries');
         if ($activeOnly) {
@@ -81,13 +81,16 @@ final class GalleryFacade extends BaseFacade
         return GalleryEntity::fromSelection($query);
     }
 
-    public function getMedia(int $id, bool $activeOnly = true): ?GalleryMediaEntity
+    public function getMedia(?int $id, bool $activeOnly = true): ?GalleryMediaEntity
     {
         $query = $this->dbconn->table('gallery_items');
         if ($activeOnly) {
             $query->where('active', true);
         }
 
+        if ($id === null) {
+            return null;
+        }
         $row = $query->get($id);
         return $row ? GalleryMediaEntity::fromActiveRow($row) : null;
     }

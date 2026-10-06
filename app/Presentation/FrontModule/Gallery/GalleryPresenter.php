@@ -31,7 +31,7 @@ final class GalleryPresenter extends FrontModule\BasePresenter
             $this->addBreadcrumbItem('Gallery', $gallery->name, 'detail', 'id', $gallery->id);
         } else {
             $this->flashMessage("Galerie s id '#" . $id . "' neexistuje!", 'error');
-            $this->redirect(':FrontModule:Gallery:default', array('id' => NULL));
+            $this->redirect(':FrontModule:Gallery:default', array('id' => null));
         }
     }
 

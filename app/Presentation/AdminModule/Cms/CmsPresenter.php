@@ -403,7 +403,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 
         // If ID not empty
         if ($this->parentItem !== null) {
-            if ($this->parentItem->pageId != NULL) {
+            if ($this->parentItem->pageId != null) {
                 $parentUrl = $this->parentItem->url . '/';
             }
         }
@@ -511,7 +511,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
             ->setDefaultValue($this->page->allowComments ? 1 : 0);
 
         $form
-            ->addTextArea('content', NULL, 80, 40)
+            ->addTextArea('content', null, 80, 40)
             ->setRequired('Musíte napsat nějaký obsah, který se bude zobrazovat na stránce!')
             ->setDefaultValue($this->page->content);
 
@@ -548,7 +548,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         $this->pagesFacade->persist($this->page);
 
         $this->flashMessage("Stránka obsahu '" . $this->page->id . ' - ' . $values->heading . "' byla úspěšně aktualizována.", 'info');
-        if ($form->isSubmitted === $form['save_and_back']) {
+        if ($form->isSubmitted() === $form['save_and_back']) {
             $this->redirect('Cms:default');
             exit();
         }
@@ -573,7 +573,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 
     private function generateMenuItemsInSelectbox(int $itemId, ?int $parentId = null, int $level = 0): array
     {
-        $items = array();
+        $items = [];
         $result = $this->menuItemsFacade->getMenuItems($parentId, false);
 
         foreach ($result as $item) {
