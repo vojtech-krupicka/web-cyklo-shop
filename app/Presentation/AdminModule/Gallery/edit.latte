@@ -36,22 +36,22 @@
 			<div class="tools">
 				<div class="time">{$item->added|date:'H:i:s d.m.Y'}</div>
 				<ul>
-					<li><a n:href="deleteMedia! mediaId => $item->id" title="Smazat obrázek" onclick="return confirm('Opravdu chcete smazat tento obrázek? Tato akce je permamentní!');"><img class="delete" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					<li><a n:href="deleteMedia! mediaId => $item->id" title="Smazat obrázek" onclick="return confirm('Opravdu chcete smazat tento obrázek? Tato akce je permamentní!');"><img class="delete" n:asset="images/x.png" alt="" /></a></li>
 					{if ($iterator->counter) < count($galleryItems)}
-					<li><a n:href="moveMedia! mediaId => $item->id, up => false" title="Posunout dolu" onclick="return confirm('Opravdu chcete pousnout obrázek dolů?');"><img class="move-down" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					<li><a n:href="moveMedia! mediaId => $item->id, up => false" title="Posunout dolu" onclick="return confirm('Opravdu chcete pousnout obrázek dolů?');"><img class="move-down" n:asset="images/x.png" alt="" /></a></li>
 					{else}
-					<li><img class="move-down-disabled" src="{$baseUrl}/images/x.png" alt="" /></li>
+					<li><img class="move-down-disabled" n:asset="images/x.png" alt="" /></li>
 					{/if}
 					{if ($iterator->counter-1) > 0}
-					<li><a n:href="moveMedia! mediaId => $item->id, up => true" title="Posunout nahoru" onclick="return confirm('Opravdu chcete pousnout obrázek nahoru?');"><img class="move-up" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					<li><a n:href="moveMedia! mediaId => $item->id, up => true" title="Posunout nahoru" onclick="return confirm('Opravdu chcete pousnout obrázek nahoru?');"><img class="move-up" n:asset="images/x.png" alt="" /></a></li>
 					{else}
-					<li><img class="move-up-disabled" src="{$baseUrl}/images/x.png" alt="" /></li>
+					<li><img class="move-up-disabled" n:asset="images/x.png" alt="" /></li>
 					{/if}
 
 					{if $item->active}
-					<li><a n:href="activateMedia! mediaId => $item->id, flag => false" title="Aktivní - deaktivovat?" onclick="return confirm('Opravdu chcete položku menu deaktivovat?');"><img class="activate" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					<li><a n:href="activateMedia! mediaId => $item->id, flag => false" title="Aktivní - deaktivovat?" onclick="return confirm('Opravdu chcete položku menu deaktivovat?');"><img class="activate" n:asset="images/x.png" alt="" /></a></li>
 					{else}
-					<li><a n:href="activateMedia! mediaId => $item->id, flag => true" title="Neaktivní - aktivovat?" onclick="return confirm('Opravdu chcete položku menu aktivovat?');"><img class="deactivate" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+					<li><a n:href="activateMedia! mediaId => $item->id, flag => true" title="Neaktivní - aktivovat?" onclick="return confirm('Opravdu chcete položku menu aktivovat?');"><img class="deactivate" n:asset="images/x.png" alt="" /></a></li>
 					{/if}
 				</ul>
 			</div>

@@ -13,7 +13,7 @@
         </div>
         <div class="tools">
             <ul>
-                <li><a n:href="delete! fileName => $file->fileName, img => false" title="Smazat soubor" onclick="return confirm('Opravdu chcete smazat tento soubor? Tato akce je permamentní!');"><img class="delete" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+                <li><a n:href="delete! fileName => $file->fileName, img => false" title="Smazat soubor" onclick="return confirm('Opravdu chcete smazat tento soubor? Tato akce je permamentní!');"><img class="delete" n:asset="images/x.png" alt="" /></a></li>
             </ul>
         </div>
         <div class="cleaner"></div>
@@ -39,7 +39,7 @@
         </div>
         <div class="tools">
             <ul>
-                <li><a n:href="delete! fileName => $image->fileName, img => true" title="Smazat soubor" onclick="return confirm('Opravdu chcete smazat tento soubor? Tato akce je permamentní!');"><img class="delete" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+                <li><a n:href="delete! fileName => $image->fileName, img => true" title="Smazat soubor" onclick="return confirm('Opravdu chcete smazat tento soubor? Tato akce je permamentní!');"><img class="delete" n:asset="images/x.png" alt="" /></a></li>
             </ul>
         </div>
         <div class="cleaner"></div>

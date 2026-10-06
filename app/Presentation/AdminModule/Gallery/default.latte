@@ -2,7 +2,7 @@
 
 <div class="tools mainTools">
 	<ul>
-		<li><a n:href="add" title="Nová galerie" class="new"><img class="add" src="{$baseUrl}/images/x.png" alt="" /> Nová galerie</a></li>
+		<li><a n:href="add" title="Nová galerie" class="new"><img class="add" n:asset="images/x.png" alt="" /> Nová galerie</a></li>
 	</ul>
 </div>
 
@@ -25,12 +25,12 @@
 		<td class="left">{$gallery->name}</td>
 		<td class="tools">
 			<ul>
-				<li><a n:href="delete! galleryId => $gallery->id" title="Smazat galerii" onclick="return confirm('Opravdu chcete smazat tuto galerii? Tato akce je permamentní!');"><img class="delete" src="{$baseUrl}/images/x.png" alt="" /></a></li>
-				<li><a n:href="edit id => $gallery->id" title="Upravit galerii"><img class="gallery-edit" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+				<li><a n:href="delete! galleryId => $gallery->id" title="Smazat galerii" onclick="return confirm('Opravdu chcete smazat tuto galerii? Tato akce je permamentní!');"><img class="delete" n:asset="images/x.png" alt="" /></a></li>
+				<li><a n:href="edit id => $gallery->id" title="Upravit galerii"><img class="gallery-edit" n:asset="images/x.png" alt="" /></a></li>
 				{if $gallery->active}
-				<li><a n:href="activate! galleryId => $gallery->id, flag => false" title="Aktivní - deaktivovat?" onclick="return confirm('Opravdu chcete galerii deaktivovat?');"><img class="activate" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+				<li><a n:href="activate! galleryId => $gallery->id, flag => false" title="Aktivní - deaktivovat?" onclick="return confirm('Opravdu chcete galerii deaktivovat?');"><img class="activate" n:asset="images/x.png" alt="" /></a></li>
 				{else}
-				<li><a n:href="activate! galleryId => $gallery->id, flag => true" title="Neaktivní - aktivovat?" onclick="return confirm('Opravdu chcete galerii aktivovat?');"><img class="deactivate" src="{$baseUrl}/images/x.png" alt="" /></a></li>
+				<li><a n:href="activate! galleryId => $gallery->id, flag => true" title="Neaktivní - aktivovat?" onclick="return confirm('Opravdu chcete galerii aktivovat?');"><img class="deactivate" n:asset="images/x.png" alt="" /></a></li>
 				{/if}
 			</ul>
 		</td>
