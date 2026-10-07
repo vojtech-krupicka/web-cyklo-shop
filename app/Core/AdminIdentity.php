@@ -25,7 +25,7 @@ final class AdminIdentity implements Security\IIdentity
     /**
      * @param list<string> $roles
      */
-    public static function fromMember(array $roles, Model\Member\MemberEntity $member): self
+    public static function fromMember(array $roles, Model\Member\MemberEntity $member): static
     {
         return new self(
             id: (int) $member->id,

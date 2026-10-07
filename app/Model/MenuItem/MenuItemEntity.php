@@ -20,7 +20,7 @@ final class MenuItemEntity extends BaseEntity
         public int $sortOrder = 0,
     ) {}
 
-    public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
+    public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): static
     {
         return new self(
             id: (int) $row['id'],

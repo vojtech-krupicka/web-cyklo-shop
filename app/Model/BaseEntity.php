@@ -6,13 +6,7 @@ use Nette\Database\Table;
 
 abstract class BaseEntity
 {
-    /**
-     * @return static
-     */
-    public static function fromActiveRow(Table\ActiveRow $row): self
-    {
-        throw new \LogicException('Method fromActiveRow() must be implemented in the child class.');
-    }
+    abstract public static function fromActiveRow(Table\ActiveRow $row): static;
 
     /**
      * @param Table\Selection<Table\ActiveRow> $selection
