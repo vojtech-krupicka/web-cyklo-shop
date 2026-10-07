@@ -3,12 +3,12 @@
 namespace App\Presentation\FrontModule\Gallery;
 
 use App\Presentation\FrontModule;
-use Model\GalleryMediaEntity;
+use App\Model;
 
 final class GalleryPresenter extends FrontModule\BasePresenter
 {
     public function __construct(
-        private \Model\GalleryFacade $galleryFacade
+        private Model\GalleryFacade $galleryFacade
     ) {}
 
     public function renderDefault()
@@ -35,7 +35,7 @@ final class GalleryPresenter extends FrontModule\BasePresenter
         }
     }
 
-    public function getRandomGalleryItem(int $galleryId): ?GalleryMediaEntity
+    public function getRandomGalleryItem(int $galleryId): ?Model\GalleryMediaEntity
     {
         $result = $this->galleryFacade->getGalleryItems($galleryId, true, 'RAND()', 1);
         return array_pop($result);

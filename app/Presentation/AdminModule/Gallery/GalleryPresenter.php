@@ -2,8 +2,9 @@
 
 namespace App\Presentation\AdminModule\Gallery;
 
+use App\Model\GalleryMediaEntity;
 use App\Presentation\AdminModule;
-use Model\GalleryMediaEntity;
+use App\Model;
 use Nette\Application\UI\Form;
 use Nette\Http\FileUpload;
 use Nette\Utils\FileSystem;
@@ -37,13 +38,13 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     public ?int $id = null;
 
-    private ?\Model\GalleryEntity $gallery = null;
+    private ?Model\GalleryEntity $gallery = null;
     private array $galleryItems = [];
 
     public function __construct(
         private FileSystem $fileSystem,
-        private \Model\GalleryFacade $galleryFacade,
-        private \Model\AppSettings $appSettings
+        private Model\GalleryFacade $galleryFacade,
+        private Model\AppSettings $appSettings
     ) {}
 
     public function beforeRender(): void
@@ -151,7 +152,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     public function galleryAddSubmitted(Form $form, GalleryAddEditFormData $values): void
     {
-        $gallery = new \Model\GalleryEntity();
+        $gallery = new Model\GalleryEntity();
         $gallery->name = $values->name;
         $gallery->description = $values->description;
         $gallery->allowComments = (bool) $values->allowComments;
@@ -349,95 +350,96 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
     // #region Gallery media edit
 
     protected function createComponentGalleryMediaEdit(): \Nette\Application\UI\Multiplier
-	{
-		// Create multiplier
-		$control = new \Nette\Application\UI\Multiplier(function($id) {
+    {
+        // Create multiplier
+        $control = new \Nette\Application\UI\Multiplier(function ($id) {
             // New instance of nette form
-			$form = new Form;
-			$item = $this->galleryFacade->getMedia((int)$id, false);
+            $form = new Form;
+            $item = $this->galleryFacade->getMedia((int) $id, false);
 
-			// Add item name (text in menu)
-			$form->addText('title', '')
-				 ->setRequired('Vyplňte prosím název položky!')
-				 ->addRule(\Nette\Application\UI\Form::MaxLength, 'Název položky je příliš dlouhý, max. délka je %d znaků!', 64)
-				 ->setDefaultValue($item->title);
+            // Add item name (text in menu)
+            $form
+                ->addText('title', '')
+                ->setRequired('Vyplňte prosím název položky!')
+                ->addRule(\Nette\Application\UI\Form::MaxLength, 'Název položky je příliš dlouhý, max. délka je %d znaků!', 64)
+                ->setDefaultValue($item->title);
 
+            // Add item title (text in title attribute)
+            $form
+                ->addTextArea('description', '', 80, 1)
+                ->addRule(\Nette\Application\UI\Form::MaxLength, 'Popisek položky je příliš dlouhý, max. délka je %d znaků!', 256)
+                ->setDefaultValue($item->description);
 
-			// Add item title (text in title attribute)
-			$form->addTextArea('description', '', 80, 1)
-				 ->addRule(\Nette\Application\UI\Form::MaxLength, 'Popisek položky je příliš dlouhý, max. délka je %d znaků!', 256)
-				 ->setDefaultValue($item->description);
+            // File
+            $form->addHidden('id', $id);
 
-			// File
-			$form->addHidden('id', $id);
+            // Add button
+            $form->addSubmit('save', 'Uložit');
 
-			// Add button
-			$form->addSubmit('save', 'Uložit');
+            // Add callback
+            $form->onSuccess[] = $this->galleryMediaEditSubmitted(...);
 
-			// Add callback
-			$form->onSuccess[] = $this->galleryMediaEditSubmitted(...);
+            // Return new form instance
+            return $form;
+        });
 
-			// Return new form instance
-			return $form;
-		});
-
-		return $control;
-	}
+        return $control;
+    }
 
     public function galleryMediaEditSubmitted(Form $form, GalleryMediaEditFormData $values)
-	{
-        $media = $this->galleryFacade->getMedia((int)$values->id, false);
-        if($media) {
+    {
+        $media = $this->galleryFacade->getMedia((int) $values->id, false);
+        if ($media) {
             $media->title = $values->title;
             $media->description = $values->description;
-			$this->galleryFacade->persistMedia($media);
+            $this->galleryFacade->persistMedia($media);
 
-			$this->flashMessage("Popisek obrázku '#".$values->id." - ".$media->title."' byl úspěšně upraven!", 'info');
-		} else {
-			$this->flashMessage("Obrázek s id '#".$values->id."' neexistuje!", 'error');
-		}
+            $this->flashMessage("Popisek obrázku '#" . $values->id . ' - ' . $media->title . "' byl úspěšně upraven!", 'info');
+        } else {
+            $this->flashMessage("Obrázek s id '#" . $values->id . "' neexistuje!", 'error');
+        }
 
-		if($this->isAjax()) {
-			$this->redrawControl('galleryItem-'.$values->id);
-		}
-		else {
-			$this->redirect('this');
-		}
+        if ($this->isAjax()) {
+            $this->redrawControl('galleryItem-' . $values->id);
+        } else {
+            $this->redirect('this');
+        }
 
-		return;
-	}
+        return;
+    }
 
     // #region Gallery media edit signals
 
-    public function handleActivateMedia(int $mediaId, bool $flag): void {
+    public function handleActivateMedia(int $mediaId, bool $flag): void
+    {
         $media = $this->galleryFacade->getMedia($mediaId, false);
 
-        if(!$media) {
-            $this->flashMessage("Obrázek s id '#".$mediaId."' neexistuje!", 'error');
+        if (!$media) {
+            $this->flashMessage("Obrázek s id '#" . $mediaId . "' neexistuje!", 'error');
         } else {
             $media->active = $flag;
-			$this->galleryFacade->persistMedia($media);
+            $this->galleryFacade->persistMedia($media);
 
-			if($flag) {
-				$this->flashMessage("Popisek obrázku '#".$mediaId." - ".$media->filename."' byl úspěšně aktivován!", 'info');
-			} else {
-				$this->flashMessage("Popisek obrázku '#".$mediaId." - ".$media->filename."' byl úspěšně deaktivován!", 'info');
-			}
-		}
+            if ($flag) {
+                $this->flashMessage("Popisek obrázku '#" . $mediaId . ' - ' . $media->filename . "' byl úspěšně aktivován!", 'info');
+            } else {
+                $this->flashMessage("Popisek obrázku '#" . $mediaId . ' - ' . $media->filename . "' byl úspěšně deaktivován!", 'info');
+            }
+        }
 
-		if($this->isAjax()) {
-			$this->redrawControl('galleryItems');
-		}
-		else {
-			$this->redirect('this#snippet--galleryItem-'.$mediaId);
-		}
-
+        if ($this->isAjax()) {
+            $this->redrawControl('galleryItems');
+        } else {
+            $this->redirect('this#snippet--galleryItem-' . $mediaId);
+        }
     }
-    public function handleDeleteMedia(int $mediaId): void {
+
+    public function handleDeleteMedia(int $mediaId): void
+    {
         $media = $this->galleryFacade->getMedia($mediaId, false);
 
-        if(!$media) {
-            $this->flashMessage("Obrázek s id '#".$mediaId."' neexistuje!", 'error');
+        if (!$media) {
+            $this->flashMessage("Obrázek s id '#" . $mediaId . "' neexistuje!", 'error');
         } else {
             $index = 0;
             $allMedia = $this->galleryFacade->getGalleryItems($media->galleryId, false);
@@ -452,23 +454,24 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
             $dirName = $this->getDirName();
             $fileName = $media->filename;
             $this->fileSystem->delete($this->fileSystem->joinPaths($dirName, $fileName));
-			$this->fileSystem->delete($this->fileSystem->joinPaths($dirName, 'thumb_' . $fileName));
+            $this->fileSystem->delete($this->fileSystem->joinPaths($dirName, 'thumb_' . $fileName));
 
-            $this->flashMessage("Popisek obrázku '#".$mediaId." - ".$media->filename."' byl úspěšně smazán!", 'info');
+            $this->flashMessage("Popisek obrázku '#" . $mediaId . ' - ' . $media->filename . "' byl úspěšně smazán!", 'info');
         }
 
-        if($this->isAjax()) {
+        if ($this->isAjax()) {
             $this->redrawControl('galleryItems');
-        }
-        else {
+        } else {
             $this->redirect('this');
         }
     }
-    public function handleMoveMedia(int $mediaId, bool $up): void {
+
+    public function handleMoveMedia(int $mediaId, bool $up): void
+    {
         $media = $this->galleryFacade->getMedia($mediaId, false);
 
-        if(!$media) {
-            $this->flashMessage("Obrázek s id '#".$mediaId."' neexistuje!", 'error');
+        if (!$media) {
+            $this->flashMessage("Obrázek s id '#" . $mediaId . "' neexistuje!", 'error');
         } else {
             $siblingMedia = $this->galleryFacade->getGalleryItems($media->galleryId, false);
             $siblingKeys = array_keys($siblingMedia);
@@ -485,21 +488,19 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
                     $this->galleryFacade->persistMedia($media);
                     $this->galleryFacade->persistMedia($swapItem);
 
-                    $this->flashMessage("Obrázek '#".$mediaId." - ".$media->filename."' byl úspěšně přesunut!", 'info');
+                    $this->flashMessage("Obrázek '#" . $mediaId . ' - ' . $media->filename . "' byl úspěšně přesunut!", 'info');
                 }
-            } else{
-                $this->flashMessage("Obrázek '#".$mediaId." - ".$media->filename."' nelze přesunout!", 'error');
+            } else {
+                $this->flashMessage("Obrázek '#" . $mediaId . ' - ' . $media->filename . "' nelze přesunout!", 'error');
             }
         }
 
-        if($this->isAjax()) {
+        if ($this->isAjax()) {
             $this->redrawControl('galleryItems');
-        }
-        else {
+        } else {
             $this->redirect('this');
         }
     }
-
 
     // #region Helpers
 

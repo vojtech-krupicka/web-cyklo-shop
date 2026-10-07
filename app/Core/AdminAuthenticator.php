@@ -2,12 +2,13 @@
 
 namespace App\Core;
 
+use App\Model;
 use Nette\Security;
 
 final class AdminAuthenticator implements Security\Authenticator
 {
     public function __construct(
-        private \Model\MembersFacade $membersFacade,
+        private Model\MembersFacade $membersFacade,
         private Security\Passwords $passwords,
     ) {}
 

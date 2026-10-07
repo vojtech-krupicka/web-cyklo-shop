@@ -4,9 +4,9 @@ services:
 	- App\Core\RouterFactory::createRouter
 	- App\Presentation\FrontModule\Contact\ContactPresenter(%mapy.apiKey%)
 	- App\Core\AdminAuthenticator
-	- Model\AppSettings(%wwwDir%, %settings.resourcesDir%)
-	- Model\SeoSettings(%seo.title%, %seo.keywords%, %seo.description%)
-	- Model\ShopInfo(%shopInfo%, %openingHours%)
+	- App\Model\AppSettings(%wwwDir%, %settings.resourcesDir%)
+	- App\Model\SeoSettings(%seo.title%, %seo.keywords%, %seo.description%)
+	- App\Model\ShopInfo(%shopInfo%, %openingHours%)
 
 search:
 	- in: %appDir%

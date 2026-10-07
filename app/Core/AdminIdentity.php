@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use Model\MemberEntity;
+use App\Model;
 use Nette\Security;
 
 final class AdminIdentity implements Security\IIdentity
@@ -24,7 +24,7 @@ final class AdminIdentity implements Security\IIdentity
         public \DateTime $lastLogin,
     ) {}
 
-    public static function fromMember(array $roles, MemberEntity $member): self
+    public static function fromMember(array $roles, Model\MemberEntity $member): self
     {
         return new self(
             id: (int) $member->id,

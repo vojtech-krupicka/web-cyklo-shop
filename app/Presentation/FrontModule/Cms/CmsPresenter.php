@@ -3,8 +3,7 @@
 namespace App\Presentation\FrontModule\Cms;
 
 use App\Presentation\FrontModule;
-use Model\MenuItemEntity;
-use Model\PageEntity;
+use App\Model;
 use Nette\Application\Attributes\Persistent;
 
 final class CmsPresenter extends FrontModule\BasePresenter
@@ -12,12 +11,12 @@ final class CmsPresenter extends FrontModule\BasePresenter
     #[Persistent]
     public ?string $uri = null;
 
-    private ?MenuItemEntity $menuItem = null;
-    private ?PageEntity $page = null;
+    private ?Model\MenuItemEntity $menuItem = null;
+    private ?Model\PageEntity $page = null;
 
     public function __construct(
-        private \Model\PagesFacade $pagesFacade,
-        private \Model\MenuItemsFacade $menuItemsFacade,
+        private Model\PagesFacade $pagesFacade,
+        private Model\MenuItemsFacade $menuItemsFacade,
     ) {}
 
     public function renderDefault(): void

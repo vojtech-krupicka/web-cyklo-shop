@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Model;
+namespace App\Model;
 
 final class Location
 {
@@ -21,9 +21,9 @@ final class ShopInfoItems
         public readonly string $city,
         public readonly string $phone,
         public readonly string $mobile,
-		public readonly string $email,
-		public readonly string $ico,
-		array $location,
+        public readonly string $email,
+        public readonly string $ico,
+        array $location,
     ) {
         $this->location = new Location(...$location);
     }
@@ -42,11 +42,11 @@ final class ShopInfo
     public readonly ShopInfoItems $info;
     public readonly array $openingHours;
 
-	public function __construct(
-		array $info,
-		array $openingHours
-	) {
-		$this->info = new ShopInfoItems(...$info);
-		$this->openingHours = array_map(fn($item) => new OpeningHoursItems(...$item), $openingHours);
-	}
+    public function __construct(
+        array $info,
+        array $openingHours
+    ) {
+        $this->info = new ShopInfoItems(...$info);
+        $this->openingHours = array_map(fn($item) => new OpeningHoursItems(...$item), $openingHours);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Presentation;
 
 use App\Components\BreadcrumbMenu;
+use App\Model;
 use Nette\DI\Attributes\Inject;
 use Nette;
 
@@ -13,7 +14,7 @@ use Nette;
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
     #[Inject]
-    public \Model\ShopInfo $shopInfo;
+    public Model\ShopInfo $shopInfo;
 
     #[Inject]
     public BreadcrumbMenu\BreadcrumbMenuControlFactory $breadcrumbMenuControlFactory;
