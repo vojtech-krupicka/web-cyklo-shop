@@ -6,6 +6,7 @@ ARG USER_GID=1000
 # System packages: MySQL client (used by bin/db-* scripts), git/unzip for Composer
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        openssh-client sudo nano \
         default-mysql-client git unzip gzip libicu-dev \
         libfreetype-dev libjpeg62-turbo-dev libpng-dev libwebp-dev \
     && rm -rf /var/lib/apt/lists/*
