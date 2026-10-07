@@ -7,13 +7,6 @@ use Nette\Application\UI;
 use Nette\Forms\Rendering\DefaultFormRenderer;
 use Nette\Security;
 
-class SignInFormData
-{
-    public string $username;
-    public string $password;
-    public bool $remember;
-}
-
 final class SignInPresenter extends AdminModule\BasePresenter
 {
     public function actionDefault(): void

@@ -2,34 +2,11 @@
 
 namespace App\Presentation\AdminModule\Gallery;
 
-use App\Model\GalleryMediaEntity;
 use App\Presentation\AdminModule;
 use App\Model;
 use Nette\Application\UI\Form;
 use Nette\Forms\Rendering\DefaultFormRenderer;
-use Nette\Http\FileUpload;
 use Nette\Utils\FileSystem;
-
-class GalleryAddEditFormData
-{
-    public string $name;
-    public string $description;
-    public int $allowComments;
-}
-
-class GalleryMediaAddFormData
-{
-    public string $title;
-    public string $description;
-    public FileUpload $media;
-}
-
-class GalleryMediaEditFormData
-{
-    public string $id;
-    public string $title;
-    public string $description;
-}
 
 final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 {

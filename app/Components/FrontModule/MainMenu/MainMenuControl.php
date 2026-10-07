@@ -5,19 +5,6 @@ namespace App\Components\FrontModule\MainMenu;
 use App\Model;
 use Nette\Application\UI\Control;
 
-final class MainMenuItem
-{
-    public bool $isActive = false;
-
-    public function __construct(
-        public readonly string $presenter,
-        public readonly string $title,
-        string $presenterName,
-    ) {
-        $this->isActive = $presenterName === 'FrontModule:' . $presenter;
-    }
-}
-
 final class MainMenuControl extends Control
 {
     public function __construct(

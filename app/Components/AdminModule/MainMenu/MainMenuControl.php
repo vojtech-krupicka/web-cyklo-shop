@@ -4,19 +4,6 @@ namespace App\Components\AdminModule\MainMenu;
 
 use Nette\Application\UI\Control;
 
-final class MainMenuItem
-{
-    public bool $isActive = false;
-
-    public function __construct(
-        public readonly string $presenter,
-        public readonly string $title,
-        string $presenterName,
-    ) {
-        $this->isActive = $presenterName === 'AdminModule:' . $presenter;
-    }
-}
-
 final class MainMenuControl extends Control
 {
     public function render(): void

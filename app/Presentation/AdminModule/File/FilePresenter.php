@@ -6,28 +6,7 @@ use App\Presentation\AdminModule;
 use App\Model;
 use Nette\Application\UI\Form;
 use Nette\Forms\Rendering\DefaultFormRenderer;
-use Nette\Http\FileUpload;
 use Nette\Utils\FileSystem;
-
-class FileAddFormData
-{
-    public string $name;
-    public bool $overwrite;
-    public FileUpload $file;
-}
-
-class FileListItem
-{
-    public function __construct(
-        public string $fileName,
-        public string $extension,
-        public string $name,
-        public string $fullPath,
-        public string $webPath,
-        public int $fileSize,
-        public \DateTime $modified
-    ) {}
-}
 
 final class FilePresenter extends AdminModule\BaseSecuredPresenter
 {
@@ -158,7 +137,7 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
         $files = [];
 
         foreach (\Nette\Utils\Finder::findFiles('*')->in($dirName) as $fn => $file) {
-            $files[] = new FileListItem(
+            $files[] = new Model\File\FileListItem(
                 fileName: $file->getFilename(),
                 extension: $file->getExtension(),
                 name: $file->getFilename(),

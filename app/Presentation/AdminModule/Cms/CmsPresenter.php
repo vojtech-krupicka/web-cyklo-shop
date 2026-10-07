@@ -8,34 +8,6 @@ use Nette\Application\UI\Form;
 use Nette\Forms\Rendering\DefaultFormRenderer;
 use Nette\Utils\DateTime;
 
-class MenuItemAddFormData
-{
-    public string $name;
-    public string $title;
-    public string $fullUrl;
-    public string $url;
-    public bool $extern;
-}
-
-class MenuItemEditFormData
-{
-    public string $name;
-    public string $title;
-    public string $fullUrl;
-    public string $url;
-    public ?int $parentId;
-}
-
-class PageEditFormData
-{
-    public string $heading;
-    public string $seoTitle;
-    public string $seoKeywords;
-    public string $seoDescription;
-    public string $content;
-    public int $allowComments;
-}
-
 final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 {
     public ?int $id = null;
