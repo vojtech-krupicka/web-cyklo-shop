@@ -18,7 +18,7 @@ final class PageFacade extends BaseFacade
         return $row ? PageEntity::fromActiveRow($row) : null;
     }
 
-    public function createHomepage(): PageEntity
+    public function createHomepage(): ?PageEntity
     {
         $data = [
             'heading' => 'Homepage',

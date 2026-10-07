@@ -43,7 +43,7 @@ final class MemberFacade extends BaseFacade
             'email' => $member->email,
             'role' => $member->role,
             'active' => $member->active,
-            'last_logon' => $member->lastLogin->format('Y-m-d H:i:s'),
+            'last_logon' => $member->lastLogin ? $member->lastLogin->format('Y-m-d H:i:s') : null,
         ]);
     }
 }

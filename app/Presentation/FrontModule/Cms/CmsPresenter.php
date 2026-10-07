@@ -11,8 +11,8 @@ final class CmsPresenter extends FrontModule\BasePresenter
     #[Persistent]
     public ?string $uri = null;
 
-    private ?Model\MenuItem\MenuItemEntity $menuItem = null;
-    private ?Model\Page\PageEntity $page = null;
+    private Model\MenuItem\MenuItemEntity $menuItem;
+    private Model\Page\PageEntity $page;
 
     public function __construct(
         private Model\Page\PageFacade $pagesFacade,
@@ -21,17 +21,28 @@ final class CmsPresenter extends FrontModule\BasePresenter
 
     public function renderDefault(): void
     {
+        if (!$this->uri) {
+            throw new \Nette\Application\BadRequestException('Nebyla zadána platná URL!');
+        }
+
         // Get current menu item
-        $this->menuItem = $this->menuItemsFacade->getMenuItemByUri($this->uri);
-        if (!$this->menuItem) {
+        $menuItem = $this->menuItemsFacade->getMenuItemByUri($this->uri);
+        if (!$menuItem) {
             throw new \Nette\Application\BadRequestException("Stránka s URL '" . $this->uri . "' neexistuje!");
         }
 
         // Get page
-        $this->page = $this->pagesFacade->getPageById($this->menuItem->pageId);
-        if (!$this->page) {
+        if (!$menuItem->pageId) {
             throw new \Nette\Application\BadRequestException("Stránka s URL '" . $this->uri . "' neexistuje!");
         }
+
+        $page = $this->pagesFacade->getPageById($menuItem->pageId);
+        if (!$page) {
+            throw new \Nette\Application\BadRequestException("Stránka s URL '" . $this->uri . "' neexistuje!");
+        }
+
+        $this->page = $page;
+        $this->menuItem = $menuItem;
 
         // Get all parent menu items for breadcrumb
         $parentItems = [];

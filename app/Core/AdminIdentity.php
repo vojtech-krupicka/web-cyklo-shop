@@ -19,7 +19,7 @@ final class AdminIdentity implements Security\IIdentity
         public readonly string $email,
         public readonly string $role,
         public readonly bool $active,
-        public \DateTime $lastLogin,
+        public ?\DateTime $lastLogin,
     ) {}
 
     /**

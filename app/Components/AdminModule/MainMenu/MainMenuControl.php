@@ -17,7 +17,7 @@ final class MainMenuControl extends Control
      */
     private function createMenuItems(): array
     {
-        $presenterName = $this->getPresenter()->getName();
+        $presenterName = $this->getPresenter()->getName() ?? '';
         return [
             new MainMenuItem('Default', 'Úvod', $presenterName),
             new MainMenuItem('Cms', 'Vlastní stránky', $presenterName),

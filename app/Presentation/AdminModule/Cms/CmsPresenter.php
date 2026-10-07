@@ -11,9 +11,10 @@ use Nette\Utils\DateTime;
 final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 {
     public ?int $id = null;
-    public ?Model\MenuItem\MenuItemEntity $parentItem = null;
-    public ?Model\MenuItem\MenuItemEntity $menuItem = null;
-    public ?Model\Page\PageEntity $page = null;
+    private ?Model\MenuItem\MenuItemEntity $parentItem = null;
+    private Model\MenuItem\MenuItemEntity $menuItem;
+    private Model\Page\PageEntity $page;
+    private ?Model\MenuItem\MenuItemEntity $pageMenuItem = null;
 
     public function __construct(
         private Model\Page\PageFacade $pagesFacade,
@@ -273,13 +274,14 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     public function actionItemEdit(int $id): void
     {
         $this->id = $id;
-        $this->menuItem = $this->menuItemsFacade->getMenuItemById($this->id, false);
-        $this->parentItem = $this->menuItemsFacade->getMenuItemById($this->menuItem->parentId, false);
-
-        if (!$this->menuItem) {
+        $menuItem = $this->menuItemsFacade->getMenuItemById($this->id, false);
+        if (!$menuItem) {
             $this->flashMessage('Nebylo zadáno platné ID položky menu. Nelze editovat', 'error');
             $this->redirect('Cms:');
         }
+
+        $this->menuItem = $menuItem;
+        $this->parentItem = $this->menuItemsFacade->getMenuItemById($this->menuItem->parentId, false);
     }
 
     public function renderItemEdit(): void
@@ -359,6 +361,9 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     {
         $parentUrl = '';
         $menuItem = $this->menuItemsFacade->getMenuItemById($this->id, false);
+        if (!$menuItem) {
+            throw new \Nette\Application\BadRequestException('Položka menu neexistuje!');
+        }
 
         // Set new parent
         if ($menuItem->parentId != $values->parentId) {
@@ -422,13 +427,16 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     public function actionPageEdit(int $id): void
     {
         $this->id = $id;
-        $this->page = $this->pagesFacade->getPageById($id);
-        $this->menuItem = $this->menuItemsFacade->getMenuItemByPageId($id, false);
+        $page = $this->pagesFacade->getPageById($id);
+        $pageMenuItem = $this->menuItemsFacade->getMenuItemByPageId($id, false);
 
-        if (!$this->page || (!$this->page->isHomepage && !$this->menuItem)) {
+        if (!$page || (!$page->isHomepage && !$pageMenuItem)) {
             $this->flashMessage('Nebylo zadáno platné ID stránky obsahu. Nelze editovat', 'error');
             $this->redirect('Cms:');
         }
+
+        $this->page = $page;
+        $this->pageMenuItem = $pageMenuItem;
 
         if ($this->isAjax()) {
             $this->redrawControl('comments');
@@ -438,7 +446,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     public function renderPageEdit(): void
     {
         $this->template->page = $this->page;
-        $this->template->menuItem = $this->menuItem;
+        $this->template->menuItem = $this->pageMenuItem;
 
         $this->template->pageHeading = 'Úprava obsahu stránky';
         $this->addBreadcrumbItem('Cms', 'Úprava stránky', action: 'pageEdit', argName: 'id', argValue: $this->id);
@@ -502,12 +510,8 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 
         // Return new form instance
         return $form;
-    }  // createComponentPageEdit()
+    }
 
-    /**
-     * Callback method for adding new menu item
-     * @param \Nette\Application\UI\Form $form
-     */
     public function pageEditSubmitted(Form $form, PageEditFormData $values): void
     {
         $this->page->modified = new \DateTime();
@@ -543,13 +547,13 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     /**
      * @return array<int|string, string>
      */
-    private function generateMenuItemsInSelectbox(int $itemId, ?int $parentId = null, int $level = 0): array
+    private function generateMenuItemsInSelectbox(?int $itemId, ?int $parentId = null, int $level = 0): array
     {
         $items = [];
         $result = $this->menuItemsFacade->getMenuItems($parentId, false);
 
         foreach ($result as $item) {
-            if ($item->id == $itemId) {
+            if ($item->id === $itemId) {
                 continue;
             }
             $items[$item->id] = str_repeat('-', 4 * $level) . ' ' . $item->name;

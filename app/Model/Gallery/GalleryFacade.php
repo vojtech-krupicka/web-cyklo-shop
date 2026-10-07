@@ -84,13 +84,19 @@ final class GalleryFacade extends BaseFacade
             $row = $this->dbconn->table('galleries')->insert($data);
             $gallery->id = (int) $row['id'];
         } else {
-            $this->dbconn->table('galleries')->get($gallery->id)->update($data);
+            $row = $this->dbconn->table('galleries')->get($gallery->id);
+            if ($row) {
+                $row->update($data);
+            }
         }
     }
 
     public function delete(GalleryEntity $gallery): void
     {
-        $this->dbconn->table('galleries')->get($gallery->id)->delete();
+        $row = $this->dbconn->table('galleries')->get($gallery->id);
+        if ($row) {
+            $row->delete();
+        }
     }
 
     public function persistMedia(GalleryMediaEntity $media): void
@@ -109,12 +115,18 @@ final class GalleryFacade extends BaseFacade
             $row = $this->dbconn->table('gallery_items')->insert($data);
             $media->id = (int) $row['id'];
         } else {
-            $this->dbconn->table('gallery_items')->get($media->id)->update($data);
+            $row = $this->dbconn->table('gallery_items')->get($media->id);
+            if ($row) {
+                $row->update($data);
+            }
         }
     }
 
     public function deleteMedia(GalleryMediaEntity $media): void
     {
-        $this->dbconn->table('gallery_items')->get($media->id)->delete();
+        $row = $this->dbconn->table('gallery_items')->get($media->id);
+        if ($row) {
+            $row->delete();
+        }
     }
 }

@@ -29,7 +29,7 @@ final class MainMenuControl extends Control
      */
     private function createMenuItems(): array
     {
-        $presenterName = $this->getPresenter()->getName();
+        $presenterName = $this->getPresenter()->getName() ?? '';
         return [
             new MainMenuItem('Homepage', 'Úvod', $presenterName),
             new MainMenuItem('Gallery', 'Galerie', $presenterName),

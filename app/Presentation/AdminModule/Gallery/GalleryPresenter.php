@@ -17,7 +17,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     public ?int $id = null;
 
-    private ?Model\Gallery\GalleryEntity $gallery = null;
+    private Model\Gallery\GalleryEntity $gallery;
 
     /**
      * @var list<Model\Gallery\GalleryMediaEntity>
@@ -153,12 +153,13 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     public function actionEdit(int $id): void
     {
-        $this->gallery = $this->galleryFacade->getGallery($id, false);
-        if (!$this->gallery) {
+        $gallery = $this->galleryFacade->getGallery($id, false);
+        if (!$gallery) {
             $this->flashMessage('Nebylo zadáno platné ID galerie. Nelze editovat', 'error');
             $this->redirect('Gallery:default');
         }
 
+        $this->gallery = $gallery;
         $this->galleryItems = $this->galleryFacade->getGalleryItems($this->gallery->id, false);
     }
 
@@ -341,6 +342,10 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
             // New instance of nette form
             $form = new Form;
             $item = $this->galleryFacade->getMedia((int) $id, false);
+            if (!$item) {
+                $this->flashMessage("Obrázek s id '#" . $id . "' neexistuje!", 'error');
+                $this->redirect('Gallery:edit', ['id' => $this->gallery->id]);
+            }
 
             // Add item name (text in menu)
             $form
