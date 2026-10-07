@@ -30,7 +30,7 @@ class Bootstrap
 
 	public function initializeEnvironment(): void
 	{
-		$this->configurator->setDebugMode(true); // enable for your remote IP
+		$this->configurator->setDebugMode(getenv('NETTE_DEBUG') === '1');
 		$this->configurator->enableTracy($this->rootDir . '/log');
 
 		$this->configurator->createRobotLoader()
