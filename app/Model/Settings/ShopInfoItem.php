@@ -6,6 +6,9 @@ final class ShopInfoItem
 {
     public readonly Location $location;
 
+    /**
+     * @param array{lon: float, lat: float} $location
+     */
     public function __construct(
         public readonly string $name,
         public readonly string $url,

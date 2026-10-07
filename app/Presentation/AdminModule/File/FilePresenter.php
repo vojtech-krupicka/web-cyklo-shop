@@ -20,7 +20,7 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Default
 
-    public function renderDefault()
+    public function renderDefault(): void
     {
         $this->template->pageHeading = 'Správce souborů';
         $this->addBreadcrumbItem('File', 'Správce souborů');
@@ -126,11 +126,14 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Helpers
 
-    public function getDirName(string $folder)
+    public function getDirName(string $folder): string
     {
         return $this->fileSystem->joinPaths($this->appSettings->resourcesDir, $folder);
     }
 
+    /**
+     * @return list<Model\File\FileListItem>
+     */
     private function generateFilesList(string $folder): array
     {
         $dirName = $this->getDirName($folder);
@@ -151,7 +154,7 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
         return $files;
     }
 
-    public function generateTinyMCEFileList(bool $img = true)
+    public function generateTinyMCEFileList(bool $img = true): void
     {
         // You can't simply echo everything right away because we need to set some headers first!
         $listName = ($img) ? 'tinyMCEImageList' : 'tinyMCELinkList';

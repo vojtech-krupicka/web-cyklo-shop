@@ -2,17 +2,26 @@
 
 namespace App\Model;
 
+use Nette\Database\Table;
+
 abstract class BaseEntity
 {
-    public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
+    /**
+     * @return static
+     */
+    public static function fromActiveRow(Table\ActiveRow $row): self
     {
         throw new \LogicException('Method fromActiveRow() must be implemented in the child class.');
     }
 
-    public static function fromSelection(\Nette\Database\Table\Selection $selection): array
+    /**
+     * @param Table\Selection<Table\ActiveRow> $selection
+     * @return array<static>
+     */
+    public static function fromSelection(Table\Selection $selection): array
     {
         return array_map(
-            fn(\Nette\Database\Table\ActiveRow $row) => static::fromActiveRow($row),
+            fn(Table\ActiveRow $row) => static::fromActiveRow($row),
             $selection->fetchAll(),
         );
     }

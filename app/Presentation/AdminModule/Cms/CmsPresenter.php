@@ -27,6 +27,9 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         $this->addBreadcrumbItem('Cms', 'Vlastní stránky');
     }
 
+    /**
+     * @return list<Model\MenuItem\MenuItemEntity>
+     */
     public function getMenuItems(?int $parentId = null, string $order = 'ASC'): array
     {
         return $this->menuItemsFacade->getMenuItems($parentId, false, $order);
@@ -267,7 +270,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region EditMenuItem action
 
-    public function actionItemEdit(int $id)
+    public function actionItemEdit(int $id): void
     {
         $this->id = $id;
         $this->menuItem = $this->menuItemsFacade->getMenuItemById($this->id, false);
@@ -279,7 +282,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         }
     }
 
-    public function renderItemEdit()
+    public function renderItemEdit(): void
     {
         $this->template->menuItem = $this->menuItem;
 
@@ -416,7 +419,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region EditPage action
 
-    public function actionPageEdit(int $id)
+    public function actionPageEdit(int $id): void
     {
         $this->id = $id;
         $this->page = $this->pagesFacade->getPageById($id);
@@ -432,7 +435,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         }
     }
 
-    public function renderPageEdit()
+    public function renderPageEdit(): void
     {
         $this->template->page = $this->page;
         $this->template->menuItem = $this->menuItem;
@@ -527,7 +530,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Helpers
 
-    private function updateChildrenUrl(?int $parentId, string $parentUrl)
+    private function updateChildrenUrl(?int $parentId, string $parentUrl): void
     {
         $children = $this->menuItemsFacade->getMenuItems($parentId, false);
         foreach ($children as $child) {
@@ -535,10 +538,11 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
             $this->menuItemsFacade->persist($child);
             $this->updateChildrenUrl($child->id, $child->url);
         }
-
-        return;
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function generateMenuItemsInSelectbox(int $itemId, ?int $parentId = null, int $level = 0): array
     {
         $items = [];

@@ -4,17 +4,21 @@ namespace App\Presentation\Accessory;
 
 use Latte\Extension;
 
-
 final class LatteExtension extends Extension
 {
-	public function getFilters(): array
-	{
-		return [];
-	}
+    /**
+     * @return array<string, callable(string): string>
+     */
+    public function getFilters(): array
+    {
+        return [];
+    }
 
-
-	public function getFunctions(): array
-	{
-		return [];
-	}
+    /**
+     * @return array<string, callable(string): string>
+     */
+    public function getFunctions(): array
+    {
+        return [];
+    }
 }

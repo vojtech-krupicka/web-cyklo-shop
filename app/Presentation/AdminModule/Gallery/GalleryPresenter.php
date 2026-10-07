@@ -5,6 +5,7 @@ namespace App\Presentation\AdminModule\Gallery;
 use App\Presentation\AdminModule;
 use App\Model;
 use Nette\Application\UI\Form;
+use Nette\Application\UI\Multiplier;
 use Nette\Forms\Rendering\DefaultFormRenderer;
 use Nette\Utils\FileSystem;
 
@@ -17,6 +18,10 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
     public ?int $id = null;
 
     private ?Model\Gallery\GalleryEntity $gallery = null;
+
+    /**
+     * @var list<Model\Gallery\GalleryMediaEntity>
+     */
     private array $galleryItems = [];
 
     public function __construct(
@@ -34,7 +39,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Default
 
-    public function renderDefault()
+    public function renderDefault(): void
     {
         $this->template->pageHeading = 'Galerie';
 
@@ -81,7 +86,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Gallery add
 
-    public function renderAdd()
+    public function renderAdd(): void
     {
         $this->template->pageHeading = 'Nová galerie';
 
@@ -146,7 +151,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Gallery edit
 
-    public function actionEdit(int $id)
+    public function actionEdit(int $id): void
     {
         $this->gallery = $this->galleryFacade->getGallery($id, false);
         if (!$this->gallery) {
@@ -157,7 +162,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
         $this->galleryItems = $this->galleryFacade->getGalleryItems($this->gallery->id, false);
     }
 
-    public function renderEdit(int $id)
+    public function renderEdit(int $id): void
     {
         $this->template->pageHeading = 'Editace galerie';
         $this->addBreadcrumbItem('Gallery', 'Editace galerie', action: 'edit', argName: 'id', argValue: $this->gallery->id);
@@ -167,7 +172,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
         $this->template->wwwDir = $this->appSettings->wwwDir;
     }
 
-    protected function createComponentGalleryEdit()
+    protected function createComponentGalleryEdit(): Form
     {
         // New instance of nette form
         $form = new Form;
@@ -210,7 +215,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
         return $form;
     }
 
-    public function galleryEditSubmitted(Form $form, GalleryAddEditFormData $values)
+    public function galleryEditSubmitted(Form $form, GalleryAddEditFormData $values): void
     {
         $this->gallery->name = $values->name;
         $this->gallery->description = $values->description;
@@ -326,10 +331,13 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Gallery media edit
 
-    protected function createComponentGalleryMediaEdit(): \Nette\Application\UI\Multiplier
+    /**
+     * @return Multiplier<Form>
+     */
+    protected function createComponentGalleryMediaEdit(): Multiplier
     {
         // Create multiplier
-        $control = new \Nette\Application\UI\Multiplier(function ($id) {
+        $control = new Multiplier(function ($id) {
             // New instance of nette form
             $form = new Form;
             $item = $this->galleryFacade->getMedia((int) $id, false);
@@ -338,13 +346,13 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
             $form
                 ->addText('title', '')
                 ->setRequired('Vyplňte prosím název položky!')
-                ->addRule(\Nette\Application\UI\Form::MaxLength, 'Název položky je příliš dlouhý, max. délka je %d znaků!', 64)
+                ->addRule(Form::MaxLength, 'Název položky je příliš dlouhý, max. délka je %d znaků!', 64)
                 ->setDefaultValue($item->title);
 
             // Add item title (text in title attribute)
             $form
                 ->addTextArea('description', '', 80, 1)
-                ->addRule(\Nette\Application\UI\Form::MaxLength, 'Popisek položky je příliš dlouhý, max. délka je %d znaků!', 256)
+                ->addRule(Form::MaxLength, 'Popisek položky je příliš dlouhý, max. délka je %d znaků!', 256)
                 ->setDefaultValue($item->description);
 
             // File
@@ -363,7 +371,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
         return $control;
     }
 
-    public function galleryMediaEditSubmitted(Form $form, GalleryMediaEditFormData $values)
+    public function galleryMediaEditSubmitted(Form $form, GalleryMediaEditFormData $values): void
     {
         $media = $this->galleryFacade->getMedia((int) $values->id, false);
         if ($media) {
@@ -481,7 +489,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Helpers
 
-    public function getDirName()
+    public function getDirName(): string
     {
         return $this->fileSystem->joinPaths($this->appSettings->resourcesDir, self::DEFAULT_DIR);
     }

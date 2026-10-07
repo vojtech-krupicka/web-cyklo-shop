@@ -6,6 +6,9 @@ use Nette\Application\UI\Control;
 
 final class BreadcrumbMenuControl extends Control
 {
+    /**
+     * @param list<array{name: string, label: string}>|null $items
+     */
     public function render(?array $items = null): void
     {
         $this->template->menuItems = $items;

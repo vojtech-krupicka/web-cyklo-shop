@@ -7,6 +7,9 @@ use Nette\Security;
 
 final class AdminIdentity implements Security\IIdentity
 {
+    /**
+     * @param list<string> $roles
+     */
     public function __construct(
         public readonly int $id,
         public array $roles,
@@ -19,6 +22,9 @@ final class AdminIdentity implements Security\IIdentity
         public \DateTime $lastLogin,
     ) {}
 
+    /**
+     * @param list<string> $roles
+     */
     public static function fromMember(array $roles, Model\Member\MemberEntity $member): self
     {
         return new self(

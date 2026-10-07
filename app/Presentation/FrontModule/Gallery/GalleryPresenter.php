@@ -11,7 +11,7 @@ final class GalleryPresenter extends FrontModule\BasePresenter
         private Model\Gallery\GalleryFacade $galleryFacade
     ) {}
 
-    public function renderDefault()
+    public function renderDefault(): void
     {
         $this->template->pageHeading = 'Galerie';
         $this->addBreadcrumbItem('Gallery', 'Galerie');
@@ -19,7 +19,7 @@ final class GalleryPresenter extends FrontModule\BasePresenter
         $this->template->galleries = $this->galleryFacade->getGalleries(true, 'added ASC');
     }
 
-    public function renderDetail(int $id)
+    public function renderDetail(int $id): void
     {
         $gallery = $this->galleryFacade->getGallery($id);
         if ($gallery) {

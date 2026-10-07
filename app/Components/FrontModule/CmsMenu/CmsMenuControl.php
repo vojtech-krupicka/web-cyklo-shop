@@ -29,6 +29,9 @@ final class CmsMenuControl extends Control
         $this->template->render($file);
     }
 
+    /**
+     * @return list<Model\MenuItem\MenuItemEntity>
+     */
     public function getMenuItems(?int $parentId = null, bool $activeOnly = true, string $order = 'ASC'): array
     {
         return $this->menuItemsFacade->getMenuItems($parentId, $activeOnly, $order);

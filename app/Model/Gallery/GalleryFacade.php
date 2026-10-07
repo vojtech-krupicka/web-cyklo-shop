@@ -20,6 +20,9 @@ final class GalleryFacade extends BaseFacade
         return $row ? GalleryEntity::fromActiveRow($row) : null;
     }
 
+    /**
+     * @return list<GalleryEntity>
+     */
     public function getGalleries(bool $activeOnly = true, string $order = 'added'): array
     {
         $query = $this->dbconn->table('galleries');
@@ -45,6 +48,9 @@ final class GalleryFacade extends BaseFacade
         return $row ? GalleryMediaEntity::fromActiveRow($row) : null;
     }
 
+    /**
+     * @return list<GalleryMediaEntity>
+     */
     public function getGalleryItems(
         ?int $galleryId = null,
         bool $activeOnly = true,

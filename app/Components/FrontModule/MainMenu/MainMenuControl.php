@@ -24,6 +24,9 @@ final class MainMenuControl extends Control
         $this->template->render(__DIR__ . '/menu-with-galleries.latte');
     }
 
+    /**
+     * @return list<MainMenuItem>
+     */
     private function createMenuItems(): array
     {
         $presenterName = $this->getPresenter()->getName();

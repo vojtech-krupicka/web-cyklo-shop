@@ -47,6 +47,9 @@ final class MenuItemFacade extends BaseFacade
         return $row ? MenuItemEntity::fromActiveRow($row) : null;
     }
 
+    /**
+     * @return list<MenuItemEntity>
+     */
     public function getMenuItems(?int $parentId = null, bool $activeOnly = true, string $order = 'ASC'): array
     {
         $query = $this->dbconn->table('menu_items');
