@@ -14,7 +14,7 @@ use Nette;
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
     #[Inject]
-    public Model\ShopInfo $shopInfo;
+    public Model\Settings\ShopInfo $shopInfo;
 
     #[Inject]
     public BreadcrumbMenu\BreadcrumbMenuControlFactory $breadcrumbMenuControlFactory;

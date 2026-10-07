@@ -11,7 +11,7 @@ use App;
 abstract class BasePresenter extends App\Presentation\BasePresenter
 {
     #[Inject]
-    public Model\SeoSettings $seoSettings;
+    public Model\Settings\SeoSettings $seoSettings;
 
     #[Inject]
     public CmsMenu\CmsMenuControlFactory $cmsMenuControlFactory;
