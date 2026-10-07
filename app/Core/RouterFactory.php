@@ -16,7 +16,7 @@ final class RouterFactory
 
         $adminRouter = new RouteList('AdminModule');
         $adminRouter->addRoute('admin/index.php', 'Default:default', Route::ONE_WAY);
-        $adminRouter->addRoute('admin/<presenter>/<action>[/<id \d+(?:-[a-z-]+)?>]', array(
+        $adminRouter->addRoute('admin/<presenter>[/<action>[/<id \d+(?:-[a-z-]+)?>]]', array(
             'presenter' => array(
                 Route::Value => 'Default',
                 Route::FilterTable => array(
@@ -26,7 +26,7 @@ final class RouterFactory
                     'galerie' => 'Gallery',
                     'diskuze' => 'Guestbook',
                     'spravce-souboru' => 'File',
-                    'prihlaseni' => 'Sign'
+                    'prihlaseni' => 'SignIn'
                 ),
             ),
             'action' => array(
@@ -41,18 +41,13 @@ final class RouterFactory
                     'komentare' => 'comments'
                 ),
             ),
-            'signal' => array(
-                Route::FilterTable => array(
-                    'odhlasit' => 'logout',
-                ),
-            ),
             'id' => null,
         ));
 
         $frontRouter = new RouteList('FrontModule');
         $frontRouter->addRoute('index.php', 'Homepage:default', Route::ONE_WAY);
         $frontRouter->addRoute('<uri [a-z0-9_/-]+>.html', 'Cms:default');
-        $frontRouter->addRoute('<presenter>/<action>[/<id>]', array(
+        $frontRouter->addRoute('<presenter>[/<action>[/<id>]]', array(
             'presenter' => array(
                 Route::Value => 'Homepage',
                 Route::FilterTable => array(
