@@ -13,7 +13,7 @@ INSERT INTO
 VALUES (
         1,
         'test-admin',
-        'fba19bd88890b69c49c5fb597fd7d7b30b9394b70e387421b2d6f8cb67fe927e114c116493a35c247adafda828ec3ab57f4bc9d31fc0597f1c2519ff5c8bf0f7',
+        '$2y$12$mMYtfW8z83L/Rf8TVOt7SuJ0.Wv1JgC4z1SP0OY853H.udJ3s4KDO',
         'Test',
         'Admin',
         'test-admin@example.com',
@@ -24,7 +24,7 @@ VALUES (
     (
         2,
         'test-editor',
-        '1cf9bb30b548af20668b15fe575d095698bdd8c43b2b0856646c04cc3dc4be326b3c6907d671ce21dc6d6cc31489c99aab832a91569adf97a27d194c2a8b23de',
+        '$2y$12$zAsRDNOLSVM4cYgKJE641ubtFvW6r8.6vU/nO6fRKj7FCvwdGYtfq',
         'Test',
         'Editor',
         'test-editor@example.com',
