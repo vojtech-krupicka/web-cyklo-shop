@@ -13,7 +13,7 @@ final class MemberEntity extends BaseEntity
         public readonly string $email,
         public readonly string $role,
         public readonly bool $active,
-        public \DateTime $lastLogin,
+        public ?\DateTime $lastLogin,
     ) {}
 
     public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
