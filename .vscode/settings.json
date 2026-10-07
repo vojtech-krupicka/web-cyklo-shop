@@ -3,6 +3,7 @@
   "php.validate.executablePath": "/usr/local/bin/php",
   "intelephense.environment.phpVersion": "8.4.0",
   "editor.formatOnSave": true,
+  "editor.detectIndentation": false,
   "files.associations": {
     "*.php": "php"
   },
@@ -14,14 +15,13 @@
     "var/mail": true,
     "db/dumps": true
   },
-  "[php][neon]": {
-    "editor.tabSize": 4,
-    "editor.insertSpaces": false
-  },
   "[sql]": {
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.formatOnSave": false
   },
   "[php]": {
-    "editor.defaultFormatter": "lkrms.pretty-php"
+    "editor.defaultFormatter": "lkrms.pretty-php",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4
   }
 }
