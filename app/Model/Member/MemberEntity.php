@@ -21,15 +21,15 @@ final class MemberEntity extends BaseEntity
     public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
     {
         return new self(
-            id: (int) $row->id,
-            password: (string) $row->password,
-            username: (string) $row->nickname,
-            firstname: (string) $row->firstname,
-            surname: (string) $row->surname,
-            email: (string) $row->email,
-            role: (string) $row->role,
-            active: (bool) $row->active,
-            lastLogin: $row->last_logon,
+            id: (int) $row['id'],
+            password: (string) $row['password'],
+            username: (string) $row['nickname'],
+            firstname: (string) $row['firstname'],
+            surname: (string) $row['surname'],
+            email: (string) $row['email'],
+            role: (string) $row['role'],
+            active: (bool) $row['active'],
+            lastLogin: $row['last_logon'],
         );
     }
 }

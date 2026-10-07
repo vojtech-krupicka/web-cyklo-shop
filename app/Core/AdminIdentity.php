@@ -7,14 +7,9 @@ use Nette\Security;
 
 final class AdminIdentity implements Security\IIdentity
 {
-    /**
-     * @var list<string>
-     */
-    private array $roles;
-
     public function __construct(
         public readonly int $id,
-        array $roles,
+        public array $roles,
         public readonly string $username,
         public readonly string $firstname,
         public readonly string $surname,

@@ -23,17 +23,17 @@ final class MenuItemEntity extends BaseEntity
     public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
     {
         return new self(
-            id: (int) $row->id,
-            parentId: $row->parent_id !== null ? (int) $row->parent_id : null,
-            pageId: $row->page_id !== null ? (int) $row->page_id : null,
-            name: (string) $row->name,
-            title: (string) $row->title,
-            urlQuery: (string) $row->url_query,
-            urlFragment: (string) $row->url_fragment,
-            urlRewriteName: (string) $row->url_rewrite_name,
-            url: (string) $row->url,
-            active: (bool) $row->active,
-            sortOrder: (int) $row->sort_order,
+            id: (int) $row['id'],
+            parentId: $row['parent_id'] !== null ? (int) $row['parent_id'] : null,
+            pageId: $row['page_id'] !== null ? (int) $row['page_id'] : null,
+            name: (string) $row['name'],
+            title: (string) $row['title'],
+            urlQuery: (string) $row['url_query'],
+            urlFragment: (string) $row['url_fragment'],
+            urlRewriteName: (string) $row['url_rewrite_name'],
+            url: (string) $row['url'],
+            active: (bool) $row['active'],
+            sortOrder: (int) $row['sort_order'],
         );
     }
 }

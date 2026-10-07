@@ -5,6 +5,7 @@ namespace App\Presentation\AdminModule\File;
 use App\Presentation\AdminModule;
 use App\Model;
 use Nette\Application\UI\Form;
+use Nette\Forms\Rendering\DefaultFormRenderer;
 use Nette\Http\FileUpload;
 use Nette\Utils\FileSystem;
 
@@ -70,8 +71,9 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
     {
         // New instance of nette form
         $form = new Form;
-        $renderer = $form->getRenderer();
+        $renderer = new DefaultFormRenderer;
         $renderer->wrappers['controls']['container'] = 'table class="form"';
+        $form->setRenderer($renderer);
         $form->addGroup();
 
         // Add item name (text in menu)

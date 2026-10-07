@@ -4,6 +4,7 @@ namespace App\Presentation\AdminModule\SignIn;
 
 use App\Presentation\AdminModule;
 use Nette\Application\UI;
+use Nette\Forms\Rendering\DefaultFormRenderer;
 use Nette\Security;
 
 class SignInFormData
@@ -20,7 +21,6 @@ final class SignInPresenter extends AdminModule\BasePresenter
         // Check if user is already logged, and if its true, redirect to default presenter.
         if ($this->user->isLoggedIn()) {
             $this->redirect(':AdminModule:Default:');
-            exit();
         }
     }
 
@@ -32,8 +32,9 @@ final class SignInPresenter extends AdminModule\BasePresenter
     protected function createComponentSignInForm(): UI\Form
     {
         $form = new UI\Form;
-        $renderer = $form->getRenderer();
+        $renderer = new DefaultFormRenderer;
         $renderer->wrappers['controls']['container'] = 'table class="form"';
+        $form->setRenderer($renderer);
 
         $form
             ->addText('username', '*Přihlašovací jméno:')
@@ -72,6 +73,5 @@ final class SignInPresenter extends AdminModule\BasePresenter
         $this->user->logout(true);
         $this->flashMessage('Byl jste úspěšně odhlášen.', 'info');
         $this->redirect('default');
-        exit();
     }
 }

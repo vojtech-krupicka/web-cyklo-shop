@@ -51,7 +51,7 @@ final class PageFacade extends BaseFacade
 
         if ($item->id === null) {
             $row = $this->dbconn->table('pages')->insert($data);
-            $item->id = (int) $row->id;
+            $item->id = (int) $row['id'];
         } else {
             $this->dbconn->table('pages')->where('id', $item->id)->update($data);
         }

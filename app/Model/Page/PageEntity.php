@@ -22,16 +22,16 @@ final class PageEntity extends BaseEntity
     public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
     {
         return new self(
-            id: (int) $row->id,
-            heading: (string) $row->heading,
-            seoTitle: (string) $row->seo_title,
-            seoKeywords: (string) $row->seo_keywords,
-            seoDescription: (string) $row->seo_description,
-            content: (string) $row->content,
-            isHomepage: (bool) $row->is_homepage,
-            allowComments: (bool) $row->allow_comments,
-            created: $row->created,
-            modified: $row->modified,
+            id: (int) $row['id'],
+            heading: (string) $row['heading'],
+            seoTitle: (string) $row['seo_title'],
+            seoKeywords: (string) $row['seo_keywords'],
+            seoDescription: (string) $row['seo_description'],
+            content: (string) $row['content'],
+            isHomepage: (bool) $row['is_homepage'],
+            allowComments: (bool) $row['allow_comments'],
+            created: $row['created'],
+            modified: $row['modified'],
         );
     }
 }

@@ -6,6 +6,7 @@ use App\Model\GalleryMediaEntity;
 use App\Presentation\AdminModule;
 use App\Model;
 use Nette\Application\UI\Form;
+use Nette\Forms\Rendering\DefaultFormRenderer;
 use Nette\Http\FileUpload;
 use Nette\Utils\FileSystem;
 
@@ -114,8 +115,9 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
     {
         // New instance of nette form
         $form = new Form;
-        $renderer = $form->getRenderer();
+        $renderer = new DefaultFormRenderer;
         $renderer->wrappers['controls']['container'] = 'table class="form"';
+        $form->setRenderer($renderer);
 
         $form->addGroup();
 
@@ -140,7 +142,6 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
         $form->addSubmit('save', 'Vytvořit');
         $form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
             $this->redirect('Gallery:default');
-            exit();
         };
 
         // Add callback
@@ -174,7 +175,6 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
         if (!$this->gallery) {
             $this->flashMessage('Nebylo zadáno platné ID galerie. Nelze editovat', 'error');
             $this->redirect('Gallery:default');
-            exit();
         }
 
         $this->galleryItems = $this->galleryFacade->getGalleryItems($this->gallery->id, false);
@@ -194,8 +194,9 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
     {
         // New instance of nette form
         $form = new Form;
-        $renderer = $form->getRenderer();
+        $renderer = new DefaultFormRenderer;
         $renderer->wrappers['controls']['container'] = 'table class="form"';
+        $form->setRenderer($renderer);
 
         $form->addGroup();
 
@@ -223,7 +224,6 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
         $form->addSubmit('save_and_back', 'Uložit a pokračovat');
         $form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
             $this->redirect('Gallery:default');
-            exit();
         };
 
         // Add callback
@@ -254,8 +254,9 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
     {
         // New instance of nette form
         $form = new Form;
-        $renderer = $form->getRenderer();
+        $renderer = new DefaultFormRenderer;
         $renderer->wrappers['controls']['container'] = 'table class="form"';
+        $form->setRenderer($renderer);
 
         $form->addGroup();
 
@@ -281,7 +282,6 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
         $form->addSubmit('save_and_back', 'Přidat a pokračovat');
         $form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
             $this->redirect('Gallery:default');
-            exit();
         };
 
         // Add callback

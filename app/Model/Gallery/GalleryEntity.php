@@ -18,12 +18,12 @@ final class GalleryEntity extends BaseEntity
     public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
     {
         return new self(
-            id: (int) $row->id,
-            name: (string) $row->name,
-            description: (string) $row->description,
-            active: (bool) $row->active,
-            allowComments: (bool) $row->allow_comments,
-            added: $row->added,
+            id: (int) $row['id'],
+            name: (string) $row['name'],
+            description: (string) $row['description'],
+            active: (bool) $row['active'],
+            allowComments: (bool) $row['allow_comments'],
+            added: $row['added'],
         );
     }
 }

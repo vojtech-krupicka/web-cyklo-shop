@@ -20,14 +20,14 @@ final class GalleryMediaEntity extends BaseEntity
     public static function fromActiveRow(\Nette\Database\Table\ActiveRow $row): self
     {
         return new self(
-            id: (int) $row->id,
-            galleryId: (int) $row->gallery_id,
-            filename: (string) $row->file_name,
-            title: (string) $row->title,
-            description: (string) $row->description,
-            active: (bool) $row->active,
-            sortOrder: (int) $row->sort_order,
-            added: $row->added,
+            id: (int) $row['id'],
+            galleryId: (int) $row['gallery_id'],
+            filename: (string) $row['file_name'],
+            title: (string) $row['title'],
+            description: (string) $row['description'],
+            active: (bool) $row['active'],
+            sortOrder: (int) $row['sort_order'],
+            added: $row['added'],
         );
     }
 }

@@ -83,7 +83,7 @@ final class MenuItemFacade extends BaseFacade
 
         if ($item->id === null) {
             $row = $this->dbconn->table('menu_items')->insert($data);
-            $item->id = (int) $row->id;
+            $item->id = (int) $row['id'];
         } else {
             $this->dbconn->table('menu_items')->where('id', $item->id)->update($data);
         }

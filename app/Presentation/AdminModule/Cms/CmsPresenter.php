@@ -5,6 +5,7 @@ namespace App\Presentation\AdminModule\Cms;
 use App\Presentation\AdminModule;
 use App\Model;
 use Nette\Application\UI\Form;
+use Nette\Forms\Rendering\DefaultFormRenderer;
 use Nette\Utils\DateTime;
 
 class MenuItemAddFormData
@@ -175,8 +176,9 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     protected function createComponentMenuItemAdd(): Form
     {
         $form = new Form();
-        $renderer = $form->getRenderer();
+        $renderer = new DefaultFormRenderer;
         $renderer->wrappers['controls']['container'] = 'table class="form"';
+        $form->setRenderer($renderer);
 
         $form->addGroup();
 
@@ -219,7 +221,6 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         $form->addSubmit('save', 'Vytvořit');
         $form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
             $this->redirect('Cms:default');
-            exit();
         };
 
         $form->onSuccess[] = $this->menuItemAddSubmitted(...);
@@ -303,7 +304,6 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         if (!$this->menuItem) {
             $this->flashMessage('Nebylo zadáno platné ID položky menu. Nelze editovat', 'error');
             $this->redirect('Cms:');
-            exit();
         }
     }
 
@@ -319,8 +319,9 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     {
         // New instance of nette form
         $form = new Form;
-        $renderer = $form->getRenderer();
+        $renderer = new DefaultFormRenderer;
         $renderer->wrappers['controls']['container'] = 'table class="form"';
+        $form->setRenderer($renderer);
 
         $form->addGroup();
 
@@ -370,7 +371,6 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         $form->addSubmit('save_and_back', 'Uložit a pokračovat');
         $form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
             $this->redirect('Cms:default');
-            exit();
         };
 
         // Add callback
@@ -437,11 +437,9 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         $this->flashMessage("Položka menu '" . $menuItem->id . ' - ' . $menuItem->name . "' byla úspěšně aktualizována.", 'info');
         if ($form->isSubmitted() === $form['save_and_back']) {
             $this->redirect('Cms:default');
-            exit();
         }
 
         $this->redirect('this');
-        exit();
     }
 
     // #region EditPage action
@@ -455,7 +453,6 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         if (!$this->page || (!$this->page->isHomepage && !$this->menuItem)) {
             $this->flashMessage('Nebylo zadáno platné ID stránky obsahu. Nelze editovat', 'error');
             $this->redirect('Cms:');
-            exit();
         }
 
         if ($this->isAjax()) {
@@ -476,8 +473,9 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     {
         // New instance of nette form
         $form = new Form;
-        $renderer = $form->getRenderer();
+        $renderer = new DefaultFormRenderer;
         $renderer->wrappers['controls']['container'] = 'table class="form"';
+        $form->setRenderer($renderer);
 
         $form->addGroup();
 
@@ -522,7 +520,6 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         $form->addSubmit('save_and_back', 'Uložit a pokračovat');
         $form->addSubmit('cancel', 'Zrušit')->onClick[] = function () {
             $this->redirect('Cms:default');
-            exit();
         };
 
         // Add callback
@@ -551,11 +548,9 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         $this->flashMessage("Stránka obsahu '" . $this->page->id . ' - ' . $values->heading . "' byla úspěšně aktualizována.", 'info');
         if ($form->isSubmitted() === $form['save_and_back']) {
             $this->redirect('Cms:default');
-            exit();
         }
 
         $this->redirect('this');
-        exit();
     }
 
     // #region Helpers

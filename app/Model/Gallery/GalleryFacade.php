@@ -76,7 +76,7 @@ final class GalleryFacade extends BaseFacade
 
         if ($gallery->id === null) {
             $row = $this->dbconn->table('galleries')->insert($data);
-            $gallery->id = (int) $row->id;
+            $gallery->id = (int) $row['id'];
         } else {
             $this->dbconn->table('galleries')->get($gallery->id)->update($data);
         }
@@ -101,7 +101,7 @@ final class GalleryFacade extends BaseFacade
 
         if ($media->id === null) {
             $row = $this->dbconn->table('gallery_items')->insert($data);
-            $media->id = (int) $row->id;
+            $media->id = (int) $row['id'];
         } else {
             $this->dbconn->table('gallery_items')->get($media->id)->update($data);
         }

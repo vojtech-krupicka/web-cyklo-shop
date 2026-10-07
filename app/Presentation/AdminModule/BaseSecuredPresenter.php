@@ -18,7 +18,6 @@ abstract class BaseSecuredPresenter extends BasePresenter
 
             // A pokud neni, presmeruje na stranku prihlaseni
             $this->redirect(':AdminModule:SignIn:');
-            die;
         }
     }
 
@@ -34,6 +33,5 @@ abstract class BaseSecuredPresenter extends BasePresenter
         $this->user->logout(true);
         $this->flashMessage('Byl jste úspěšně odhlášen.', 'info');
         $this->redirect(':AdminModule:SignIn:');
-        exit();
     }
 }
