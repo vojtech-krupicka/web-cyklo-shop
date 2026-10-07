@@ -1,5 +1,6 @@
 # Local DI configuration — holds database credentials, must never be committed
-/app/config/config.neon
+/config/local.dev.neon
+/config/local.prod.neon
 
 # Writable runtime directories (keep the dir, ignore the contents)
 /temp/*

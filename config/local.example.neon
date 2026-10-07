@@ -1,0 +1,10 @@
+parameters:
+	database:
+		driver: mysql
+		host: some-db-server
+		dbname: db-name
+		user: db-user
+		password: db-password
+
+	mapy:
+		apiKey: ''

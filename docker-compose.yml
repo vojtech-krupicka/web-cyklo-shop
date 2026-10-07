@@ -12,6 +12,7 @@ services:
       - .:/var/www/root
     env_file: .env
     environment:
+      APP_ENV: dev
       NETTE_DEBUG: 1
       APACHE_RUN_USER: dev
       APACHE_RUN_GROUP: dev

@@ -44,5 +44,12 @@ class Bootstrap
 		$configDir = $this->rootDir . '/config';
 		$this->configurator->addConfig($configDir . '/common.neon');
 		$this->configurator->addConfig($configDir . '/services.neon');
+
+        $env = getenv('APP_ENV') ?: 'prod';
+        $local = "$configDir/local.$env.neon";
+        if (!is_file($local)) {
+            throw new \RuntimeException("Missing config file '$local', copy 'config/local.example.neon' to it.");
+        }
+        $this->configurator->addConfig($local);
 	}
 }

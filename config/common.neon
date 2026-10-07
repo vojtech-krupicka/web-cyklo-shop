@@ -1,13 +1,6 @@
 # see https://doc.nette.org/en/configuring
 
 parameters:
-	database:
-		driver: mysql
-		host: db
-		dbname: app
-		user: app
-		password: app
-
 	seo:
 		title: "Prodej a servis jízdních kol"
 		keywords: "cyklo, shop, jízdní kola, prodej, servis"
@@ -36,9 +29,6 @@ parameters:
 
 	settings:
 		resourcesDir: '%wwwDir%/resources'
-
-	mapy:
-		apiKey: ''
 
 
 application:
