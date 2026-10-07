@@ -12,14 +12,11 @@ use Nette\Application\Attributes\Requires;
 #[Requires(methods: '*', forward: true)]
 final class Error4xxPresenter extends Nette\Application\UI\Presenter
 {
-	public function renderDefault(Nette\Application\BadRequestException $exception): void
+    public function actionDefault(\Throwable $exception, ?Nette\Application\Request $request = null): void
 	{
-		// renders the appropriate error template based on the HTTP status code
-		$code = $exception->getCode();
-		$file = is_file($file = __DIR__ . "/$code.latte")
-			? $file
-			: __DIR__ . '/4xx.latte';
-		$this->template->httpCode = $code;
-		$this->template->setFile($file);
+		$module = str_starts_with((string) $request?->getPresenterName(), 'AdminModule:')
+			? 'AdminModule'
+			: 'FrontModule';
+		$this->forward(":$module:Error4xx:default", ['exception' => $exception]);
 	}
 }
