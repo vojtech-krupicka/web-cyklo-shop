@@ -10,13 +10,13 @@ abstract class BaseEntity
 
     /**
      * @param Table\Selection<Table\ActiveRow> $selection
-     * @return array<static>
+     * @return list<static>
      */
     public static function fromSelection(Table\Selection $selection): array
     {
-        return array_map(
+        return array_values(array_map(
             fn(Table\ActiveRow $row) => static::fromActiveRow($row),
             $selection->fetchAll(),
-        );
+        ));
     }
 }

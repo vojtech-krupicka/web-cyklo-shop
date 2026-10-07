@@ -541,7 +541,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
     }
 
     /**
-     * @return array<int, string>
+     * @return array<int|string, string>
      */
     private function generateMenuItemsInSelectbox(int $itemId, ?int $parentId = null, int $level = 0): array
     {
