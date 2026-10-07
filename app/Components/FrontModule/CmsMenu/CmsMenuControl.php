@@ -8,7 +8,7 @@ use Nette\Application\UI\Control;
 final class CmsMenuControl extends Control
 {
     public function __construct(
-        private Model\MenuItemsFacade $menuItemsFacade,
+        private Model\MenuItem\MenuItemFacade $menuItemsFacade,
     ) {}
 
     public function renderSidebar(?int $activeItemId = null, ?string $heading = null): void

@@ -38,13 +38,13 @@ class PageEditFormData
 final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 {
     public ?int $id = null;
-    public ?Model\MenuItemEntity $parentItem = null;
-    public ?Model\MenuItemEntity $menuItem = null;
-    public ?Model\PageEntity $page = null;
+    public ?Model\MenuItem\MenuItemEntity $parentItem = null;
+    public ?Model\MenuItem\MenuItemEntity $menuItem = null;
+    public ?Model\Page\PageEntity $page = null;
 
     public function __construct(
-        private Model\PagesFacade $pagesFacade,
-        private Model\MenuItemsFacade $menuItemsFacade,
+        private Model\Page\PageFacade $pagesFacade,
+        private Model\MenuItem\MenuItemFacade $menuItemsFacade,
     ) {}
 
     public function beforeRender(): void
@@ -235,7 +235,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
         $lastItem = array_shift($menuItems);
         $sortOrder = $lastItem ? $lastItem->sortOrder + 1 : 0;
 
-        $menuItem = new Model\MenuItemEntity(
+        $menuItem = new Model\MenuItem\MenuItemEntity(
             parentId: $parentId,
             pageId: null,
             name: $values->name,
@@ -273,7 +273,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
             $menuItem->url = $parentUrl . $menuItem->urlRewriteName;
 
             // Create new page for this item
-            $newPage = new Model\PageEntity(
+            $newPage = new Model\Page\PageEntity(
                 heading: $menuItem->name,
                 seoTitle: $menuItem->title,
             );

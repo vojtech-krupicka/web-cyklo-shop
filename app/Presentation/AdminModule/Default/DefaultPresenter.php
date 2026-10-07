@@ -3,12 +3,12 @@
 namespace App\Presentation\AdminModule\Default;
 
 use App\Presentation\AdminModule;
-use Model\MembersFacade;
+use App\Model;
 
 final class DefaultPresenter extends AdminModule\BaseSecuredPresenter
 {
     public function __construct(
-        private MembersFacade $membersFacade,
+        private Model\Member\MemberFacade $membersFacade,
     ) {}
 
     public function renderDefault(): void

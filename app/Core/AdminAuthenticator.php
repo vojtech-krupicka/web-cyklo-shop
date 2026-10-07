@@ -8,7 +8,7 @@ use Nette\Security;
 final class AdminAuthenticator implements Security\Authenticator
 {
     public function __construct(
-        private Model\MembersFacade $membersFacade,
+        private Model\Member\MemberFacade $membersFacade,
         private Security\Passwords $passwords,
     ) {}
 

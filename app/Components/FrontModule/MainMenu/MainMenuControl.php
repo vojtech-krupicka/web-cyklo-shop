@@ -21,7 +21,7 @@ final class MainMenuItem
 final class MainMenuControl extends Control
 {
     public function __construct(
-        private Model\GalleryFacade $galleryFacade,
+        private Model\Gallery\GalleryFacade $galleryFacade,
     ) {}
 
     public function renderFlat(): void

@@ -11,12 +11,12 @@ final class CmsPresenter extends FrontModule\BasePresenter
     #[Persistent]
     public ?string $uri = null;
 
-    private ?Model\MenuItemEntity $menuItem = null;
-    private ?Model\PageEntity $page = null;
+    private ?Model\MenuItem\MenuItemEntity $menuItem = null;
+    private ?Model\Page\PageEntity $page = null;
 
     public function __construct(
-        private Model\PagesFacade $pagesFacade,
-        private Model\MenuItemsFacade $menuItemsFacade,
+        private Model\Page\PageFacade $pagesFacade,
+        private Model\MenuItem\MenuItemFacade $menuItemsFacade,
     ) {}
 
     public function renderDefault(): void

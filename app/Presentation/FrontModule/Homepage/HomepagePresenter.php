@@ -8,11 +8,11 @@ use App\Model;
 final class HomepagePresenter extends FrontModule\BasePresenter
 {
     public function __construct(
-        private Model\PagesFacade $pagesFacade,
-        private Model\GalleryFacade $galleryFacade
+        private Model\Page\PageFacade $pagesFacade,
+        private Model\Gallery\GalleryFacade $galleryFacade
     ) {}
 
-    public function renderDefault()
+    public function renderDefault(): void
     {
         $this->template->homepage = $this->pagesFacade->getHomepage();
         $this->template->gallery = $this->galleryFacade->getGalleryItems(null, true, 'RAND()', 3);

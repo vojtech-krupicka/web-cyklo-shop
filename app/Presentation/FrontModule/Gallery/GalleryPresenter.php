@@ -8,7 +8,7 @@ use App\Model;
 final class GalleryPresenter extends FrontModule\BasePresenter
 {
     public function __construct(
-        private Model\GalleryFacade $galleryFacade
+        private Model\Gallery\GalleryFacade $galleryFacade
     ) {}
 
     public function renderDefault()
@@ -35,7 +35,7 @@ final class GalleryPresenter extends FrontModule\BasePresenter
         }
     }
 
-    public function getRandomGalleryItem(int $galleryId): ?Model\GalleryMediaEntity
+    public function getRandomGalleryItem(int $galleryId): ?Model\Gallery\GalleryMediaEntity
     {
         $result = $this->galleryFacade->getGalleryItems($galleryId, true, 'RAND()', 1);
         return array_pop($result);

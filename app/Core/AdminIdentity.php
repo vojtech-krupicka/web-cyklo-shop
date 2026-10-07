@@ -24,7 +24,7 @@ final class AdminIdentity implements Security\IIdentity
         public \DateTime $lastLogin,
     ) {}
 
-    public static function fromMember(array $roles, Model\MemberEntity $member): self
+    public static function fromMember(array $roles, Model\Member\MemberEntity $member): self
     {
         return new self(
             id: (int) $member->id,

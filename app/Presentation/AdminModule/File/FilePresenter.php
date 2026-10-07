@@ -35,7 +35,7 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
 
     public function __construct(
         private FileSystem $fileSystem,
-        private Model\AppSettings $appSettings
+        private Model\Settings\AppSettings $appSettings
     ) {}
 
     // #region Default

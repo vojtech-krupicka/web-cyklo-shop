@@ -38,13 +38,13 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     public ?int $id = null;
 
-    private ?Model\GalleryEntity $gallery = null;
+    private ?Model\Gallery\GalleryEntity $gallery = null;
     private array $galleryItems = [];
 
     public function __construct(
         private FileSystem $fileSystem,
-        private Model\GalleryFacade $galleryFacade,
-        private Model\AppSettings $appSettings
+        private Model\Gallery\GalleryFacade $galleryFacade,
+        private Model\Settings\AppSettings $appSettings
     ) {}
 
     public function beforeRender(): void
@@ -152,7 +152,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     public function galleryAddSubmitted(Form $form, GalleryAddEditFormData $values): void
     {
-        $gallery = new Model\GalleryEntity();
+        $gallery = new Model\Gallery\GalleryEntity();
         $gallery->name = $values->name;
         $gallery->description = $values->description;
         $gallery->allowComments = (bool) $values->allowComments;
@@ -321,7 +321,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
             $this->flashMessage("Obrázek byl přejmenován na '" . $fileName . "' z důvodu konfliktu jmen!", 'warning');
         }
 
-        $media = new GalleryMediaEntity(
+        $media = new Model\Gallery\GalleryMediaEntity(
             galleryId: $this->gallery->id,
             filename: $fileName,
             title: $values->title,
