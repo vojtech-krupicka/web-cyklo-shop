@@ -9,6 +9,7 @@ use Nette\Forms\Control;
 use Nette\Forms\Rendering\DefaultFormRenderer;
 use Nette\Http\FileUpload;
 use Nette\Utils\FileSystem;
+use Nette\Utils\Strings;
 
 final class FilePresenter extends AdminModule\BaseSecuredPresenter
 {
@@ -109,9 +110,11 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
         $fileName = $values->file->getSanitizedName();
         $parts = explode('.', $fileName);
         $extension = strtolower(array_pop($parts));
-        $fileName = join('.', $parts);
+        // No dots in the stem: "shell.php.txt" must not keep a ".php" segment, because some hosts
+        // run PHP for any name that merely contains it
+        $fileName = Strings::webalize(join('.', $parts), '_', lower: false) ?: 'soubor';
 
-        $newFileName = ($form->values->name) ? \Nette\Utils\Strings::webalize($form->values->name) : $fileName;
+        $newFileName = ($form->values->name) ? Strings::webalize($form->values->name) : $fileName;
         $isImage = $values->file->isImage();
         $dirName = $this->getDirName($isImage ? self::DEFAULT_IMAGES_DIR : self::DEFAULT_FILES_DIR);
 
@@ -121,7 +124,7 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
                 foreach (\Nette\Utils\Finder::findFiles('*')->in($dirName . '/') as $fn => $foo) {
                     $fn = substr($fn, strlen($dirName) + 1);
 
-                    if (\Nette\Utils\Strings::match($fn, '#^' . $newFileName . '_[0-9]*.' . $extension . '#')) {
+                    if (Strings::match($fn, '#^' . $newFileName . '_[0-9]*.' . $extension . '#')) {
                         $index++;
                     }
                 }

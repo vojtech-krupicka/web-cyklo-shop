@@ -30,7 +30,7 @@ final class UploadsHtaccessTest extends TestCase
             $this->fail('the .htaccess has no <FilesMatch "..."> block');
         }
         $regex = '#' . str_replace('#', '\\#', preg_replace('#^\(\?i\)#', '', $m[1])) . '#i';
-        foreach (['shell.php', 'shell.PHP', 'shell.phtml', 'shell.phar', 'shell.php5', 'shell.pht', 'shell.sh', 'shell.cgi'] as $name) {
+        foreach (['shell.php', 'shell.PHP', 'shell.phtml', 'shell.phar', 'shell.php5', 'shell.pht', 'shell.sh', 'shell.cgi', 'shell.php.txt', 'shell.phtml.zip', 'x.PHP.pdf'] as $name) {
             $this->assertSame(1, preg_match($regex, $name), "$name must be denied");
         }
         foreach (['photo.png', 'dokument.pdf', 'thumb_photo.jpg', 'archiv.zip', 'notes.txt'] as $name) {

@@ -69,8 +69,9 @@ Bugs found by the new tests while porting the code:
   outside the upload folder. File names are now reduced to a plain name.
 - The file manager accepted any file type, including `.php`, into the publicly served upload
   folder, which allowed remote code execution by any signed-in member. It now accepts only images
-  and an allowlist of document types, and `www/resources/.htaccess` denies script execution there
-  as a second layer.
+  and an allowlist of document types, stores names without dots in the stem (so `shell.php.txt`
+  cannot keep a `.php` segment), and `www/resources/.htaccess` denies script execution there as a
+  second layer.
 - Forms and signal links (activate, delete, move, log out) require a same-origin request, as
   enforced by Nette 3.3; there are no per-request tokens.
 

@@ -202,6 +202,39 @@ final class FileManagerTest extends PresenterTestCase
         $this->assertSame([], array_values($stored), 'no executable file may end up in the web root');
     }
 
+    /** @return iterable<string, array{string}> */
+    public static function provideDoubleExtensions(): iterable
+    {
+        foreach (['shell.php.txt', 'shell.php.pdf', 'shell.phtml.zip', 'shell.PHP.docx', 'shell.php5.csv', 'a.b.shell.php.txt'] as $name) {
+            yield $name => [$name];
+        }
+    }
+
+    /**
+     * Some hosts run PHP for any name that merely contains ".php" (AddHandler), so an allowed last
+     * extension is not enough: the script extension must not survive anywhere in the stored name.
+     */
+    #[DataProvider('provideDoubleExtensions')]
+    public function testDoubleExtensionsDoNotKeepAScriptSegment(string $name): void
+    {
+        $this->uploadFile($this->upload($name, '<?php echo "pwned";'));
+
+        $stored = $this->storedFileNames();
+        $withScriptSegment = array_filter(
+            $stored,
+            fn(string $file) => preg_match('#\.(ph(p\d*|tml|ar|t)|phps|pl|py|cgi|sh|shtml)(\.|$)#i', $file) === 1,
+        );
+        $this->assertSame([], array_values($withScriptSegment), 'stored: ' . implode(', ', $stored));
+    }
+
+    public function testNamesWithDotsKeepTheirLettersAndExtension(): void
+    {
+        $this->uploadFile($this->upload('Zpráva_2024.verze.2.pdf', 'content'));
+
+        // diacritics are transliterated, every other separator (also dots in the stem) becomes a hyphen
+        $this->assertFileExists($this->files() . '/Zprava-2024-verze-2.pdf');
+    }
+
     public function testACustomNameCannotSmuggleInAScriptExtension(): void
     {
         $this->uploadFile($this->upload('harmless.txt', '<?php echo "pwned";'), ['name' => 'shell.php']);

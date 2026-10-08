@@ -1,6 +1,8 @@
 # Uploaded files are data, never code: nothing below this folder may be executed.
 # Images, documents and gallery pictures are still served as usual.
-<FilesMatch "(?i)\.(php[0-9]*|phtml|phar|pht|phps|pl|py|cgi|sh|shtml)$">
+# A script extension anywhere in the name counts ("shell.php.txt"): some hosts run PHP for
+# any name that contains ".php".
+<FilesMatch "(?i)\.(php[0-9]*|phtml|phar|pht|phps|pl|py|cgi|sh|shtml)(\.|$)">
     Require all denied
 </FilesMatch>
 
