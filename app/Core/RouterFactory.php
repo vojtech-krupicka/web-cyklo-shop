@@ -24,7 +24,6 @@ final class RouterFactory
                     'novinky' => 'News',
                     'vlastni-stranky' => 'Cms',
                     'galerie' => 'Gallery',
-                    'diskuze' => 'Guestbook',
                     'spravce-souboru' => 'File',
                     'prihlaseni' => 'SignIn'
                 ),
@@ -54,7 +53,6 @@ final class RouterFactory
                     'uvod' => 'Homepage',
                     'novinky' => 'News',
                     'galerie' => 'Gallery',
-                    'diskuze' => 'Guestbook',
                     'kontakt' => 'Contact',
                     'mapa-stranek' => 'Sitemap'
                 ),

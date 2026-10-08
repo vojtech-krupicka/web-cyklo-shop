@@ -33,7 +33,6 @@ final class MainMenuControl extends Control
         return [
             new MainMenuItem('Homepage', 'Úvod', $presenterName),
             new MainMenuItem('Gallery', 'Galerie', $presenterName),
-            // new MainMenuItem('Guestbook', 'Diskuze', $presenterName),
             new MainMenuItem('Contact', 'Kontakt', $presenterName),
             new MainMenuItem('Sitemap', 'Mapa stránek', $presenterName),
         ];
