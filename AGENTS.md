@@ -54,7 +54,7 @@ rather than relying on this file. This file is a signpost, not the manual.
 - **Backend:** PHP 8.2+, Nette 3.2, Latte 3 templates
 - **Database:** Nette Database Explorer (default: SQLite in-memory; change it in `config/common.neon`)
 - **Frontend:** Vite + TypeScript, `nette-forms` for client-side validation (Vite is optional, see `readme.md`)
-- **Testing:** Nette Tester (`.phpt`)
+- **Testing:** PHPUnit (`*Test.php`)
 - **Static analysis:** PHPStan level 8 (`app`, `bin`)
 
 ```
@@ -78,8 +78,7 @@ www/index.php                  # HTTP entry point
 php -S localhost:8000 -t www
 
 # Tests
-composer run tester
-vendor/bin/tester tests/path/to/file.phpt -s
+composer run test
 
 # Static analysis
 composer run phpstan

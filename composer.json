@@ -28,11 +28,11 @@
     "tracy/tracy": "^2.10"
   },
   "require-dev": {
-    "nette/tester": "^2.5",
     "phpstan/phpstan": "^2.1",
     "phpstan/extension-installer": "^1.4",
     "nette/phpstan-rules": "^1.0",
-    "symfony/thanks": "^1"
+    "symfony/thanks": "^1",
+    "phpunit/phpunit": "^13.4"
   },
   "autoload": {
     "psr-4": {
@@ -42,7 +42,7 @@
   "scripts": {
     "psr": "composer dump-autoload --optimize --strict-psr --strict-ambiguous",
     "phpstan": "phpstan analyse --memory-limit=1G",
-    "tester": "tester tests -s",
+    "test": "@php -d xdebug.mode=off vendor/bin/phpunit",
     "check": [
       "@psr",
       "@phpstan"
