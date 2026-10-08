@@ -127,6 +127,8 @@ create (for example `/tmp/Tester`, `temp/`, `log/`) become unwritable for the `d
   and map submitted values to a `*FormData` class.
 - Links from controls and components to presenters use `{plink}`, not `n:href`.
 - Signals are plain GET links (`handleXxx`). Anything destructive must check that the record exists.
+- AJAX is done by Naja only (`www/assets/javascript/app.js` initializes it and shows the spinner). Mark a
+  link, form or button with `class="ajax"` and wrap the redrawn part in a `{snippet}`; do not add jQuery AJAX plugins.
 
 **Configuration**
 - No secrets in `common.neon`. Environment-specific values go in `config/local.<env>.neon`.

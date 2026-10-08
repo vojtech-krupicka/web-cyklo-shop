@@ -50,6 +50,17 @@ final class FrontModulePresenterTest extends PresenterTestCase
         $this->assertCount(4, $response->getSource()->galleryItems);
     }
 
+    public function testLayoutUsesNajaAsTheOnlyAjaxLibrary(): void
+    {
+        $html = $this->renderPage($this->runPresenter('FrontModule:Homepage', ['action' => 'default']));
+
+        $this->assertStringContainsString('Naja.min.js', $html);
+        $this->assertStringContainsString('javascript/app.js', $html);
+        foreach (['jquery.nette.js', 'jquery.ajaxform.js', 'jquery.livequery.js'] as $legacy) {
+            $this->assertStringNotContainsString($legacy, $html);
+        }
+    }
+
     /**
      * Renders the complete page, which catches template and component errors.
      *

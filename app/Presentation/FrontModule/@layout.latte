@@ -20,11 +20,9 @@
 
     {asset "javascript/jquery.js"}
     {asset "javascript/shadowbox.js"}
-    {asset "javascript/jquery.ajaxform.js"}
-    {asset "javascript/jquery.livequery.js"}
-    {asset "javascript/jquery.nette.js"}
     <script src="https://unpkg.com/nette-forms@3"></script>
     <script src="https://unpkg.com/naja@3/dist/Naja.min.js"></script>
+    {asset "javascript/app.js"}
     {asset "javascript/tiny_mce/jquery.tinymce.js"}
 
 	<script type="text/javascript">
@@ -39,9 +37,6 @@
 	<script type="text/javascript">
 	// <![CDATA[
 		$(document).ready(function(){
-            // Initialize Naja
-            naja.initialize();
-
 			// Initialize shadowbox
 			Shadowbox.init({
 				counterType: "skip",
