@@ -64,7 +64,7 @@ cp .env.example .env
 cp config/local.example.neon config/local.dev.neon
 ```
 
-The defaults in both files already match `docker-compose.yml`, so you only need to edit `config/local.dev.neon` if you want the contact-page map (see [Configuration](#configuration)).
+`.env` is the single source of truth for the database settings. `docker-compose.yml` uses it to create the MySQL database and user, and `config/local.dev.neon` (from the example) reads the same values as `%env.MYSQL_USER%` and so on. You only need to edit `config/local.dev.neon` if you want the contact-page map (see [Configuration](#configuration)). `.env` itself is git-ignored; change the copy of `.env.example` as you like, before the first `docker compose up`.
 
 Open the folder in VS Code and run **Dev Containers: Reopen in Container**. Without VS Code:
 
@@ -120,6 +120,8 @@ Configuration is layered; later files override earlier ones.
 | `NETTE_DEBUG` | `1` turns on debug mode (Tracy, container auto-rebuild). Unset or anything else means production mode. Independent of `APP_ENV`. |
 
 `docker-compose.yml` sets `APP_ENV=dev` and `NETTE_DEBUG=1` for the dev container. A production environment sets neither.
+
+Every environment variable is also available in the NEON files as `%env.NAME%` (for example `%env.MYSQL_PASSWORD%`). The development file uses that for the database settings, so `.env` is the only place for them. `local.prod.neon` should hold literal values instead, because shared hosting usually cannot set environment variables. The values are read at runtime and are not stored in the cached container.
 
 ### Map API key
 

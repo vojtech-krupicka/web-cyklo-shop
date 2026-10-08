@@ -1,3 +1,6 @@
+# Docker and app environment (template: .env.example)
+/.env
+
 # Local DI configuration — holds database credentials, must never be committed
 /config/local.dev.neon
 /config/local.prod.neon

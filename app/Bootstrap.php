@@ -17,6 +17,8 @@ class Bootstrap
         $this->configurator->setTempDirectory($this->rootDir . '/temp');
         // Derived from the entry script by default, which is wrong outside www/index.php (CLI, tests)
         $this->configurator->addStaticParameters(['wwwDir' => $this->rootDir . '/www']);
+        // Environment variables usable in config as %env.NAME% (read at runtime, not baked into the cached container)
+        $this->configurator->addDynamicParameters(['env' => getenv()]);
     }
 
     public function bootWebApplication(): Nette\DI\Container

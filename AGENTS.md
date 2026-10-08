@@ -132,6 +132,10 @@ create (for example `/tmp/Tester`, `temp/`, `log/`) become unwritable for the `d
 - No secrets in `common.neon`. Environment-specific values go in `config/local.<env>.neon`.
 - `APP_ENV` selects the file (`dev`, `test`, `prod`; default `prod`). `NETTE_DEBUG=1` turns on debug
   mode. They are independent; never derive one from the other.
+- Environment variables are available in NEON as `%env.NAME%`. In development `.env` is the single
+  source of truth for the database settings (`local.dev.neon` reads them from there); `.env` is
+  git-ignored, `.env.example` is its template. `local.prod.neon` uses literal values because
+  shared hosting cannot set environment variables.
 
 **Database**
 - Change the schema or the mock data with a **new** numbered migration. Never edit an applied one.
