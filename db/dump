@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Dump the database (schema + data) to a gzip-compressed SQL file.
 #
-# Usage: bin/db-dump [output-file]
+# Usage: db/dump [output-file]
 #   default output: db/dumps/<db>-<timestamp>.sql.gz
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-source bin/lib/db.sh
+source db/lib/db.sh
 
 out="${1:-db/dumps/${DB_NAME}-$(date +%Y%m%d-%H%M%S).sql.gz}"
 mkdir -p "$(dirname "$out")"

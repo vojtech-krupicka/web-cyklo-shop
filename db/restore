@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # Restore a dump (.sql or .sql.gz) into the database, like pg_restore.
-# Dumps made by bin/db-dump contain DROP TABLE IF EXISTS, so existing tables
+# Dumps made by db/dump contain DROP TABLE IF EXISTS, so existing tables
 # with the same names are replaced.
 #
-# Usage: bin/db-restore <dump-file>
+# Usage: db/restore <dump-file>
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-source bin/lib/db.sh
+source db/lib/db.sh
 
 file="${1:-}"
 if [[ -z "$file" || ! -f "$file" ]]; then
-  echo "Usage: bin/db-restore <dump.sql|dump.sql.gz>" >&2
+  echo "Usage: db/restore <dump.sql|dump.sql.gz>" >&2
   exit 1
 fi
 

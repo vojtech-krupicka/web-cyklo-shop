@@ -1,4 +1,4 @@
-# Shared helpers for bin/db-* scripts. Source this file, don't execute it.
+# Shared helpers for the db/ scripts. Source this file, don't execute it.
 # Connection settings come from .env (passed in via docker-compose.yml `env_file`).
 
 DB_HOST="${DB_HOST:-db}"

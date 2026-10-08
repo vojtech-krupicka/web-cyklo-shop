@@ -77,7 +77,7 @@ config/
 ├── common.neon                # framework configuration, non-secret defaults
 ├── services.neon              # DI services + auto-discovery (*Facade, *Factory, …)
 └── local.<dev|test|prod>.neon # per-environment values; dev and prod are git-ignored
-db/migrations/                 # numbered SQL migrations
+db/migrations/                 # numbered SQL migrations; db/ also holds the database scripts (migrate, dump, restore, test-reset)
 tests/                         # Core/, Model/, Presentation/ + base classes
 www/index.php                  # HTTP entry point
 ```
@@ -95,7 +95,7 @@ composer run psr         # every class matches its file path, no duplicate class
 composer run check       # psr + phpstan
 composer run test:db     # rebuild the test database (app_test) from the migrations
 
-bin/db-migrate           # apply pending migrations to the development database
+db/migrate               # apply pending migrations to the development database
 ```
 
 Before you call a change done, `composer run check` and `composer run test` must both pass.

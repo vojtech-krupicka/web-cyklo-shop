@@ -77,7 +77,7 @@ Then, inside the container:
 
 ```bash
 composer install
-bin/db-migrate
+db/migrate
 ```
 
 The site is at <http://localhost:4203>, the admin at <http://localhost:4203/admin>.
@@ -141,9 +141,9 @@ Migrations are plain SQL files in `db/migrations/`, applied in filename order an
 
 | Command | What it does |
 |---|---|
-| `bin/db-migrate` | Apply pending migrations to the development database |
-| `bin/db-dump [file]` | Dump the database to a gzip-compressed SQL file (default in `db/dumps/`, which is git-ignored) |
-| `bin/db-restore <file>` | Restore a `.sql` or `.sql.gz` dump |
+| `db/migrate` | Apply pending migrations to the development database |
+| `db/dump [file]` | Dump the database to a gzip-compressed SQL file (default in `db/dumps/`, which is git-ignored) |
+| `db/restore <file>` | Restore a `.sql` or `.sql.gz` dump |
 | `composer run test:db` | Drop and recreate the **test** database from the migrations |
 
 | Migration | Content |
@@ -203,7 +203,7 @@ config/                    common.neon, services.neon, local.*.neon
 db/
   migrations/              SQL migrations
   dumps/                   Local dumps (git-ignored)
-bin/                       db-migrate, db-dump, db-restore, db-test-reset
+  migrate dump restore test-reset   Database scripts (shell), lib/db.sh holds the shared helpers
 docker/                    PHP/Apache image, MySQL init scripts
 tests/                     PHPUnit tests (Core, Model, Presentation)
 www/                       Public document root

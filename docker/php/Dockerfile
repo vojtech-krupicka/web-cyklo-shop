@@ -3,7 +3,7 @@ FROM php:8.4-apache
 ARG USER_UID=1000
 ARG USER_GID=1000
 
-# System packages: MySQL client (used by bin/db-* scripts), git/unzip for Composer
+# System packages: MySQL client (used by the db/ scripts), git/unzip for Composer
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         openssh-client sudo nano \

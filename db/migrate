@@ -2,11 +2,11 @@
 # Apply pending SQL migrations from db/migrations/*.sql, in filename order.
 # Applied files are recorded in the `schema_migrations` table, so re-running is safe.
 #
-# Usage: bin/db-migrate
+# Usage: db/migrate
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-source bin/lib/db.sh
+source db/lib/db.sh
 
 shopt -s nullglob
 files=(db/migrations/*.sql)
