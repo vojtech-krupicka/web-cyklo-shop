@@ -128,6 +128,24 @@ final class CmsSignalsTest extends PresenterTestCase
         $this->assertSame([3 => 0, 6 => 1, 4 => 2, 5 => 3], $this->order(2));
     }
 
+    public function testAnInactiveItemCanBeMoved(): void
+    {
+        $this->cms('activate', ['itemId' => 6, 'flag' => 0]);
+
+        $this->cms('move', ['itemId' => 6, 'up' => 1]);
+
+        $this->assertSame([3 => 0, 6 => 1, 4 => 2, 5 => 3], $this->order(2));
+    }
+
+    public function testAnItemCanMovePastAnInactiveNeighbour(): void
+    {
+        $this->cms('activate', ['itemId' => 4, 'flag' => 0]);
+
+        $this->cms('move', ['itemId' => 6, 'up' => 1]);
+
+        $this->assertSame([3 => 0, 6 => 1, 4 => 2, 5 => 3], $this->order(2));
+    }
+
     public function testTheFirstItemCannotMoveUpAndTheLastCannotMoveDown(): void
     {
         $this->cms('move', ['itemId' => 3, 'up' => 1]);
