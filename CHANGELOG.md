@@ -24,6 +24,8 @@ First release of the rewrite from Nette 2.0.4 (PHP 5.3) to Nette 3.3 (PHP 8.4). 
   rendered completely, every admin form and signal handler, file uploads, and logout.
 - Composer scripts `test`, `test:db`, `phpstan`, `psr` and `check`, and matching VS Code tasks.
 - Contact page map using Leaflet with Mapy.com tiles (needs an API key in the local config).
+- Example configuration (`config/deployment.example.ini`) and a README guide for deploying to FTP
+  hosting with dg/ftp-deployment.
 - README, `AGENTS.md` (instructions for AI coding agents), and an MIT `LICENSE`.
 
 ### Changed

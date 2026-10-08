@@ -220,14 +220,37 @@ Only `www/` may be web-accessible. `app/`, `config/`, `log/`, `temp/` and `vendo
 
 **Docker or Kubernetes**: build the image from `docker/php`, mount or bake in `config/local.prod.neon` (or mount it as a Secret), and leave `APP_ENV` and `NETTE_DEBUG` unset.
 
-**Shared hosting (FTP)**:
+**Shared hosting (FTP)**: copying folders by hand is slow and risky (the live uploads and the production config are easy to overwrite). The simplest reliable way is [dg/ftp-deployment](https://github.com/dg/ftp-deployment), which remembers what is on the server (in a `.htdeployment` file) and uploads only what changed. It needs PHP 8.2 or newer on your machine; install it outside this project (the PHAR from its releases page, or `composer create-project dg/ftp-deployment`).
 
-1. Run `composer install --no-dev --optimize-autoloader` locally and upload `vendor/` too.
-2. Upload `app/`, `config/` and `www/`, plus your own `config/local.prod.neon`. Do not upload `local.dev.neon`.
-3. Keep `app/`, `config/`, `vendor/`, `log/` and `temp/` above the public folder, or deny them in `.htaccess`.
-4. Make `temp/`, `log/` and `www/resources/` (with `images`, `files` and `galleries`) writable by the web server.
-5. Apply the schema (`db/migrations/0001_create_schema.sql`) with your host's database tool. Skip `0002` and `0003`; they contain mock data and test accounts. Create a real member with a password hashed by `Nette\Security\Passwords`.
-6. Clear `temp/cache` after every deployment.
+*Once, to prepare the server*
+
+1. If the host allows it, set the document root to the `www/` folder. Otherwise the project root is served, and the root `.htaccess` (`Require all denied`) plus `www/.htaccess` are your safety net.
+2. Create `log/`, `temp/` and `www/resources/` (with `images`, `files` and `galleries` inside) and make them writable by the web server.
+3. Create the database and apply `db/migrations/0001_create_schema.sql` with the host's database tool. Skip `0002` and `0003`: they contain mock content and test accounts.
+4. Create the first admin. Make a bcrypt hash (any machine with PHP; here in the dev container) and insert the member:
+
+   ```bash
+   docker compose exec -u dev web php -r 'echo password_hash("choose-a-password", PASSWORD_BCRYPT), "\n";'
+   ```
+   ```sql
+   INSERT INTO members (nickname, password, firstname, surname, email, role, active)
+   VALUES ('admin', '<the hash>', 'First', 'Admin', 'you@example.com', 'admin', 1);
+   ```
+5. Upload your `config/local.prod.neon` (literal database values, see [Configuration](#configuration)) by hand, once. The deployment never touches it.
+6. Copy `config/deployment.example.ini` to `config/deployment.ini` (git-ignored) and fill in the FTP details. For the first run set `allowDelete = no`.
+
+*For every release*
+
+```bash
+rm -rf /tmp/build && mkdir /tmp/build
+git archive v1.0.0 | tar -x -C /tmp/build                       # clean export of the tag, tracked files only
+composer install --no-dev --optimize-autoloader --working-dir=/tmp/build
+
+php path/to/deployment config/deployment.ini -t                 # preview: read what it would upload and delete
+php path/to/deployment config/deployment.ini                    # deploy
+```
+
+Then apply any new `db/migrations/NNNN_*.sql` file with the host's database tool, open the site and the admin, and check `log/` on the server. The example config ignores the live data (`www/resources`, the generated TinyMCE lists, `log/`, `temp/`, the local configuration) so a deployment can neither overwrite nor delete it, and it purges `temp/cache` after each upload. Deploy from the clean export, never from your working copy: that one contains your development configuration and the dev packages.
 
 Before the first public deployment: test the real 404 and 500 pages with debug off, and check that errors end up in `log/`, not on screen.
 

@@ -5,6 +5,9 @@
 /config/local.dev.neon
 /config/local.prod.neon
 
+# Deployment settings with the FTP password (template: config/deployment.example.ini)
+/config/deployment.ini
+
 # Writable runtime directories (keep the dir, ignore the contents)
 /temp/*
 !/temp/.gitignore
