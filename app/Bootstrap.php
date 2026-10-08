@@ -27,7 +27,10 @@ class Bootstrap
     public function initializeEnvironment(): void
     {
         $this->configurator->setDebugMode(getenv('NETTE_DEBUG') === '1');
-        $this->configurator->enableTracy($this->rootDir . '/log');
+        // Tests (APP_ENV=test) leave error handling to PHPUnit
+        if (getenv('APP_ENV') !== 'test') {
+            $this->configurator->enableTracy($this->rootDir . '/log');
+        }
     }
 
     private function setupContainer(): void

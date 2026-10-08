@@ -1,0 +1,12 @@
+# Used when APP_ENV=test (phpunit.xml). Throwaway database inside the dev compose network:
+# nothing secret here, so this file is committed.
+parameters:
+	database:
+		driver: mysql
+		host: db
+		dbname: app_test
+		user: app
+		password: app
+
+	mapy:
+		apiKey: ''

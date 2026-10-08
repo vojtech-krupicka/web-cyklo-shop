@@ -39,10 +39,16 @@
       "App\\": "app"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests"
+    }
+  },
   "scripts": {
     "psr": "composer dump-autoload --optimize --strict-psr --strict-ambiguous",
     "phpstan": "phpstan analyse --memory-limit=1G",
     "test": "@php -d xdebug.mode=off vendor/bin/phpunit",
+    "test:db": "bin/db-test-reset",
     "check": [
       "@psr",
       "@phpstan"

@@ -10,8 +10,10 @@ DB_USER="${MYSQL_USER:?MYSQL_USER is not set (missing .env?)}"
 export MYSQL_PWD="${MYSQL_PASSWORD:?MYSQL_PASSWORD is not set (missing .env?)}"
 
 # Connection flags shared by mysql / mysqldump.
+# --default-character-set: the client falls back to latin1 without a UTF-8 locale,
+# which double-encodes Czech text when a migration is piped in.
 # --skip-ssl: traffic stays on the internal Docker network in dev, and it
 # silences the MariaDB client's self-signed certificate warning.
-DB_ARGS=(--protocol=TCP --skip-ssl -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER")
+DB_ARGS=(--protocol=TCP --skip-ssl --default-character-set=utf8mb4 -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER")
 
 mysql_cli() { mysql "${DB_ARGS[@]}" "$DB_NAME" "$@"; }

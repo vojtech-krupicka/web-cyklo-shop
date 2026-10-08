@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Recreate the test database from scratch and apply all migrations (schema + mock data).
+# Refuses to touch any database whose name does not end in "_test".
+#
+# Usage: bin/db-test-reset
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+export MYSQL_DATABASE="${MYSQL_TEST_DATABASE:-app_test}"
+source bin/lib/db.sh
+
+if [[ "$DB_NAME" != *_test ]]; then
+  echo "Refusing to reset '$DB_NAME': the name must end in _test" >&2
+  exit 1
+fi
+
+echo "Recreating $DB_NAME"
+mysql "${DB_ARGS[@]}" -e "DROP DATABASE IF EXISTS \`$DB_NAME\`; CREATE DATABASE \`$DB_NAME\` CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci"
+
+bin/db-migrate
