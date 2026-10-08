@@ -106,7 +106,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 
     public function handleMove(int $itemId, bool $up = false): void
     {
-        $item = $this->menuItemsFacade->getMenuItemById($itemId);
+        $item = $this->menuItemsFacade->getMenuItemById($itemId, activeOnly: false);
         if (!$item) {
             $this->flashMessage("Položka menu s id #$itemId nebyla nalezena.", 'error');
         } else {
