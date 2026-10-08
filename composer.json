@@ -5,12 +5,7 @@
     "nette"
   ],
   "type": "project",
-  "license": [
-    "MIT",
-    "BSD-3-Clause",
-    "GPL-2.0-only",
-    "GPL-3.0-only"
-  ],
+  "license": "MIT",
   "require": {
     "php": ">= 8.2",
     "nette/application": "^3.2.3",
