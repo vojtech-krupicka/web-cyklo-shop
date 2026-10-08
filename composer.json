@@ -1,11 +1,18 @@
 {
-  "name": "nette/web-project",
-  "description": "Nette: Standard Web Project",
+  "name": "vojtech-krupicka/web-cyklo-shop",
+  "description": "Small CMS and website for a bike shop, rewritten from Nette 2.0.4 to Nette 3.3 as a learning project.",
   "keywords": [
-    "nette"
+    "nette",
+    "cms",
+    "learning"
   ],
   "type": "project",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Vojtěch Krupička"
+    }
+  ],
   "require": {
     "php": ">= 8.2",
     "nette/application": "^3.2.3",
@@ -26,7 +33,6 @@
     "phpstan/phpstan": "^2.1",
     "phpstan/extension-installer": "^1.4",
     "nette/phpstan-rules": "^1.0",
-    "symfony/thanks": "^1",
     "phpunit/phpunit": "^13.4"
   },
   "autoload": {
@@ -52,7 +58,6 @@
   "minimum-stability": "stable",
   "config": {
     "allow-plugins": {
-      "symfony/thanks": true,
       "phpstan/extension-installer": true
     }
   }
