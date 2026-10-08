@@ -4,7 +4,7 @@ namespace App\Model\MenuItem;
 
 use App\Model\BaseFacade;
 
-final class MenuItemFacade extends BaseFacade
+class MenuItemFacade extends BaseFacade
 {
     public function getMenuItemByUri(string $uri): ?MenuItemEntity
     {

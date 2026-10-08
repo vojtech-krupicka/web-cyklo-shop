@@ -4,7 +4,7 @@ namespace App\Model\Page;
 
 use App\Model\BaseFacade;
 
-final class PageFacade extends BaseFacade
+class PageFacade extends BaseFacade
 {
     public function getPageById(int $id): ?PageEntity
     {

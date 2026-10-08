@@ -4,7 +4,7 @@ namespace App\Model\Gallery;
 
 use App\Model\BaseFacade;
 
-final class GalleryFacade extends BaseFacade
+class GalleryFacade extends BaseFacade
 {
     public function getGallery(?int $id, bool $activeOnly = true): ?GalleryEntity
     {

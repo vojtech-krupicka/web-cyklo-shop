@@ -4,7 +4,7 @@ namespace App\Model\Member;
 
 use App\Model\BaseFacade;
 
-final class MemberFacade extends BaseFacade
+class MemberFacade extends BaseFacade
 {
     public function getById(int $id): ?MemberEntity
     {
