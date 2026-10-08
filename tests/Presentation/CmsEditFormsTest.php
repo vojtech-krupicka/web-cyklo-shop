@@ -83,6 +83,19 @@ final class CmsEditFormsTest extends PresenterTestCase
         $this->assertSame('https://example.org', $this->row('menu_items', $external->id)['url']);
     }
 
+    public function testAnExternalAddressWithoutASchemeGetsHttps(): void
+    {
+        $facade = self::container()->getByType(MenuItemFacade::class);
+        $external = new MenuItemEntity(name: 'Externí', title: 'Externí', url: 'http://example.com', active: true);
+        $facade->persist($external);
+        $this->assertNotNull($external->id);
+
+        $this->editItem($external->id, ['name' => 'Externí', 'title' => '', 'url' => 'example.org', 'parentId' => '']);
+
+        // Nette's Form::URL rule completes a bare address with https:// before the handler runs
+        $this->assertSame('https://example.org', $this->row('menu_items', $external->id)['url']);
+    }
+
     public function testEmptyNameIsRejected(): void
     {
         $html = $this->renderPage($this->editItem(3, ['name' => '', 'title' => '', 'url' => 'dily', 'parentId' => '2']));

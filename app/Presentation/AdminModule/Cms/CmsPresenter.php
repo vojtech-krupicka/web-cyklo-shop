@@ -256,10 +256,6 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
             );
             $this->pagesFacade->persist($newPage);
             $menuItem->pageId = $newPage->id;
-        } else {
-            if (!str_starts_with($menuItem->url, 'http')) {
-                $menuItem->url = 'http://' . $menuItem->url;
-            }
         }
 
         // Create the menu item in the database
@@ -408,11 +404,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
             // Edit all URLs for children items
             $this->updateChildrenUrl($menuItem->id, $menuItem->url);
         } else {
-            $url = $values->url;
-            if (!str_starts_with($url, 'http')) {
-                $url = 'http://' . $url;
-            }
-            $menuItem->url = $url;
+            $menuItem->url = $values->url;
         }
 
         $this->menuItemsFacade->persist($menuItem);
