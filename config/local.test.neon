@@ -10,3 +10,7 @@ parameters:
 
 	mapy:
 		apiKey: ''
+
+	# Uploads and gallery folders created by tests go here (temp/ is git-ignored and cleaned by the tests)
+	settings:
+		resourcesDir: '%tempDir%/test-resources'
