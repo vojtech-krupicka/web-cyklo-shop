@@ -53,7 +53,7 @@ file. This file is a signpost, not the manual.
 - **Database:** MySQL 8.4 through Nette Database Explorer. Schema and mock data are SQL files in
   `db/migrations/`.
 - **Frontend:** jQuery, Shadowbox, TinyMCE 3 and Naja served from `www/assets` through Nette Assets.
-  `package.json` and `vite.config.ts` come from the skeleton and are **not used**.
+  There is no npm or Vite build.
 - **Testing:** PHPUnit 13 (`tests/**/*Test.php`)
 - **Static analysis:** PHPStan level 8 on `app` and `tests`
 - **Language:** the UI and all user-facing messages are in **Czech**; code and identifiers are English.

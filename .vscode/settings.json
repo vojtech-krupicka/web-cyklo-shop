@@ -12,7 +12,6 @@
   },
   "search.exclude": {
     "vendor": true,
-    "var/mail": true,
     "db/dumps": true
   },
   "[sql]": {

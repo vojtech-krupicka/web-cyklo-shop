@@ -16,7 +16,6 @@ services:
       NETTE_DEBUG: 1
       APACHE_RUN_USER: dev
       APACHE_RUN_GROUP: dev
-      FAKE_MAIL_DIR: /var/www/root/var/mail
     depends_on:
       db:
         condition: service_healthy

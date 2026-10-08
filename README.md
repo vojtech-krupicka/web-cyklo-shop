@@ -209,7 +209,7 @@ tests/                     PHPUnit tests (Core, Model, Presentation)
 www/                       Public document root
   assets/                  CSS, JavaScript, images
   resources/               Uploads (git-ignored)
-log/ temp/ var/mail/       Runtime directories (contents git-ignored)
+log/ temp/                Runtime directories (contents git-ignored)
 ```
 
 Namespaces follow the folders (`App\Model\Gallery\GalleryFacade` is `app/Model/Gallery/GalleryFacade.php`), and `composer run psr` enforces it.

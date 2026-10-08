@@ -40,8 +40,6 @@
 Thumbs.db
 
 /vendor/
-/var/mail/*
-!/var/mail/.gitkeep
 /db/dumps/*
 !/db/dumps/.gitkeep
 

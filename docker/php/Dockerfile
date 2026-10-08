@@ -35,8 +35,4 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 COPY php-dev.ini "$PHP_INI_DIR/conf.d/99-dev.ini"
 
-# Fake sendmail: writes outgoing mail to files instead of sending it
-COPY fake_sendmail /usr/local/bin/fake_sendmail
-RUN chmod +x /usr/local/bin/fake_sendmail
-
 WORKDIR /var/www/root
