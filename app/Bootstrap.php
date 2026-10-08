@@ -15,6 +15,8 @@ class Bootstrap
         $this->rootDir = dirname(__DIR__);
         $this->configurator = new Configurator;
         $this->configurator->setTempDirectory($this->rootDir . '/temp');
+        // Derived from the entry script by default, which is wrong outside www/index.php (CLI, tests)
+        $this->configurator->addStaticParameters(['wwwDir' => $this->rootDir . '/www']);
     }
 
     public function bootWebApplication(): Nette\DI\Container

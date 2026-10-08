@@ -65,7 +65,6 @@ final class RouterFactoryTest extends TestCase
         $refUrl = new UrlScript('http://localhost/admin/vlastni-stranky/upravit-polozku-menu/abc', '/');
         $params = $this->router->match(new Request($refUrl));
 
-        $this->assertSame(null, $params);  // || ($params['id'] ?? null) !== 'abc');
-        $this->assertNotSame('abc', $params['id'] ?? null);
+        $this->assertNull($params);
     }
 }
