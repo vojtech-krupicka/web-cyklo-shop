@@ -408,9 +408,11 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
             // Edit all URLs for children items
             $this->updateChildrenUrl($menuItem->id, $menuItem->url);
         } else {
-            if (!str_starts_with($values->url, 'http')) {
-                $values->url = 'http://' . $values->url;
+            $url = $values->url;
+            if (!str_starts_with($url, 'http')) {
+                $url = 'http://' . $url;
             }
+            $menuItem->url = $url;
         }
 
         $this->menuItemsFacade->persist($menuItem);
