@@ -31,6 +31,7 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
 
     public function handleDelete(string $fileName, bool $img = true): void
     {
+        $fileName = basename($fileName);  // a name only, never a path
         $dirName = $this->getDirName($img ? self::DEFAULT_IMAGES_DIR : self::DEFAULT_FILES_DIR);
         $fullPath = $this->fileSystem->joinPaths($dirName, $fileName);
         if (is_file($fullPath)) {
@@ -139,6 +140,10 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
         $dirName = $this->getDirName($folder);
         $files = [];
 
+        if (!is_dir($dirName)) {
+            return $files;
+        }
+
         foreach (\Nette\Utils\Finder::findFiles('*')->in($dirName) as $fn => $file) {
             $files[] = new Model\File\FileListItem(
                 fileName: $file->getFilename(),
@@ -164,7 +169,8 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
         // Since TinyMCE3.x you need absolute image paths in the list...
         $wwwPath = (($img) ? '/resources/images' : $this->template->baseUrl . '/resources/files');
         $outputName = ($img) ? 'tinymce.imagelist.js' : 'tinymce.filelist.js';
-        $outputPath = $this->fileSystem->joinPaths($this->appSettings->wwwDir, 'assets/javascript');
+        $outputPath = $this->appSettings->tinyMceDir;
+        $this->fileSystem->createDir($outputPath);
         $dir = $this->getDirName(($img) ? self::DEFAULT_IMAGES_DIR : self::DEFAULT_FILES_DIR);
 
         $fileList = [];
