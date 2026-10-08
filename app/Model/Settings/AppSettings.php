@@ -6,6 +6,8 @@ final class AppSettings
 {
     public function __construct(
         public readonly string $wwwDir,
-        public readonly string $resourcesDir
+        public readonly string $resourcesDir,
+        /** Where the generated TinyMCE image/file lists (tinymce.*list.js) are written */
+        public readonly string $tinyMceDir,
     ) {}
 }

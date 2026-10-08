@@ -4,7 +4,7 @@ services:
 	- App\Core\RouterFactory::createRouter
 	- App\Presentation\FrontModule\Contact\ContactPresenter(%mapy.apiKey%)
 	- App\Core\AdminAuthenticator
-	- App\Model\Settings\AppSettings(%wwwDir%, %settings.resourcesDir%)
+	- App\Model\Settings\AppSettings(%wwwDir%, %settings.resourcesDir%, %settings.tinyMceDir%)
 	- App\Model\Settings\SeoSettings(%seo.title%, %seo.keywords%, %seo.description%)
 	- App\Model\Settings\ShopInfo(%shopInfo%, %openingHours%)
 

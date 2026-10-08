@@ -29,6 +29,7 @@ parameters:
 
 	settings:
 		resourcesDir: '%wwwDir%/resources'
+		tinyMceDir: '%wwwDir%/assets/javascript'
 
 
 application:
