@@ -492,8 +492,12 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Helpers
 
-    public function getDirName(int $galleryId): string
+    public function getDirName(?int $galleryId): string
     {
+        if ($galleryId === null) {
+            throw new \LogicException('The gallery has no id, so it has no folder.');
+        }
+
         return $this->fileSystem->joinPaths($this->appSettings->resourcesDir, self::DEFAULT_DIR . $galleryId);
     }
 }
