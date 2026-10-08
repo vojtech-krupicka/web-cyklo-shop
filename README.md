@@ -225,7 +225,7 @@ Only `www/` may be web-accessible. `app/`, `config/`, `log/`, `temp/` and `vendo
 *Once, to prepare the server*
 
 1. If the host allows it, set the document root to the `www/` folder. Otherwise the project root is served, and the root `.htaccess` (`Require all denied`) plus `www/.htaccess` are your safety net.
-2. Create `log/`, `temp/` and `www/resources/` (with `images`, `files` and `galleries` inside) and make them writable by the web server.
+2. Make `log/`, `temp/` and `www/resources/` writable by the web server. `log/` and `temp/` are created by the first deployment (each holds a `.htaccess` that denies web access); create `www/resources/` yourself, the `images`, `files` and `galleries` folders below it appear on first use.
 3. Create the database and apply `db/migrations/0001_create_schema.sql` with the host's database tool. Skip `0002` and `0003`: they contain mock content and test accounts.
 4. Create the first admin. Make a bcrypt hash (any machine with PHP; here in the dev container) and insert the member:
 
