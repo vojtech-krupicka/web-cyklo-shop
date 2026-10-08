@@ -31,6 +31,17 @@ abstract class PresenterTestCase extends DatabaseTestCase
         return $presenter->run(new Request($name, $method, $params, $post));
     }
 
+    /**
+     * Submits a form component the way a browser does: POST with the "<form>-submit" signal.
+     *
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $params
+     */
+    protected function submitForm(string $presenter, string $form, array $post, array $params = []): Response
+    {
+        return $this->runPresenter($presenter, ['do' => "$form-submit"] + $params, 'POST', $post);
+    }
+
     /** Renders the whole page (layout, menus, footer) and returns the HTML. */
     protected function renderPage(Response $response): string
     {
