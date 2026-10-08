@@ -67,8 +67,12 @@ Bugs found by the new tests while porting the code:
 
 - The file manager's delete action accepted paths containing `../`, which allowed deleting files
   outside the upload folder. File names are now reduced to a plain name.
-- Forms are protected by Nette's same-origin check. Admin actions triggered by links (activate,
-  delete, move, log out) are still plain GET requests without tokens.
+- The file manager accepted any file type, including `.php`, into the publicly served upload
+  folder, which allowed remote code execution by any signed-in member. It now accepts only images
+  and an allowlist of document types, and `www/resources/.htaccess` denies script execution there
+  as a second layer.
+- Forms and signal links (activate, delete, move, log out) require a same-origin request, as
+  enforced by Nette 3.3; there are no per-request tokens.
 
 ### Known limitations
 

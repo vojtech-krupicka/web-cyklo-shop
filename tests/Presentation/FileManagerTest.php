@@ -5,6 +5,7 @@ namespace Tests\Presentation;
 use Nette\Application\Response;
 use Nette\Application\Responses\RedirectResponse;
 use Nette\Http\FileUpload;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\PresenterTestCase;
 
 final class FileManagerTest extends PresenterTestCase
@@ -37,6 +38,22 @@ final class FileManagerTest extends PresenterTestCase
         $this->assertFileExists($path, 'the TinyMCE list was generated in the sandbox');
 
         return (string) file_get_contents($path);
+    }
+
+    /** @return list<string> names of all files stored anywhere below the upload sandbox */
+    private function storedFileNames(): array
+    {
+        if (!is_dir($this->resourcesDir())) {
+            return [];
+        }
+
+        $names = [];
+        $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->resourcesDir(), \FilesystemIterator::SKIP_DOTS));
+        foreach ($files as $file) {
+            $names[] = $file->getFilename();
+        }
+
+        return $names;
     }
 
     // region page
@@ -161,5 +178,52 @@ final class FileManagerTest extends PresenterTestCase
         $this->signal('AdminModule:File', 'delete', ['fileName' => '../tajne.txt', 'img' => 1]);
 
         $this->assertFileExists($outside, 'a path with ../ must not leave the images folder');
+    }
+
+    // region upload: scripts must never be stored (regression: unrestricted file upload / RCE)
+
+    /** @return iterable<string, array{string}> */
+    public static function provideExecutableNames(): iterable
+    {
+        foreach (['php', 'phtml', 'phar', 'pht', 'php5', 'php7', 'php8', 'PHP', 'pHp'] as $extension) {
+            yield ".$extension" => ["shell.$extension"];
+        }
+    }
+
+    #[DataProvider('provideExecutableNames')]
+    public function testScriptsAreRefusedBecauseTheyWouldRunOnTheServer(string $name): void
+    {
+        $this->uploadFile($this->upload($name, '<?php echo "pwned";'));
+
+        $stored = array_filter(
+            $this->storedFileNames(),
+            fn(string $file) => preg_match('#\.(ph(p\d?|tml|ar|t)|phps)$#i', $file) === 1,
+        );
+        $this->assertSame([], array_values($stored), 'no executable file may end up in the web root');
+    }
+
+    public function testACustomNameCannotSmuggleInAScriptExtension(): void
+    {
+        $this->uploadFile($this->upload('harmless.txt', '<?php echo "pwned";'), ['name' => 'shell.php']);
+
+        $this->assertSame([], preg_grep('#\.ph(p\d?|tml|ar|t)$#i', $this->storedFileNames()) ?: []);
+    }
+
+    public function testAnImageNamedAsAScriptIsStoredAsAnImage(): void
+    {
+        $this->uploadFile($this->uploadImage('photo.php'));
+
+        $this->assertFileExists($this->images() . '/photo.png', 'the extension comes from the real image type');
+        $this->assertFileDoesNotExist($this->images() . '/photo.php');
+        $this->assertFileDoesNotExist($this->files() . '/photo.php');
+    }
+
+    public function testOrdinaryDocumentsAreStillAccepted(): void
+    {
+        foreach (['dokument.pdf', 'poznamky.txt', 'archiv.zip', 'text.docx'] as $name) {
+            $this->uploadFile($this->upload($name, 'content of ' . $name));
+
+            $this->assertFileExists($this->files() . '/' . $name, $name);
+        }
     }
 }

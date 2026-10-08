@@ -5,13 +5,22 @@ namespace App\Presentation\AdminModule\File;
 use App\Presentation\AdminModule;
 use App\Model;
 use Nette\Application\UI\Form;
+use Nette\Forms\Control;
 use Nette\Forms\Rendering\DefaultFormRenderer;
+use Nette\Http\FileUpload;
 use Nette\Utils\FileSystem;
 
 final class FilePresenter extends AdminModule\BaseSecuredPresenter
 {
     const string DEFAULT_IMAGES_DIR = 'images';
     const string DEFAULT_FILES_DIR = 'files';
+
+    /**
+     * Extensions accepted for files that are not images (images get their real extension from
+     * their content). Everything else, above all scripts such as .php, is refused, because the
+     * upload folder is below the web root.
+     */
+    const array ALLOWED_FILE_EXTENSIONS = ['pdf', 'txt', 'csv', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'zip'];
 
     public function __construct(
         private FileSystem $fileSystem,
@@ -62,7 +71,11 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
         // File
         $form
             ->addUpload('file', '*Soubor:')
-            ->setRequired('Musíte vložit soubor, který chcete nahrát!');
+            ->setRequired('Musíte vložit soubor, který chcete nahrát!')
+            ->addRule(
+                fn(Control $control): bool => !$control->getValue() instanceof FileUpload || self::isAllowedUpload($control->getValue()),
+                'Tento typ souboru nelze nahrát. Povoleny jsou obrázky a soubory typu: ' . implode(', ', self::ALLOWED_FILE_EXTENSIONS) . '.',
+            );
 
         // Allow owerride
         $form
@@ -87,9 +100,15 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
             $this->redirect('this');
         }
 
+        // The form rule already refuses these; checked again here because this is the security boundary
+        if (!self::isAllowedUpload($values->file)) {
+            $this->flashMessage("Soubor '{$values->file->getSanitizedName()}' tohoto typu nelze nahrát!", 'error');
+            $this->redirect('this');
+        }
+
         $fileName = $values->file->getSanitizedName();
         $parts = explode('.', $fileName);
-        $extension = array_pop($parts);
+        $extension = strtolower(array_pop($parts));
         $fileName = join('.', $parts);
 
         $newFileName = ($form->values->name) ? \Nette\Utils\Strings::webalize($form->values->name) : $fileName;
@@ -126,6 +145,20 @@ final class FilePresenter extends AdminModule\BaseSecuredPresenter
     }
 
     // #region Helpers
+
+    /**
+     * Images are always stored with the extension of their real type; any other file must have an allowed extension.
+     */
+    public static function isAllowedUpload(FileUpload $file): bool
+    {
+        if (!$file->isOk() || $file->isImage()) {
+            return true;
+        }
+
+        $extension = strtolower(pathinfo($file->getSanitizedName(), PATHINFO_EXTENSION));
+
+        return in_array($extension, self::ALLOWED_FILE_EXTENSIONS, true);
+    }
 
     public function getDirName(string $folder): string
     {

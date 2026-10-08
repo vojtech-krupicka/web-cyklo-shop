@@ -257,9 +257,10 @@ Before the first public deployment: test the real 404 and 500 pages with debug o
 ## Security notes
 
 - **Passwords** are hashed with `Nette\Security\Passwords` (bcrypt). The development accounts use a known password and must not exist in production.
-- **Forms** use Nette's same-origin check against CSRF. Admin actions triggered by links (activate, delete, move, log out) are plain GET signals, so they rely on the admin being logged in and are not protected by tokens. Treat that as a known weakness.
-- **Uploads** are written below `www/resources`, which is publicly readable. Image uploads are checked by content type, other files are accepted as they are.
-- Only the admin can reach the upload and file-manager code, and deleting a file refuses paths that leave the upload folder (covered by a test).
+- **CSRF**: Nette 3.3 requires a same-origin request (the `Sec-Fetch-Site` header sent by browsers) for every form submission and every `handle*()` signal, so a link on another site cannot trigger the delete, move or log-out actions. There are no per-request tokens; very old browsers without that header are not covered.
+- **Uploads** are written below `www/resources`, which is publicly readable and therefore must never execute anything. Two layers: the file manager accepts only images (stored with their real extension) and a short allowlist of document types (`FilePresenter::ALLOWED_FILE_EXTENSIONS`), and `www/resources/.htaccess` denies scripts in that folder. Both are covered by tests; the second layer needs Apache with `.htaccess` enabled, on other servers deny script execution there yourself.
+- All signed-in members have the same rights: the `role` column is stored but not checked, so give accounts only to people you trust with the whole admin, including uploads.
+- Deleting a file refuses paths that leave the upload folder (covered by a test).
 - The map key is public by design; restrict it by domain.
 - The TinyMCE 3 and jQuery copies in `www/assets/javascript` are old and unmaintained. Update or replace them before using this for anything real.
 
