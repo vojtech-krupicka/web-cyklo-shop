@@ -23,5 +23,9 @@
     "editor.defaultFormatter": "lkrms.pretty-php",
     "editor.insertSpaces": true,
     "editor.tabSize": 4
+  },
+  "[json]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": false
   }
 }
