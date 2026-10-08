@@ -47,6 +47,16 @@ abstract class PresenterTestCase extends DatabaseTestCase
         return $this->runPresenter($presenter, ['do' => "$form-submit"] + $params, 'POST', $post, $files);
     }
 
+    /**
+     * Fires a signal (handleXxx) the way a clicked link does: GET with the "do" parameter.
+     *
+     * @param array<string, mixed> $params signal arguments and action parameters
+     */
+    protected function signal(string $presenter, string $signal, array $params = [], string $action = 'default'): Response
+    {
+        return $this->runPresenter($presenter, ['action' => $action, 'do' => $signal] + $params);
+    }
+
     /** The sandbox directory for uploads (see config/local.test.neon). */
     protected function resourcesDir(): string
     {

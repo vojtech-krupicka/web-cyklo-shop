@@ -142,7 +142,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
         $this->galleryFacade->persist($gallery);
 
-        $dirName = $this->getDirName() . $gallery->id;
+        $dirName = $this->getDirName($gallery->id);
         $this->fileSystem->createDir($dirName);
 
         $this->flashMessage("Galerie '{$gallery->name}' byla úspěšně vytvořena.", 'info');
@@ -286,7 +286,7 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
             $this->redirect('this');
         }
 
-        $dirName = $this->getDirName() . $this->gallery->id;
+        $dirName = $this->getDirName($this->gallery->id);
         $this->fileSystem->createDir($dirName);
 
         $index = 0;
@@ -431,6 +431,13 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
         if (!$media) {
             $this->flashMessage("Obrázek s id '#" . $mediaId . "' neexistuje!", 'error');
         } else {
+            $this->galleryFacade->deleteMedia($media);
+
+            $dirName = $this->getDirName($media->galleryId);
+            $fileName = $media->filename;
+            $this->fileSystem->delete($this->fileSystem->joinPaths($dirName, $fileName));
+            $this->fileSystem->delete($this->fileSystem->joinPaths($dirName, 'thumb_' . $fileName));
+
             $index = 0;
             $allMedia = $this->galleryFacade->getGalleryItems($media->galleryId, false);
             foreach ($allMedia as $index => $m) {
@@ -438,13 +445,6 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
                 $this->galleryFacade->persistMedia($m);
                 $index++;
             }
-
-            $this->galleryFacade->deleteMedia($media);
-
-            $dirName = $this->getDirName();
-            $fileName = $media->filename;
-            $this->fileSystem->delete($this->fileSystem->joinPaths($dirName, $fileName));
-            $this->fileSystem->delete($this->fileSystem->joinPaths($dirName, 'thumb_' . $fileName));
 
             $this->flashMessage("Popisek obrázku '#" . $mediaId . ' - ' . $media->filename . "' byl úspěšně smazán!", 'info');
         }
@@ -464,22 +464,20 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
             $this->flashMessage("Obrázek s id '#" . $mediaId . "' neexistuje!", 'error');
         } else {
             $siblingMedia = $this->galleryFacade->getGalleryItems($media->galleryId, false);
-            $siblingKeys = array_keys($siblingMedia);
-            $index = array_search($media->id, $siblingKeys, true);
+            $index = array_search($media->id, array_column($siblingMedia, 'id'), true);
 
             if ($index !== false) {
                 $swapIndex = $up ? $index - 1 : $index + 1;
                 $swapIndex = max(0, min($swapIndex, count($siblingMedia) - 1));
-                if (isset($siblingMedia[$siblingKeys[$swapIndex]])) {
-                    $swapItem = $siblingMedia[$siblingKeys[$swapIndex]];
-                    $tempOrder = $media->sortOrder;
-                    $media->sortOrder = $swapItem->sortOrder;
-                    $swapItem->sortOrder = $tempOrder;
-                    $this->galleryFacade->persistMedia($media);
-                    $this->galleryFacade->persistMedia($swapItem);
 
-                    $this->flashMessage("Obrázek '#" . $mediaId . ' - ' . $media->filename . "' byl úspěšně přesunut!", 'info');
-                }
+                $swapItem = $siblingMedia[$swapIndex];
+                $tempOrder = $media->sortOrder;
+                $media->sortOrder = $swapItem->sortOrder;
+                $swapItem->sortOrder = $tempOrder;
+                $this->galleryFacade->persistMedia($media);
+                $this->galleryFacade->persistMedia($swapItem);
+
+                $this->flashMessage("Obrázek '#" . $mediaId . ' - ' . $media->filename . "' byl úspěšně přesunut!", 'info');
             } else {
                 $this->flashMessage("Obrázek '#" . $mediaId . ' - ' . $media->filename . "' nelze přesunout!", 'error');
             }
@@ -494,8 +492,8 @@ final class GalleryPresenter extends AdminModule\BaseSecuredPresenter
 
     // #region Helpers
 
-    public function getDirName(): string
+    public function getDirName(int $galleryId): string
     {
-        return $this->fileSystem->joinPaths($this->appSettings->resourcesDir, self::DEFAULT_DIR);
+        return $this->fileSystem->joinPaths($this->appSettings->resourcesDir, self::DEFAULT_DIR . $galleryId);
     }
 }

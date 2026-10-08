@@ -75,7 +75,7 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
 
     public function handleDelete(int $itemId): void
     {
-        $item = $this->menuItemsFacade->getMenuItemById($itemId);
+        $item = $this->menuItemsFacade->getMenuItemById($itemId, activeOnly: false);
         if (!$item) {
             $this->flashMessage("Položka menu s id #$itemId nebyla nalezena.", 'error');
         } else {
@@ -111,20 +111,18 @@ final class CmsPresenter extends AdminModule\BaseSecuredPresenter
             $this->flashMessage("Položka menu s id #$itemId nebyla nalezena.", 'error');
         } else {
             $siblingItems = $this->menuItemsFacade->getMenuItems($item->parentId, false, 'ASC');
-            $siblingKeys = array_keys($siblingItems);
-            $index = array_search($item->id, $siblingKeys, true);
+            $index = array_search($item->id, array_column($siblingItems, 'id'), true);
 
             if ($index !== false) {
                 $swapIndex = $up ? $index - 1 : $index + 1;
                 $swapIndex = max(0, min($swapIndex, count($siblingItems) - 1));
-                if (isset($siblingItems[$siblingKeys[$swapIndex]])) {
-                    $swapItem = $siblingItems[$siblingKeys[$swapIndex]];
-                    $tempOrder = $item->sortOrder;
-                    $item->sortOrder = $swapItem->sortOrder;
-                    $swapItem->sortOrder = $tempOrder;
-                    $this->menuItemsFacade->persist($item);
-                    $this->menuItemsFacade->persist($swapItem);
-                }
+
+                $swapItem = $siblingItems[$swapIndex];
+                $tempOrder = $item->sortOrder;
+                $item->sortOrder = $swapItem->sortOrder;
+                $swapItem->sortOrder = $tempOrder;
+                $this->menuItemsFacade->persist($item);
+                $this->menuItemsFacade->persist($swapItem);
             }
         }
 
