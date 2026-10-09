@@ -5,6 +5,8 @@ All notable changes to this project are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
 ## [1.0.0] - 2026-10-08
 
 First release of the rewrite from Nette 2.0.4 (PHP 5.3) to Nette 3.3 (PHP 8.4). It replaces the
@@ -83,4 +85,5 @@ Bugs found by the new tests while porting the code:
 - The snippet names redrawn by some admin handlers do not match the snippets in the templates, so
   AJAX updates in the gallery editor show only the flash message.
 
+[Unreleased]: https://github.com/vojtech-krupicka/web-cyklo-shop/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/vojtech-krupicka/web-cyklo-shop/releases/tag/v1.0.0

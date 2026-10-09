@@ -148,6 +148,11 @@ create (for example `/tmp/Tester`, `temp/`, `log/`) become unwritable for the `d
   Do not let an editor auto-format the SQL files in `db/migrations/`.
 - Tests use the separate `app_test` database. Never point tests at the development database.
 
+**Changelog**
+- Record every user-visible change, fix or security fix in `CHANGELOG.md` under `## [Unreleased]`
+  (sections Added, Changed, Deprecated, Removed, Fixed, Security). On release, rename the section to
+  the version and date and add a fresh empty `[Unreleased]`.
+
 **Code style**
 - PHP: 4 spaces. NEON: tabs. Both are set in `.editorconfig`.
 - Tracy must stay off in production.
