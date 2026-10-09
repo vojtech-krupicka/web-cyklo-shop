@@ -1,0 +1,63 @@
+{
+  "name": "vojtech-krupicka/web-cyklo-shop",
+  "description": "Small CMS and website for a bike shop, rewritten from Nette 2.0.4 to Nette 3.3 as a learning project.",
+  "keywords": [
+    "nette",
+    "cms",
+    "learning"
+  ],
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Vojtěch Krupička"
+    }
+  ],
+  "require": {
+    "php": ">= 8.2",
+    "nette/application": "^3.2.3",
+    "nette/assets": "^1.0.0",
+    "nette/bootstrap": "^3.2.6",
+    "nette/caching": "^3.2",
+    "nette/database": "^3.2",
+    "nette/di": "^3.2",
+    "nette/forms": "^3.2",
+    "nette/http": "^3.3",
+    "nette/security": "^3.2",
+    "nette/utils": "^4.0",
+    "latte/latte": "^3.1",
+    "tracy/tracy": "^2.10"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1",
+    "phpstan/extension-installer": "^1.4",
+    "nette/phpstan-rules": "^1.0",
+    "phpunit/phpunit": "^13.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "psr": "composer dump-autoload --optimize --strict-psr --strict-ambiguous",
+    "phpstan": "phpstan analyse --memory-limit=1G",
+    "test": "@php -d xdebug.mode=off vendor/bin/phpunit",
+    "test:db": "db/test-reset",
+    "check": [
+      "@psr",
+      "@phpstan"
+    ]
+  },
+  "minimum-stability": "stable",
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
+  }
+}

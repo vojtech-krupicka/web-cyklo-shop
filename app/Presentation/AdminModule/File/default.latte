@@ -1,0 +1,50 @@
+{block #content}
+
+{control fileAdd}
+
+<h2>Soubory</h2>
+{if count($files)}
+<div class="gallery-items">
+    <div n:foreach="$files as $file" class="item">
+        <div class="info">
+            Název souboru: <a href="{$file->webPath|noescape}" title="{$file->fileName}">{$file->fileName}</a><br />
+            Velikost: <strong>{$file->fileSize|bytes}</strong><br />
+            Vytvořeno: <strong>{$file->modified|date:'H:i:s d.m.Y'}</strong>
+        </div>
+        <div class="tools">
+            <ul>
+                <li><a n:href="delete! fileName => $file->fileName, img => false" title="Smazat soubor" onclick="return confirm('Opravdu chcete smazat tento soubor? Tato akce je permamentní!');"><img class="delete" n:asset="images/x.png" alt="" /></a></li>
+            </ul>
+        </div>
+        <div class="cleaner"></div>
+    </div>
+</div>
+{else}
+<div class="nothingToShow">Nebyly nalezeny žádné soubory!</div>
+{/if}
+
+<h2>Obrázky</h2>
+{if count($images)}
+<div class="gallery-items">
+    <div n:foreach="$images as $image" class="item">
+        <div class="left">
+            <a rel="shadowbox[images1]" href="{$image->webPath|noescape}" title="{$image->fileName}">
+                <img src="{$image->webPath|noescape}" alt="{$image->fileName}" />
+            </a>
+        </div>
+        <div class="info">
+            Název souboru: <a rel="shadowbox[images2]" href="{$image->webPath}" title="{$image->fileName}">{$image->fileName}</a><br />
+            Velikost: <strong>{$image->fileSize|bytes}</strong><br />
+            Vytvořeno: <strong>{$image->modified|date:'H:i:s d.m.Y'}</strong>
+        </div>
+        <div class="tools">
+            <ul>
+                <li><a n:href="delete! fileName => $image->fileName, img => true" title="Smazat soubor" onclick="return confirm('Opravdu chcete smazat tento soubor? Tato akce je permamentní!');"><img class="delete" n:asset="images/x.png" alt="" /></a></li>
+            </ul>
+        </div>
+        <div class="cleaner"></div>
+    </div>
+</div>
+{else}
+<div class="nothingToShow">Nebyly nalezeny žádné obrázky!</div>
+{/if}

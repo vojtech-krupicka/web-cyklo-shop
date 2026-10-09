@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Apply pending SQL migrations from db/migrations/*.sql, in filename order.
+# Applied files are recorded in the `schema_migrations` table, so re-running is safe.
+#
+# Usage: db/migrate
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+source db/lib/db.sh
+
+shopt -s nullglob
+files=(db/migrations/*.sql)
+
+mysql_cli -e "CREATE TABLE IF NOT EXISTS schema_migrations (
+  version    VARCHAR(255) NOT NULL PRIMARY KEY,
+  applied_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+)"
+
+applied=$(mysql_cli -N -B -e "SELECT version FROM schema_migrations")
+count=0
+
+for file in "${files[@]}"; do
+  version=$(basename "$file")
+
+  if [[ ! "$version" =~ ^[A-Za-z0-9_.-]+$ ]]; then
+    echo "Skipping $version: use only letters, digits, _ . - in migration names" >&2
+    continue
+  fi
+
+  if grep -qxF "$version" <<<"$applied"; then
+    continue
+  fi
+
+  echo "Applying $version"
+  mysql_cli < "$file"
+  mysql_cli -e "INSERT INTO schema_migrations (version) VALUES ('$version')"
+  count=$((count + 1))
+done
+
+if [[ $count -eq 0 ]]; then
+  echo "Nothing to migrate."
+else
+  echo "Applied $count migration(s)."
+fi

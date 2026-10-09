@@ -1,0 +1,43 @@
+<?php declare(strict_types=1);
+
+namespace App\Presentation\FrontModule\Gallery;
+
+use App\Presentation\FrontModule;
+use App\Model;
+
+final class GalleryPresenter extends FrontModule\BasePresenter
+{
+    public function __construct(
+        private Model\Gallery\GalleryFacade $galleryFacade
+    ) {}
+
+    public function renderDefault(): void
+    {
+        $this->template->pageHeading = 'Galerie';
+        $this->addBreadcrumbItem('Gallery', 'Galerie');
+
+        $this->template->galleries = $this->galleryFacade->getGalleries(true, 'added ASC');
+    }
+
+    public function renderDetail(int $id): void
+    {
+        $gallery = $this->galleryFacade->getGallery($id);
+        if ($gallery) {
+            $this->template->gallery = $gallery;
+            $this->template->galleryItems = $this->galleryFacade->getGalleryItems($id, true, 'sort_order ASC');
+
+            $this->template->pageHeading = $gallery->name;
+            $this->addBreadcrumbItem('Gallery', 'Galerie');
+            $this->addBreadcrumbItem('Gallery', $gallery->name, 'detail', 'id', $gallery->id);
+        } else {
+            $this->flashMessage("Galerie s id '#" . $id . "' neexistuje!", 'error');
+            $this->redirect(':FrontModule:Gallery:default', array('id' => null));
+        }
+    }
+
+    public function getRandomGalleryItem(int $galleryId): ?Model\Gallery\GalleryMediaEntity
+    {
+        $result = $this->galleryFacade->getGalleryItems($galleryId, true, 'RAND()', 1);
+        return array_pop($result);
+    }
+}

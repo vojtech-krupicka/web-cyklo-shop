@@ -1,0 +1,19 @@
+{block #content}
+
+{if $gallery}
+    <div class="gallery">
+    {foreach $gallery as $item}
+        <div n:class="item, ($iterator->first) ? itemFirst, ($iterator->last) ? itemLast">
+            <a n:href=":FrontModule:Gallery:detail id => $item->galleryId" title="{$item->title}">
+                <img src="{$baseUrl}/resources/galleries/gallery_{$item->galleryId}/thumb_{$item->filename}" alt="{$item->title}" />
+            </a>
+        </div>
+    {/foreach}
+    </div>
+{/if}
+
+<div class="wysiwyg">
+{$homepage->content|noescape}
+</div>
+
+{/block}

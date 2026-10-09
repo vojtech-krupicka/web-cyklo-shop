@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs">
+<head>
+	<meta http-equiv="Content-Language" content="cs" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="author" content="Cyklo shop" />
+	<meta name="keywords" content="{$seoKeywords|striptags}" />
+	<meta name="description" content="{$seoDescription|striptags}" />
+	<meta name="robots" content="index, follow" />
+	{block meta}{/block}
+
+	<title>.: Cyklo shop{if $seoTitle} | {$seoTitle|striptags}{/if} :.</title>
+
+	{asset 'css/style.css'}
+	{asset 'css/shadowbox.css'}
+	{block css}{/block}
+
+    <link rel="icon" type="image/x-icon" href="{asset 'css/images/favicon.ico'}">
+
+    {asset "javascript/jquery.js"}
+    {asset "javascript/shadowbox.js"}
+    <script src="https://unpkg.com/nette-forms@3"></script>
+    <script src="https://unpkg.com/naja@3/dist/Naja.min.js"></script>
+    {asset "javascript/app.js"}
+    {asset "javascript/tiny_mce/jquery.tinymce.js"}
+
+	<script type="text/javascript">
+	// <![CDATA[
+		var baseUrl = {$baseUrl};
+	// ]]>
+	</script>
+
+    {asset "javascript/tinymce.config.lite.js"}
+	{block js}{/block}
+
+	<script type="text/javascript">
+	// <![CDATA[
+		$(document).ready(function(){
+			// Initialize shadowbox
+			Shadowbox.init({
+				counterType: "skip",
+				continuous: true,
+				overlayColor: '#000011',
+				overlayOpacity: 0.8
+			});
+
+			// Initialize MCE editor
+			$('.mceEditorLite').tinymce(HassaMceConfigLite);
+		});
+	// ]]>
+	</script>
+</head>
+
+<body>
+
+	<div id="headerWrapper">
+
+		<div id="header">
+
+			<div class="logo">
+				<h1>{$shopInfo->name|noescape}</h1>
+				<a n:href=":FrontModule:Homepage:" title="{$shopInfo->name|noescape}">
+					{asset "css/images/bg-logo.png"}
+				</a>
+			</div>
+
+			<div class="menu">
+				{control mainMenu:flat}
+			</div>
+
+			<div class="cleaner"></div>
+		</div>
+
+	</div>
+
+	<div id="middleWrapper">
+
+		<div id="middle">
+
+			<div id="left">
+				{control cmsMenu:sidebar $activeItemId}
+			</div>
+
+			<div id="content">
+				{snippet flashes}
+				<div n:if="$flashes" class="flashes">
+					<ul n:foreach="$flashes as $flash">
+						<li class="{$flash->type}">{$flash->message}</li>
+					</ul>
+				</div>
+				{/snippet}
+
+                {control breadcrumb items: $breadcrumbItems}
+
+                <h1 n:ifset="$pageHeading">{$pageHeading}</h1>
+
+				{include #content}
+			</div>
+
+			<div class="cleaner"></div>
+
+		</div>
+
+	</div>
+
+	<div class="cleaner"></div>
+
+	<div id="footerWrapper">
+		<div id="footer">
+			<div class="top">
+				<div class="box boxFirst">
+					<h2>Kde nás najdete?</h2>
+					<dl>
+						<dt><a href="{$shopInfo->url}" title="{$shopInfo->name|noescape}">{$shopInfo->name|noescape}</a></dt>
+						<dt>{$shopInfo->street|noescape}</dt>
+						<dt>{$shopInfo->city|noescape}</dt>
+						<dt><a n:href=":FrontModule:Contact:default#toc_map" title="Mapa">(mapa {asset 'css/images/icon-new-window.png'})</a></dt>
+					</dl>
+					<dl>
+						<dt>tel/fax:</dt>
+						<dd>{$shopInfo->phone|noescape}</dd>
+
+						<dt>mobil:</dt>
+						<dd>{$shopInfo->mobile|noescape}</dd>
+
+						<dt>email:</dt>
+						<dd>
+							<a href="mailto:{$shopInfo->email}" title="{$shopInfo->email}">{$shopInfo->email}</a>
+						</dd>
+
+						<dt>IČ:</dt>
+						<dd>{$shopInfo->ico|noescape}</dd>
+					</dl>
+				</div>
+
+				<div class="box">
+					<h2>Otevírací doba:</h2>
+					<dl>
+                        {foreach $openingHours as $item}
+						<dt>{$item->key|noescape}:</dt>
+						<dd class="right">{$item->value|breakLines|noescape}</dd>
+                        {/foreach}
+					</dl>
+				</div>
+
+				<div class="box boxLast">
+					{control cmsMenu:footer heading: "Těšíme se na Vaší návštěvu!"}
+				</div>
+			</div>
+
+			<div class="bottom">
+				<div class="menu">
+					{control mainMenu:flat}
+				</div>
+
+				<div class="copyright"><p>Copyright &copy; 2002 - 2026 <a href="{$shopInfo->url}" title="{$shopInfo->name|noescape}">{$shopInfo->name|noescape}</a> | <a n:href=":AdminModule:Default:">Administrační systém</a>.</p></div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

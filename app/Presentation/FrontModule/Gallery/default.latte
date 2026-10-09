@@ -1,0 +1,23 @@
+{block #content}
+
+{if $galleries}
+	<div class="gallery">
+	{foreach $galleries as $gallery}
+		{var $item = $presenter->getRandomGalleryItem($gallery->id)}
+		{if $item}
+		<div n:class="item, (($iterator->counter-1) % 3 == 0) ? itemFirst, (($iterator->counter-1) % 3 == 2) ? itemLast">
+			<a n:href=":FrontModule:Gallery:detail id => $item->galleryId" title="{$gallery->name}">
+				<img src="{$baseUrl}/resources/galleries/gallery_{$item->galleryId}/thumb_{$item->filename}" alt="{$item->title}" />
+			</a>
+			<div class="info">
+				<h2><a n:href=":FrontModule:Gallery:detail id => $item->galleryId" title="{$gallery->name}">{$gallery->name}</a></h2>
+				<div class="time">{$gallery->added|date:"H:i:s d.m.Y"}</div>
+				<p>{$gallery->description|truncate:64}</p>
+			</div>
+		</div>
+		{/if}
+	{/foreach}
+	</div>
+{else}
+	<div class="nothingToShow">Nebyly nalezeny žádné galerie</div>
+{/if}

@@ -1,0 +1,68 @@
+# see https://doc.nette.org/en/configuring
+
+parameters:
+	seo:
+		title: "Prodej a servis jízdních kol"
+		keywords: "cyklo, shop, jízdní kola, prodej, servis"
+		description: "Cyklocentrum, prodej a servis jízdních kol, příslušenství a cyklistického oblečení."
+
+	shopInfo:
+		name: "Cyklo&nbsp;shop"
+		url: "https://www.example.com"
+		street: "Hlavní&nbsp;123"
+		city: "123&nbsp;45&nbsp;Město"
+		phone: "+420&nbsp;123&nbsp;456&nbsp;789"
+		mobile: "+420&nbsp;123&nbsp;456&nbsp;789"
+		email: "info@example.com"
+		ico: "12345678"
+		location:
+			lon: 15.1234
+			lat: 49.9876
+
+	openingHours:
+		- key: "Po - Pá"
+		  value: "8:00 - 11:30\n13:00 - 17:00"
+		- key: "So"
+		  value: "8:00 - 11:30"
+		- key: "Ne"
+		  value: "zavřeno"
+
+	settings:
+		resourcesDir: '%wwwDir%/resources'
+		tinyMceDir: '%wwwDir%/assets/javascript'
+
+
+application:
+	errorPresenter:
+		4xx: Error:Error4xx
+		5xx: Error:Error5xx
+	mapping: App\Presentation\*\**Presenter
+
+
+database:
+	dsn: '%database.driver%:host=%database.host%;dbname=%database.dbname%'
+	user: %database.user%
+	password: %database.password%
+
+
+latte:
+	strictParsing: yes
+	extensions:
+		- App\Presentation\Accessory\LatteExtension
+
+
+assets:
+	mapping:
+		default:
+			path: assets
+
+
+di:
+	export:
+		parameters: no
+		tags: no
+
+session:
+	expiration: 14 days
+	autoStart: smart
+

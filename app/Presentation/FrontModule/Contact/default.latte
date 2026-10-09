@@ -1,0 +1,83 @@
+{block #content}
+<div class="contact">
+	<h2 id="toc_info">{$shopInfo->name|noescape}</h2>
+	<dl>
+		<dt>Prodej a servis jízdních kol</dt>
+		<dt>Adresa:</dt>
+			<dd>{$shopInfo->street|noescape}</dd>
+			<dd>{$shopInfo->city|noescape}</dd>
+		<dt>Telefon:</dt>
+			<dd>{$shopInfo->phone|noescape}</dd>
+		<dt>Mobil:</dt>
+			<dd>{$shopInfo->mobile|noescape}</dd>
+		<dt>E-mail:</dt>
+			<dd><a href="mailto:{$shopInfo->email}" title="{$shopInfo->email}">{$shopInfo->email}</a></dd>
+		<dt>WWW:</dt>
+			<dd><a href="{$shopInfo->url}" title="{$shopInfo->url}">{$shopInfo->url}</a></dd>
+		<dt>IČ:</dt>
+			<dd>{$shopInfo->ico|noescape}</dd>
+	</dl>
+
+	<div class="image">
+		<div class="gallery">
+			<div class="item">
+				<a rel="shadowbox[contact]" href="{asset? "images/promo1.jpg"}" title="{$shopInfo->name|noescape}">{asset? "images/promo1_thumb.jpg"}</a>
+			</div>
+			<div class="item">
+				<a rel="shadowbox[contact]" href="{asset? "images/promo2.jpg"}" title="{$shopInfo->name|noescape}">{asset? "images/promo2_thumb.jpg"}</a>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="cleaner"></div>
+
+
+	<h2 id="toc_open">Otevírací doba</h2>
+	<table>
+		<tr n:foreach="$openingHours as $item">
+			<th class="left" style="width: 50%;">{$item->key|noescape}</th>
+			<td class="right">{$item->value|breakLines|noescape}</td>
+		</tr>
+		<tr>
+			<td class="left" colspan="3" style="font-style: italic;">Pozn.: v případě nutnosti je možné otvírací dobu po domluvě libovolně prodloužit.</td>
+		</tr>
+	</table>
+
+
+	<h2 id="toc_map">Mapa</h2>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+	<div id="mapa"></div>
+	<script>
+		(function () {
+			var lat = {$shopInfo->location->lat}, lon = {$shopInfo->location->lon};
+			var map = L.map('mapa').setView([lat, lon], 16);
+
+			L.tileLayer('https://api.mapy.com/v1/maptiles/basic/256/{l}z{r}/{l}x{r}/{l}y{r}?apikey=' + {$mapyApiKey}, {
+				minZoom: 0,
+				maxZoom: 19,
+				attribution: '<a href="https://api.mapy.com/copyright" target="_blank" rel="noopener">&copy; Seznam.cz a.s. a další</a>'
+			}).addTo(map);
+
+			L.marker([lat, lon]).addTo(map);
+
+			// Mapy.com logo is required by the API terms
+			var LogoControl = L.Control.extend({
+				options: { position: 'bottomleft' },
+				onAdd: function () {
+					var container = L.DomUtil.create('div');
+					var link = L.DomUtil.create('a', '', container);
+					link.href = 'https://mapy.com/';
+					link.target = '_blank';
+					link.rel = 'noopener';
+					link.innerHTML = '<img src="https://api.mapy.com/img/api/logo.svg" alt="Mapy.com" width="80">';
+					L.DomEvent.disableClickPropagation(link);
+					return container;
+				}
+			});
+			new LogoControl().addTo(map);
+		})();
+	</script>
+
+</div>

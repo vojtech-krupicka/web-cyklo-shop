@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs">
+<head>
+	<meta http-equiv="Content-Language" content="cs" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="author" content="hAssassin" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="robots" content="noindex, nofollow" />
+	{block meta}{/block}
+
+	<title>.: Cyklo shop | Administrační systém {if $pageHeading} | {$pageHeading|striptags}{/if}:.</title>
+
+    {asset 'css/admin/style.css'}
+	{asset 'css/shadowbox.css'}
+	{block css}{/block}
+
+	<link rel="icon" type="image/x-icon" href="{asset 'css/admin/images/favicon.ico'}">
+
+    {asset "javascript/jquery.js"}
+    {asset "javascript/shadowbox.js"}
+    <script src="https://unpkg.com/nette-forms@3"></script>
+    <script src="https://unpkg.com/naja@3/dist/Naja.min.js"></script>
+    {asset "javascript/app.js"}
+    {asset "javascript/tiny_mce/jquery.tinymce.js"}
+
+	<script type="text/javascript">
+	// <![CDATA[
+		var baseUrl = {$baseUrl};
+	// ]]>
+	</script>
+
+    {asset "javascript/tinymce.config.full.js"}
+    {asset "javascript/tinymce.config.lite.js"}
+    {asset "javascript/tinymce.filelist.js"}
+    {asset "javascript/tinymce.imagelist.js"}
+	{block js}{/block}
+
+	<script type="text/javascript">
+	// <![CDATA[
+		$(document).ready(function(){
+			// Initialize shadowbox
+			Shadowbox.init({
+				counterType: "skip",
+				continuous: true,
+				overlayColor: '#000011',
+				overlayOpacity: 0.8
+			});
+
+			// Initialize MCE editor
+			$('.mceEditorFull').tinymce(HassaMceConfigFull);
+			$('.mceEditorLite').tinymce(HassaMceConfigLite);
+		});
+	// ]]>
+	</script>
+</head>
+
+<body>
+
+	<div id="headerWrapper">
+
+		<div id="header">
+
+			<div class="logo">
+				<h1>{$shopInfo->name|noescape}</h1>
+				<h2>Hassa Framework 1.00 | http://www.example.com</h2>
+				<a n:href=":AdminModule:Default:" title="{$shopInfo->name|noescape}">
+                    {asset "css/images/bg-logo.png"}
+				</a>
+			</div>
+
+			<div class="cleaner"></div>
+		</div>
+
+	</div>
+
+	<div id="middleWrapper">
+
+		<div id="middle">
+
+			<div id="left">
+			{if $user->IsLoggedIn()}
+				<h2>Navigace</h2>
+				<div class="menu">
+					{control mainMenu}
+				</div>
+
+				<div class="box">
+					<h2>Přihlášený uživatel</h2>
+					<div class="newsItem">
+						<div class="date">{$user->identity->lastLogin|date:'H:i:s d.m.Y'}</div>
+						<h3>{$user->identity->username} - <a n:href="logout!" title="Odhlásit">Odhlásit {asset "css/images/icon-new-window.png"}</a></h3>
+						<p>Jméno: {$user->identity->firstname} {$user->identity->surname}</p>
+						<p>E-mail: <a href="mailto:{$user->identity->email}" title="{$user->identity->email}">{$user->identity->email}</a></p>
+					</div>
+				</div>
+
+				<div class="box">
+					<h2>Statistiky</h2>
+					<div class="newsItem">
+						<p>
+							Počet návštěv:
+							<!-- BlueBoard.cz Pocitadlo -->
+							<span id="bbpocitadlo-span-XXXXXXXX"><a id="bbpocitadlo-XXXXXXXX" href="http://miniaplikace.blueboard.cz"></a></span>
+							<script type="text/javascript" src="http://miniaplikace.blueboard.cz/counter_1.php?jid=XXXXXXXX"></script>
+							<!-- BlueBoard.cz Pocitadlo KONEC -->
+						</p>
+						<p>
+							On-line:
+							<!-- BLUEBOARD ONLINEMONITOR -->
+							<script src="http://miniaplikace.blueboard.cz/omonitor.php?id=000000"  type="text/javascript" ></script>
+							<!-- BLUEBOARD ONLINEMONITOR KONEC-->
+						</p>
+						<p>&nbsp;</p>
+						<p><a href="http://www.toplist.cz/toplist/?search=example&a=s&sex=on" target="_blank" title="Žebříček">Žebříček</a></p>
+						<p><a href="http://www.toplist.cz/stat/000000" target="_blank" title="Podrobné statistiky">Podrobné statistiky</a></p>
+					</div>
+				</div>
+			{/if}
+			</div>
+
+			<div id="content">
+				{snippet flashes}
+				<div n:if="$flashes" class="flashes">
+					<ul n:foreach="$flashes as $flash">
+						<li class="{$flash->type}">{$flash->message}</li>
+					</ul>
+				</div>
+				{/snippet}
+
+                {control breadcrumb items: $breadcrumbItems}
+
+                <h1 n:ifset="$pageHeading">{$pageHeading}</h1>
+
+				{include #content}
+			</div>
+
+			<div class="cleaner"></div>
+
+		</div>
+
+	</div>
+
+	<div class="cleaner"></div>
+
+	<div id="footerWrapper">
+		<div id="footer">
+			<div class="bottom">
+				<div class="menu">
+					{control mainMenu}
+				</div>
+
+				<div class="copyright">Copyright &copy; 2002 - 2026 <a href="http://www.example.com/">Cyklo shop</a> | <a href="http://www.example.com">PHP Framework v1.00</a>.</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

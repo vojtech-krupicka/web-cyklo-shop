@@ -1,0 +1,12 @@
+# Uploaded files are data, never code: nothing below this folder may be executed.
+# Images, documents and gallery pictures are still served as usual.
+# A script extension anywhere in the name counts ("shell.php.txt"): some hosts run PHP for
+# any name that contains ".php".
+<FilesMatch "(?i)\.(php[0-9]*|phtml|phar|pht|phps|pl|py|cgi|sh|shtml)(\.|$)">
+    Require all denied
+</FilesMatch>
+
+# Do not let browsers guess a different (executable) content type for an upload
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>

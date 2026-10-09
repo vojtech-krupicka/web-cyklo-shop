@@ -1,0 +1,6 @@
+<ul>
+    <li class="first"><a href="{plink :FrontModule:Homepage:}" title="Cyklo shop">Cyklo shop</a></li>
+    <li n:foreach="$menuItems as $value">
+        <a n:class="$value->isActive ? active" href="{plink :AdminModule:{$value->presenter}:}" title="{$value->title}">{$value->title}</a>
+    </li>
+</ul>

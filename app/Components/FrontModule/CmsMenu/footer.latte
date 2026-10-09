@@ -1,0 +1,12 @@
+{varType string $heading}
+
+{if count($menuItems)}
+<h2>{$heading}</h2>
+<div class="menu">
+    <ul>
+        <li n:foreach="$menuItems as $item">
+        {include 'item.latte', item: $item}
+        </li>
+    </ul>
+</div>
+{/if}

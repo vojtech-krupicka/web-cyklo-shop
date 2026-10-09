@@ -1,0 +1,62 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "app: psr",
+      "type": "shell",
+      "command": "composer run psr"
+    },
+    {
+      "label": "app: phpstan",
+      "type": "shell",
+      "command": "composer run phpstan"
+    },
+    {
+      "label": "app: test",
+      "type": "shell",
+      "command": "composer run test"
+    },
+    {
+      "label": "app: test:db",
+      "type": "shell",
+      "command": "composer run test:db"
+    },
+    {
+      "label": "app: check",
+      "type": "shell",
+      "command": "composer run check"
+    },
+    {
+      "label": "composer: require",
+      "type": "shell",
+      "command": "composer require ${input:package}"
+    },
+    {
+      "label": "composer: require (dev)",
+      "type": "shell",
+      "command": "composer require --dev ${input:package}"
+    },
+    {
+      "label": "composer: remove",
+      "type": "shell",
+      "command": "composer remove ${input:package}"
+    },
+    {
+      "label": "composer: remove (dev)",
+      "type": "shell",
+      "command": "composer remove --dev ${input:package}"
+    },
+    {
+      "label": "composer: update",
+      "type": "shell",
+      "command": "composer update"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "package",
+      "description": "Package name to install",
+      "type": "promptString"
+    }
+  ]
+}

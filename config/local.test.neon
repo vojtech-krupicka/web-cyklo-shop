@@ -1,0 +1,17 @@
+# Used when APP_ENV=test (phpunit.xml). Throwaway database inside the dev compose network:
+# nothing secret here, so this file is committed.
+parameters:
+	database:
+		driver: mysql
+		host: db
+		dbname: app_test
+		user: app
+		password: app
+
+	mapy:
+		apiKey: ''
+
+	# Uploads and gallery folders created by tests go here (temp/ is git-ignored and cleaned by the tests)
+	settings:
+		resourcesDir: '%tempDir%/test-resources'
+		tinyMceDir: '%tempDir%/test-resources/tinymce'
